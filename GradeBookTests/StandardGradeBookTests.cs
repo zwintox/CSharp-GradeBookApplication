@@ -1,14 +1,13 @@
 using System;
 using Xunit;
 
-namespace NumberCruncherTests
+namespace GradeBookTests
 {
-    public class UnitTest1
+    public class StandardGradeBookTests
     {
         [Fact]
         public void Test1()
         {
-            
         }
     }
 }
