@@ -1,0 +1,17 @@
+﻿using GradeBook;
+using Xunit;
+
+namespace GradeBookTests
+{
+    public class StudentTests
+    {
+        [Fact]
+        public void ConstructorTest()
+        {
+            var actual = new Student("Test Student",StudentType.Standard,EnrollmentType.Campus);
+            Assert.True(actual.Name == "Test Student");
+            Assert.True(actual.Type == StudentType.Standard);
+            Assert.True(actual.Enrollment == EnrollmentType.Campus);
+        }
+    }
+}
