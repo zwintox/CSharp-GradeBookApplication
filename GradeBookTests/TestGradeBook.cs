@@ -6,7 +6,9 @@ namespace GradeBookTests
     
     public class TestGradeBook : GradeBook.GradeBook
     {
-        public override void CalculateStatistics()
+        public TestGradeBook(string name) : base(name) { }
+
+        protected override void CalculateStatistics()
         {
             throw new NotImplementedException();
         }

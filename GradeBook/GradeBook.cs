@@ -7,16 +7,16 @@ namespace GradeBook
         public string Name { get; set; }
         public List<Student> Students { get; set; }
 
-        public virtual void Create(string name)
+        protected GradeBook(string name)
         {
             Name = name;
             Students = new List<Student>();
         }
 
-        public virtual void AddStudent() { }
-        public virtual void RemoveStudent() { }
-        public virtual void Load() { }
-        public virtual void Save() { }
-        public abstract void CalculateStatistics();
+        protected virtual void AddStudent() { }
+        protected virtual void RemoveStudent() { }
+        protected virtual void Load() { }
+        protected virtual void Save() { }
+        protected abstract void CalculateStatistics();
     }
 }

@@ -5,10 +5,9 @@ namespace GradeBookTests
     public class GradeBookTests
     {
         [Fact]
-        public void CreateTest()
+        public void ConstructorTest()
         {
-            var gradeBook = new TestGradeBook();
-            gradeBook.Create("Test GradeBook");
+            var gradeBook = new TestGradeBook("Test GradeBook");
             Assert.True(gradeBook.Name == "Test GradeBook");
             Assert.True(gradeBook.Students != null);
         }
