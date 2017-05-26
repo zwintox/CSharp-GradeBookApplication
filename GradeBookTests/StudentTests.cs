@@ -7,12 +7,30 @@ namespace GradeBookTests
     public class StudentTests
     {
         [Fact]
-        public void ConstructorTest()
+        public void ConstructorNameTest()
         {
             var actual = new Student("Test Student",StudentType.Standard,EnrollmentType.Campus);
             Assert.True(actual.Name == "Test Student");
+        }
+
+        [Fact]
+        public void ConstructorTypeTest()
+        {
+            var actual = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
             Assert.True(actual.Type == StudentType.Standard);
+        }
+
+        [Fact]
+        public void ConstructorEnrollmentTest()
+        {
+            var actual = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
             Assert.True(actual.Enrollment == EnrollmentType.Campus);
+        }
+
+        [Fact]
+        public void ConstructorGradesNotNullTest()
+        {
+            var actual = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
             Assert.True(actual.Grades != null);
         }
 
@@ -21,8 +39,7 @@ namespace GradeBookTests
         {
             var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
             student.AddGrade(75.1);
-            Assert.True(student.Grades.Count == 1);
-            Assert.True(student.Grades[0] == 75.1);
+            Assert.True(student.Grades.Count == 1 && student.Grades[0] == 75.1);
         }
 
         [Fact]
@@ -31,8 +48,55 @@ namespace GradeBookTests
             var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
             student.Grades = new List<double>{ 50, 75, 100 };
             student.RemoveGrade(75);
-            Assert.True(student.Grades.Count == 2);
-            Assert.True(!student.Grades.Contains(75));
+            Assert.True(student.Grades.Count == 2 && !student.Grades.Contains(75));
+        }
+
+        [Fact]
+        public void AverageGradeTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            student.Grades = new List<double> { 50, 75, 100 };
+            Assert.True(student.AverageGrade == 75);
+        }
+
+        [Fact]
+        public void LetterGradeATest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            student.Grades = new List<double> { 100 };
+            Assert.True(student.LetterGrade == 'a');
+        }
+
+        [Fact]
+        public void LetterGradeBTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            student.Grades = new List<double> { 90 };
+            Assert.True(student.LetterGrade == 'b');
+        }
+
+        [Fact]
+        public void LetterGradeCTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            student.Grades = new List<double> { 80 };
+            Assert.True(student.LetterGrade == 'c');
+        }
+
+        [Fact]
+        public void LetterGradeDTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            student.Grades = new List<double> { 70 };
+            Assert.True(student.LetterGrade == 'd');
+        }
+
+        [Fact]
+        public void LetterGradeFTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            student.Grades = new List<double> { 60 };
+            Assert.True(student.LetterGrade == 'f');
         }
     }
 }

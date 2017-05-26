@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GradeBook
 {
@@ -8,6 +9,28 @@ namespace GradeBook
         public StudentType Type { get; set; }
         public EnrollmentType Enrollment { get; set; }
         public List<double> Grades { get; set; }
+        public double AverageGrade
+        {
+            get
+            {
+                return Grades.Average();
+            }
+        }
+        public char LetterGrade
+        {
+            get
+            {
+                if (AverageGrade > 90)
+                    return 'a';
+                else if (AverageGrade > 80)
+                    return 'b';
+                else if (AverageGrade > 70)
+                    return 'c';
+                else if (AverageGrade > 60)
+                    return 'd';
+                return 'f';
+            }
+        }
 
         public Student(string name, StudentType studentType, EnrollmentType enrollment)
         {
@@ -21,11 +44,10 @@ namespace GradeBook
         {
             Grades.Add(grade);
         }
+
         public void RemoveGrade(double grade)
         {
             Grades.Remove(grade);
         }
-        public void SaveGrade() { }
-        public void CalculateStatistics() { }
     }
 }
