@@ -21,7 +21,10 @@ namespace GradeBook
         {
             Grades.Add(grade);
         }
-        public void RemoveGrade() { }
+        public void RemoveGrade(double grade)
+        {
+            Grades.Remove(grade);
+        }
         public void SaveGrade() { }
         public void CalculateStatistics() { }
     }

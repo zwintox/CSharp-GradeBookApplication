@@ -1,4 +1,5 @@
 ﻿using GradeBook;
+using System.Collections.Generic;
 using Xunit;
 
 namespace GradeBookTests
@@ -22,6 +23,16 @@ namespace GradeBookTests
             student.AddGrade(75.1);
             Assert.True(student.Grades.Count == 1);
             Assert.True(student.Grades[0] == 75.1);
+        }
+
+        [Fact]
+        public void RemoveGradeTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            student.Grades = new List<double>{ 50, 75, 100 };
+            student.RemoveGrade(75);
+            Assert.True(student.Grades.Count == 2);
+            Assert.True(!student.Grades.Contains(75));
         }
     }
 }
