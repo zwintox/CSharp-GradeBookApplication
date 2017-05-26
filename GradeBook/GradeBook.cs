@@ -12,8 +12,8 @@ namespace GradeBook
             Name = name;
             Students = new List<Student>();
         }
-        public virtual void AddGrade() { }
-        public virtual void RemoveGrade() { }
+        public virtual void AddStudent() { }
+        public virtual void RemoveStudent() { }
         public virtual void Load() { }
         public virtual void Save() { }
         public abstract void CalculateStatistics();

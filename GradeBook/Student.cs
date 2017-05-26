@@ -9,11 +9,7 @@ namespace GradeBook
         EnrollmentType Enrollment { get; set; }
         List<decimal> Grades { get; set; }
 
-        public Student()
-        {
-
-        }
-
+        void Create() { }
         void AddGrade() { }
         void RemoveGrade() { }
         void SaveGrade() { }
