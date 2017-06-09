@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GradeBook
@@ -42,6 +43,8 @@ namespace GradeBook
 
         public void AddGrade(double grade)
         {
+            if (grade < 0 || grade > 100)
+                throw new ArgumentException("Grades must be between 0 and 100.");
             Grades.Add(grade);
         }
 

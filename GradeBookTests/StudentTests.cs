@@ -1,4 +1,5 @@
 ﻿using GradeBook;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -40,6 +41,36 @@ namespace GradeBookTests
             var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
             student.AddGrade(75.1);
             Assert.True(student.Grades.Count == 1 && student.Grades[0] == 75.1);
+        }
+
+        [Fact]
+        public void AddGradeZeroAcceptedTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            student.AddGrade(0);
+            Assert.True(student.Grades.Count == 1 && student.Grades[0] == 0);
+        }
+
+        [Fact]
+        public void AddGradeOneHundredAcceptedTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            student.AddGrade(100);
+            Assert.True(student.Grades.Count == 1 && student.Grades[0] == 100);
+        }
+
+        [Fact]
+        public void AddGradeExceptionOnLowerThanZeroTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            Assert.Throws(typeof(ArgumentException), () => student.AddGrade(-10));
+        }
+
+        [Fact]
+        public void AddGradeExceptionOnMoreThanOneHundredTest()
+        {
+            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            Assert.Throws(typeof(ArgumentException), () => student.AddGrade(110));
         }
 
         [Fact]

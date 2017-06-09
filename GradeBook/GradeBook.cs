@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GradeBook
 {
@@ -13,7 +14,12 @@ namespace GradeBook
             Students = new List<Student>();
         }
 
-        protected virtual void AddStudent() { }
+        public virtual void AddStudent(Student student)
+        {
+            if(string.IsNullOrEmpty(student.Name))
+                throw new ArgumentException("A Name is required to add a student to a gradebook.");
+            Students.Add(student);
+        }
         protected virtual void RemoveStudent() { }
         protected virtual void Load() { }
         protected virtual void Save() { }
