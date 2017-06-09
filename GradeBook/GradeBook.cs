@@ -20,9 +20,12 @@ namespace GradeBook
                 throw new ArgumentException("A Name is required to add a student to a gradebook.");
             Students.Add(student);
         }
-        protected virtual void RemoveStudent() { }
-        protected virtual void Load() { }
-        protected virtual void Save() { }
-        protected abstract void CalculateStatistics();
+        public virtual void RemoveStudent() { }
+        public static GradeBook Load(string name)
+        {
+            throw new NotImplementedException();
+        }
+        public virtual void Save() { }
+        public abstract void CalculateStatistics();
     }
 }
