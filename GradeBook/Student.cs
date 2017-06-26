@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace GradeBook
 {
@@ -10,6 +11,7 @@ namespace GradeBook
         public StudentType Type { get; set; }
         public EnrollmentType Enrollment { get; set; }
         public List<double> Grades { get; set; }
+        [JsonIgnore]
         public double AverageGrade
         {
             get
@@ -17,6 +19,7 @@ namespace GradeBook
                 return Grades.Average();
             }
         }
+        [JsonIgnore]
         public virtual char LetterGrade { get; set; }
 
         public Student(string name, StudentType studentType, EnrollmentType enrollment)
