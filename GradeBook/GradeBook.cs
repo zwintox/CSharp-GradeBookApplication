@@ -7,16 +7,19 @@ namespace GradeBook
     {
         public string Name { get; set; }
         public List<Student> Students { get; set; }
+        public bool IsWeighted { get; set; }
+        public GradeBookType Type { get; set; }
 
-        protected GradeBook(string name)
+        protected GradeBook(string name, bool isWeighted)
         {
             Name = name;
+            IsWeighted = isWeighted;
             Students = new List<Student>();
         }
 
         public virtual void AddStudent(Student student)
         {
-            if(string.IsNullOrEmpty(student.Name))
+            if (string.IsNullOrEmpty(student.Name))
                 throw new ArgumentException("A Name is required to add a student to a gradebook.");
             Students.Add(student);
         }
@@ -25,7 +28,11 @@ namespace GradeBook
         {
             throw new NotImplementedException();
         }
-        public virtual void Save() { }
+        public static void Save()
+        {
+            throw new NotImplementedException();
+        }
+        public abstract char GetLetterGrade(double averageGrade);
         public abstract void CalculateStatistics();
     }
 }

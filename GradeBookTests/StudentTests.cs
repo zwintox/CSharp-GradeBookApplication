@@ -89,45 +89,5 @@ namespace GradeBookTests
             student.Grades = new List<double> { 50, 75, 100 };
             Assert.True(student.AverageGrade == 75);
         }
-
-        [Fact]
-        public void LetterGradeATest()
-        {
-            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
-            student.Grades = new List<double> { 100 };
-            Assert.True(student.LetterGrade == 'a');
-        }
-
-        [Fact]
-        public void LetterGradeBTest()
-        {
-            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
-            student.Grades = new List<double> { 90 };
-            Assert.True(student.LetterGrade == 'b');
-        }
-
-        [Fact]
-        public void LetterGradeCTest()
-        {
-            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
-            student.Grades = new List<double> { 80 };
-            Assert.True(student.LetterGrade == 'c');
-        }
-
-        [Fact]
-        public void LetterGradeDTest()
-        {
-            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
-            student.Grades = new List<double> { 70 };
-            Assert.True(student.LetterGrade == 'd');
-        }
-
-        [Fact]
-        public void LetterGradeFTest()
-        {
-            var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
-            student.Grades = new List<double> { 60 };
-            Assert.True(student.LetterGrade == 'f');
-        }
     }
 }

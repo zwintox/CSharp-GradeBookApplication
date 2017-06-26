@@ -17,21 +17,7 @@ namespace GradeBook
                 return Grades.Average();
             }
         }
-        public char LetterGrade
-        {
-            get
-            {
-                if (AverageGrade > 90)
-                    return 'a';
-                else if (AverageGrade > 80)
-                    return 'b';
-                else if (AverageGrade > 70)
-                    return 'c';
-                else if (AverageGrade > 60)
-                    return 'd';
-                return 'f';
-            }
-        }
+        public virtual char LetterGrade { get; set; }
 
         public Student(string name, StudentType studentType, EnrollmentType enrollment)
         {
