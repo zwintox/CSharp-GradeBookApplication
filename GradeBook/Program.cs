@@ -17,6 +17,7 @@ namespace GradeBook
             {
                 Console.WriteLine("What would you like to do?");
                 var command = Console.ReadLine().ToLower();
+                Console.Clear();
 
                 if(command.StartsWith("create"))
                 {
@@ -87,6 +88,7 @@ namespace GradeBook
             {
                 Console.WriteLine("What would you like to do?");
                 var command = Console.ReadLine().ToLower();
+                Console.Clear();
                 if (command == "save")
                 {
                     gradeBook.Save();
@@ -102,6 +104,7 @@ namespace GradeBook
                     var name = parts[1];
                     var score = Double.Parse(parts[2]);
                     gradeBook.AddGrade(name, score);
+                    Console.WriteLine("Added a score of " + score +  " to " + name + "'s grades");
                 }
                 else if (command.StartsWith("removegrade"))
                 {
@@ -109,6 +112,7 @@ namespace GradeBook
                     var name = parts[1];
                     var score = Double.Parse(parts[2]);
                     gradeBook.RemoveGrade(name, score);
+                    Console.WriteLine("Removed a score of " + score + " from " + name + "'s grades");
                 }
                 else if (command.StartsWith("add"))
                 {
@@ -119,14 +123,16 @@ namespace GradeBook
 
                     var student = new Student(name, studentType, enrollmentType);
                     gradeBook.AddStudent(student);
+                    Console.WriteLine("Added " + name +  " to the gradebook.");
                 }
                 else if (command.StartsWith("remove"))
                 {
                     var parts = command.Split(' ');
                     var name = parts[1];
                     gradeBook.RemoveStudent(name);
+                    Console.WriteLine("Removed " + name + " from the gradebook.");
                 }
-                else if (command == "stastics all")
+                else if (command == "statistics all")
                 {
                     gradeBook.CalculateStatistics();
                 }
@@ -169,6 +175,7 @@ namespace GradeBook
                 {
                     Console.WriteLine("{0} was not recognized, please try again.", command);
                 }
+                Console.WriteLine("=====================================");
             }
             Console.WriteLine(gradeBook.Name + " has been closed.");
         }

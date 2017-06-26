@@ -21,6 +21,8 @@ namespace GradeBook
         }
         [JsonIgnore]
         public virtual char LetterGrade { get; set; }
+        [JsonIgnore]
+        public virtual double GPA { get; set; }
 
         public Student(string name, StudentType studentType, EnrollmentType enrollment)
         {

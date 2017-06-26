@@ -1,1 +1,1 @@
-{"Name":"test","Students":[{"Name":"tom","Type":0,"Enrollment":0,"Grades":[]}],"IsWeighted":true,"Type":4}
+{"Name":"test","Students":[{"Name":"tom","Type":0,"Enrollment":0,"Grades":[100.0]},{"Name":"james","Type":1,"Enrollment":0,"Grades":[80.0]},{"Name":"jamie","Type":1,"Enrollment":3,"Grades":[95.0]}],"IsWeighted":true,"Type":4}
