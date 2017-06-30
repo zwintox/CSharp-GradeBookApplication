@@ -19,10 +19,15 @@ namespace GradeBook
                 var command = Console.ReadLine().ToLower();
                 Console.Clear();
 
-                if(command.StartsWith("create"))
+                if (command.StartsWith("create"))
                 {
                     GradeBook gradeBook;
                     var parts = command.Split(' ');
+                    if (parts.Length != 4)
+                    {
+                        Console.WriteLine("Command not valid, Create requires a name, type, is it weighted.");
+                        continue;
+                    }
                     var name = parts[1];
                     var type = parts[2];
                     var weighted = bool.Parse(parts[3]);
@@ -40,8 +45,19 @@ namespace GradeBook
                 }
                 else if(command.StartsWith("load"))
                 {
-                    var name = command.Split(' ')[1];
-                    GradeBookInteraction(GradeBook.Load(name));
+                    var parts = command.Split(' ');
+                    if (parts.Length != 1)
+                    {
+                        Console.WriteLine("Command not valid, Load requires a name.");
+                        continue;
+                    }
+                    var name = parts[1];
+                    var gradeBook = GradeBook.Load(name);
+
+                    if (gradeBook == null)
+                        continue;
+
+                    GradeBookInteraction(gradeBook);
                 }
                 else if(command == "help")
                 { 
@@ -63,13 +79,9 @@ namespace GradeBook
                     Console.WriteLine("Quit - Exits the application");
                 }
                 else if(command == "quit")
-                {
                     quit = true;
-                }
                 else
-                {
                     Console.WriteLine("{0} was not recognized, please try again.", command);
-                }
             }
             Console.WriteLine("Thank you for using GradeBook!");
             Console.WriteLine("Have a nice day!");
@@ -95,12 +107,15 @@ namespace GradeBook
                     Console.WriteLine(gradeBook.Name + " has been saved.");
                 }
                 else if (command == "close")
-                {
                     close = true;
-                }
                 else if (command.StartsWith("addgrade"))
                 {
                     var parts = command.Split(' ');
+                    if (parts.Length != 3)
+                    {
+                        Console.WriteLine("Command not valid, AddGrade requires a name and score.");
+                        continue;
+                    }
                     var name = parts[1];
                     var score = Double.Parse(parts[2]);
                     gradeBook.AddGrade(name, score);
@@ -109,6 +124,11 @@ namespace GradeBook
                 else if (command.StartsWith("removegrade"))
                 {
                     var parts = command.Split(' ');
+                    if (parts.Length != 3)
+                    {
+                        Console.WriteLine("Command not valid, RemoveGrade requires a name and score.");
+                        continue;
+                    }
                     var name = parts[1];
                     var score = Double.Parse(parts[2]);
                     gradeBook.RemoveGrade(name, score);
@@ -117,8 +137,18 @@ namespace GradeBook
                 else if (command.StartsWith("add"))
                 {
                     var parts = command.Split(' ');
+                    if (parts.Length != 4)
+                    {
+                        Console.WriteLine("Command not valid, Add requires a name, student type, enrollment type.");
+                        continue;
+                    }
                     var name = parts[1];
-                    var studentType = (StudentType)Enum.Parse(typeof(StudentType), parts[2], true);
+                    StudentType studentType;
+                    if(Enum.TryParse(parts[2], true, out studentType))
+                    {
+                        Console.WriteLine();
+                        continue;
+                    }
                     var enrollmentType = (EnrollmentType)Enum.Parse(typeof(EnrollmentType), parts[3], true);
 
                     var student = new Student(name, studentType, enrollmentType);
@@ -128,6 +158,11 @@ namespace GradeBook
                 else if (command.StartsWith("remove"))
                 {
                     var parts = command.Split(' ');
+                    if (parts.Length != 2)
+                    {
+                        Console.WriteLine("Command not valid, Remove requires a name.");
+                        continue;
+                    }
                     var name = parts[1];
                     gradeBook.RemoveStudent(name);
                     Console.WriteLine("Removed " + name + " from the gradebook.");
@@ -138,7 +173,14 @@ namespace GradeBook
                 }
                 else if (command.StartsWith("statistics"))
                 {
-                    // get student stats
+                    var parts = command.Split(' ');
+                    if(parts.Length != 2)
+                    {
+                        Console.WriteLine("Command not valid, Requires Name or All.");
+                        continue;
+                    }
+                    var name = parts[1];
+                    gradeBook.CalculateStudentStatistics(name);
                 }
                 else if(command == "help")
                 {
@@ -172,9 +214,7 @@ namespace GradeBook
                     Console.WriteLine("Save - saves the gradebook to the hard drive for later use.");
                 }
                 else
-                {
                     Console.WriteLine("{0} was not recognized, please try again.", command);
-                }
                 Console.WriteLine("=====================================");
             }
             Console.WriteLine(gradeBook.Name + " has been closed.");

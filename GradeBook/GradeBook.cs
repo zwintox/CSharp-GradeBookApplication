@@ -46,6 +46,12 @@ namespace GradeBook
         }
         public static GradeBook Load(string name)
         {
+            if(!File.Exists(name + ".gdbk"))
+            {
+                Console.WriteLine("Gradebook could not be found.");
+                return null;
+            }
+
             using (var file = new FileStream(name + ".gdbk", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = new StreamReader(file))
@@ -79,5 +85,6 @@ namespace GradeBook
         }
         public abstract char GetLetterGrade(double averageGrade);
         public abstract void CalculateStatistics();
+        public abstract void CalculateStudentStatistics(string name);
     }
 }

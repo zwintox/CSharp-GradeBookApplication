@@ -126,6 +126,70 @@ namespace GradeBook
                 Console.WriteLine("Average for only duel enrolled students is " + (duelEnrolledPoints / Students.Where(e => e.Type == StudentType.DuelEnrolled).Count()));
         }
 
+        public override void CalculateStudentStatistics(string name)
+        {
+            var student = Students.FirstOrDefault(e => e.Name == name);
+            student.LetterGrade = GetLetterGrade(student.AverageGrade);
+            var weightedGrade = student.AverageGrade;
+
+            switch (student.LetterGrade)
+            {
+                case 'A':
+                    student.GPA = 4;
+                    break;
+                case 'B':
+                    student.GPA = 3;
+                    break;
+                case 'C':
+                    student.GPA = 2;
+                    break;
+                case 'D':
+                    student.GPA = 1;
+                    break;
+                case 'F':
+                    student.GPA = 0;
+                    break;
+            }
+
+            if (IsWeighted)
+            {
+                switch (student.Type)
+                {
+                    case StudentType.DuelEnrolled:
+                    case StudentType.Honors:
+                        {
+                            switch (student.LetterGrade)
+                            {
+                                case 'A':
+                                    student.GPA = 5;
+                                    break;
+                                case 'B':
+                                    student.GPA = 4;
+                                    break;
+                                case 'C':
+                                    student.GPA = 3;
+                                    break;
+                                case 'D':
+                                    student.GPA = 2;
+                                    break;
+                                case 'F':
+                                    student.GPA = 1;
+                                    break;
+                            }
+                            break;
+                        }
+                }
+            }
+
+            Console.WriteLine(student.Name + " (" + student.LetterGrade + ":" + student.AverageGrade + "): GPA: " + student.GPA + ".");
+            Console.WriteLine();
+            Console.WriteLine("Grades:");
+            foreach(var grade in student.Grades)
+            {
+                Console.WriteLine(grade);
+            }
+        }
+
         public override char GetLetterGrade(double averageGrade)
         {
             if (averageGrade >= 90)
