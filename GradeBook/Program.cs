@@ -17,7 +17,6 @@ namespace GradeBook
             {
                 Console.WriteLine("What would you like to do?");
                 var command = Console.ReadLine().ToLower();
-                Console.Clear();
 
                 if (command.StartsWith("create"))
                 {
@@ -36,6 +35,9 @@ namespace GradeBook
                         case "standard":
                             gradeBook = new StandardGradeBook(name, weighted);
                             break;
+                        case "rank":
+                            gradeBook = new RankedGradeBook(name, weighted);
+                            break;
                         default:
                             Console.WriteLine("{0} is not a supported type of gradebook, please try again.", type);
                             continue;
@@ -46,7 +48,7 @@ namespace GradeBook
                 else if(command.StartsWith("load"))
                 {
                     var parts = command.Split(' ');
-                    if (parts.Length != 1)
+                    if (parts.Length != 2)
                     {
                         Console.WriteLine("Command not valid, Load requires a name.");
                         continue;
@@ -100,7 +102,6 @@ namespace GradeBook
             {
                 Console.WriteLine("What would you like to do?");
                 var command = Console.ReadLine().ToLower();
-                Console.Clear();
                 if (command == "save")
                 {
                     gradeBook.Save();
@@ -143,13 +144,20 @@ namespace GradeBook
                         continue;
                     }
                     var name = parts[1];
+
                     StudentType studentType;
-                    if(Enum.TryParse(parts[2], true, out studentType))
+                    if(!Enum.TryParse(parts[2], true, out studentType))
                     {
-                        Console.WriteLine();
+                        Console.WriteLine(parts[2] + " is not a valid student type, try again.");
                         continue;
                     }
-                    var enrollmentType = (EnrollmentType)Enum.Parse(typeof(EnrollmentType), parts[3], true);
+
+                    EnrollmentType enrollmentType;
+                    if(!Enum.TryParse(parts[3], true, out enrollmentType))
+                    {
+                        Console.WriteLine(parts[3] + " is not a volid enrollment type, try again.");
+                        continue;
+                    }
 
                     var student = new Student(name, studentType, enrollmentType);
                     gradeBook.AddStudent(student);
@@ -166,6 +174,10 @@ namespace GradeBook
                     var name = parts[1];
                     gradeBook.RemoveStudent(name);
                     Console.WriteLine("Removed " + name + " from the gradebook.");
+                }
+                else if (command == "list")
+                {
+                    gradeBook.ListStudents();
                 }
                 else if (command == "statistics all")
                 {
@@ -198,6 +210,8 @@ namespace GradeBook
                     Console.WriteLine("State - Students who's legal residence is outside the school's district, but is in the same state as the school.");
                     Console.WriteLine("National - Students who's legal residence is not in the same state as the school, but is in the same country as the school.");
                     Console.WriteLine("International - Students who's legal residence is not in the same country as the school.");
+                    Console.WriteLine();
+                    Console.WriteLine("List - Lists all students.");
                     Console.WriteLine();
                     Console.WriteLine("AddGrade 'Name' 'Score' - Adds a new grade to a student with the matching name of the provided score.");
                     Console.WriteLine();

@@ -32,17 +32,42 @@ namespace GradeBook
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("A Name is required to remove a student from a gradebook.");
             var student = Students.FirstOrDefault(e => e.Name == name);
+            if (student == null)
+            {
+                Console.WriteLine("student " + name + " was not found, try again.");
+                return;
+            }
+
             Students.Remove(student);
         }
         public void AddGrade(string name, double score)
         {
             var student = Students.FirstOrDefault(e => e.Name == name);
+            if (student == null)
+            {
+                Console.WriteLine("student " + name + " was not found, try again.");
+                return;
+            }
+
             student.AddGrade(score);
         }
         public void RemoveGrade(string name, double score)
         {
             var student = Students.FirstOrDefault(e => e.Name == name);
+            if (student == null)
+            {
+                Console.WriteLine("student " + name + " was not found, try again.");
+                return;
+            }
+
             student.RemoveGrade(score);
+        }
+        public void ListStudents()
+        {
+            foreach(var student in Students)
+            {
+                Console.WriteLine(student.Name + " : " + student.Type + " : " + student.Enrollment);
+            }
         }
         public static GradeBook Load(string name)
         {
@@ -65,6 +90,9 @@ namespace GradeBook
                         case GradeBookType.Standard:
                             gradebook = JsonConvert.DeserializeObject<StandardGradeBook>(json);
                             break;
+                        case GradeBookType.Ranked:
+                            gradebook = JsonConvert.DeserializeObject<RankedGradeBook>(json);
+                            break;
                         default:
                             throw new ArgumentException("The specified gradebook appears to be corrupted.");
                     }
@@ -83,6 +111,7 @@ namespace GradeBook
                 }
             }
         }
+        public abstract double GetGPA(char letterGrade, bool isWeighted, StudentType studentType);
         public abstract char GetLetterGrade(double averageGrade);
         public abstract void CalculateStatistics();
         public abstract void CalculateStudentStatistics(string name);

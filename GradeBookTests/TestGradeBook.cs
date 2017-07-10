@@ -7,9 +7,24 @@ namespace GradeBookTests
     
     public class TestGradeBook : GradeBook.GradeBook
     {
-        public TestGradeBook(string name) : base(name) { }
+        public TestGradeBook(string name, bool isWeighted) : base(name, isWeighted) { }
 
         public override void CalculateStatistics()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CalculateStudentStatistics(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetGPA(char letterGrade, bool isWeighted, StudentType studentType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override char GetLetterGrade(double averageGrade)
         {
             throw new NotImplementedException();
         }
