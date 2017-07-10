@@ -1,1 +1,0 @@
-{"Name":"test","Students":[{"Name":"jamie","Type":0,"Enrollment":0,"Grades":[100.0,98.0,95.0,100.0]},{"Name":"sam","Type":1,"Enrollment":1,"Grades":[100.0,50.0,75.0]},{"Name":"susan","Type":2,"Enrollment":3,"Grades":[95.0,60.0,70.0,80.0]}],"IsWeighted":true,"Type":4}
