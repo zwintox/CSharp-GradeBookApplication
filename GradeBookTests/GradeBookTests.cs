@@ -4,6 +4,7 @@ using Xunit;
 
 using GradeBook;
 using GradeBook.Enums;
+using System.Collections.Generic;
 
 namespace GradeBookTests
 {
@@ -83,6 +84,33 @@ namespace GradeBookTests
         {
             var gradeBook = new TestGradeBook("Test GradeBook", true);
             gradeBook.AddGrade("jamie", 100);
+        }
+
+        [Fact]
+        public void RemoveGradeTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+            gradeBook.Students.Add(new Student("jamie", StudentType.Standard, EnrollmentType.Campus));
+            gradeBook.Students.FirstOrDefault(e => e.Name == "jamie").Grades = new List<double> { 100, 50 };
+            gradeBook.RemoveGrade("jamie", 100);
+            Assert.True(gradeBook.Students.FirstOrDefault(e => e.Name == "jamie").Grades.Count == 1);
+            Assert.True(gradeBook.Students.FirstOrDefault(e => e.Name == "jamie").Grades[0] == 50);
+        }
+
+        [Fact]
+        public void RemoveGradeStudentNotFoundTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+            gradeBook.Students.Add(new Student("jamie", StudentType.Standard, EnrollmentType.Campus));
+            gradeBook.Students.FirstOrDefault(e => e.Name == "jamie").Grades = new List<double> { 100, 50 };
+            gradeBook.RemoveGrade("bob", 100);
+        }
+
+        [Fact]
+        public void RemoveGradeThrowsExceptionOnEmptyNameTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+            Assert.Throws(typeof(ArgumentException), () => gradeBook.RemoveGrade(string.Empty, 100));
         }
     }
 }

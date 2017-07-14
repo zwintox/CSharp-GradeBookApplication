@@ -55,13 +55,14 @@ namespace GradeBook.GradeBooks
         }
         public void RemoveGrade(string name, double score)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException("A Name is required to remove a grade from a student.");
             var student = Students.FirstOrDefault(e => e.Name == name);
             if (student == null)
             {
                 Console.WriteLine("student " + name + " was not found, try again.");
                 return;
             }
-
             student.RemoveGrade(score);
         }
         public void ListStudents()
