@@ -7,16 +7,16 @@ using System.Linq;
 
 using GradeBook.Enums;
 
-namespace GradeBook
+namespace GradeBook.GradeBooks
 {
-    public abstract class GradeBook
+    public abstract class BaseGradeBook
     {
         public string Name { get; set; }
         public List<Student> Students { get; set; }
         public bool IsWeighted { get; set; }
         public GradeBookType Type { get; set; }
 
-        protected GradeBook(string name, bool isWeighted)
+        protected BaseGradeBook(string name, bool isWeighted)
         {
             Name = name;
             IsWeighted = isWeighted;
@@ -71,7 +71,7 @@ namespace GradeBook
                 Console.WriteLine(student.Name + " : " + student.Type + " : " + student.Enrollment);
             }
         }
-        public static GradeBook Load(string name)
+        public static BaseGradeBook Load(string name)
         {
             if(!File.Exists(name + ".gdbk"))
             {
@@ -83,7 +83,7 @@ namespace GradeBook
             {
                 using (var reader = new StreamReader(file))
                 {
-                    GradeBook gradebook;
+                    BaseGradeBook gradebook;
                     var json = reader.ReadToEnd();
                     var jobject =  JsonConvert.DeserializeObject<JObject>(json);
                     var type = Enum.Parse(typeof(GradeBookType), jobject.GetValue("Type").ToString(), true);

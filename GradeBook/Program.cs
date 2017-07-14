@@ -1,6 +1,7 @@
 ﻿using System;
 
 using GradeBook.Enums;
+using GradeBook.GradeBooks;
 
 namespace GradeBook
 {
@@ -22,7 +23,7 @@ namespace GradeBook
 
                 if (command.StartsWith("create"))
                 {
-                    GradeBook gradeBook;
+                    BaseGradeBook gradeBook;
                     var parts = command.Split(' ');
                     if (parts.Length != 4)
                     {
@@ -56,7 +57,7 @@ namespace GradeBook
                         continue;
                     }
                     var name = parts[1];
-                    var gradeBook = GradeBook.Load(name);
+                    var gradeBook = BaseGradeBook.Load(name);
 
                     if (gradeBook == null)
                         continue;
@@ -92,7 +93,7 @@ namespace GradeBook
             Console.Read();
         }
 
-        static void GradeBookInteraction(GradeBook gradeBook)
+        static void GradeBookInteraction(BaseGradeBook gradeBook)
         {
             Console.WriteLine("#=======================#");
             Console.WriteLine(gradeBook.Name);
