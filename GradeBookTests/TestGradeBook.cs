@@ -1,11 +1,13 @@
 ﻿using System;
-using GradeBook;
+
+using GradeBook.Enums;
+using GradeBook.GradeBooks;
 
 namespace GradeBookTests
 {
     //This class exists to provide a default implimentation of the GradeBook for testing
     
-    public class TestGradeBook : GradeBook.BaseGradeBook
+    public class TestGradeBook : BaseGradeBook
     {
         public TestGradeBook(string name, bool isWeighted) : base(name, isWeighted) { }
 

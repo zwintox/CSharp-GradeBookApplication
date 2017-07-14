@@ -1,7 +1,9 @@
-﻿using GradeBook;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Xunit;
+
+using GradeBook;
+using GradeBook.Enums;
 
 namespace GradeBookTests
 {
