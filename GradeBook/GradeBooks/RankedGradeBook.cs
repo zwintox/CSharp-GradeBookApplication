@@ -23,6 +23,12 @@ namespace GradeBook.GradeBooks
             var honorPoints = 0d;
             var duelEnrolledPoints = 0d;
 
+            if (Students.Where(e => e.Grades.Count > 0).Count() < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade.");
+                return;
+            }
+
             foreach (var student in Students)
             {
                 student.LetterGrade = GetLetterGrade(student.AverageGrade);
@@ -81,6 +87,12 @@ namespace GradeBook.GradeBooks
 
         public override void CalculateStudentStatistics(string name)
         {
+            if(Students.Where(e => e.Grades.Count > 0).Count() < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade.");
+                return;
+            }
+
             var student = Students.FirstOrDefault(e => e.Name == name);
             student.LetterGrade = GetLetterGrade(student.AverageGrade);
             student.GPA = GetGPA(student.LetterGrade, student.Type);
@@ -139,6 +151,8 @@ namespace GradeBook.GradeBooks
 
         public override char GetLetterGrade(double averageGrade)
         {
+            if (Students.Count < 5)
+                throw new InvalidOperationException("Ranked grading requires a minimum of 5 students in order to provide grades.");
             var grades = Students.OrderByDescending(e => e.AverageGrade).Select(e => e.AverageGrade).ToList();
             var gradeScale = Students.Count()*0.2;
 
