@@ -60,5 +60,29 @@ namespace GradeBookTests
             gradeBook.Students.Add(new Student("jamie", StudentType.Standard, EnrollmentType.Campus));
             gradeBook.RemoveStudent("robert");
         }
+
+        [Fact]
+        public void AddGradeTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+            gradeBook.Students.Add(new Student("jamie", StudentType.Standard, EnrollmentType.Campus));
+            gradeBook.AddGrade("jamie",100);
+            Assert.True(gradeBook.Students.FirstOrDefault(e => e.Name == "jamie").Grades.Count == 1);
+            Assert.True(gradeBook.Students.FirstOrDefault(e => e.Name == "jamie").Grades[0] == 100);
+        }
+
+        [Fact]
+        public void AddGradeThrowsExceptionOnEmptyNameTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+            Assert.Throws(typeof(ArgumentException), () => gradeBook.AddGrade(string.Empty,100));
+        }
+
+        [Fact]
+        public void AddGradeTestNotFoundTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+            gradeBook.AddGrade("jamie", 100);
+        }
     }
 }

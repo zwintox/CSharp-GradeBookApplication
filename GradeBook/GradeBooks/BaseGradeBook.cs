@@ -43,13 +43,14 @@ namespace GradeBook.GradeBooks
         }
         public void AddGrade(string name, double score)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException("A Name is required to add a grade to a student.");
             var student = Students.FirstOrDefault(e => e.Name == name);
             if (student == null)
             {
                 Console.WriteLine("student " + name + " was not found, try again.");
                 return;
             }
-
             student.AddGrade(score);
         }
         public void RemoveGrade(string name, double score)
