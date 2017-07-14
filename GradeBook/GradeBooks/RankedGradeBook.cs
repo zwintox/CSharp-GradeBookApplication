@@ -26,7 +26,7 @@ namespace GradeBook.GradeBooks
             foreach (var student in Students)
             {
                 student.LetterGrade = GetLetterGrade(student.AverageGrade);
-                student.GPA = GetGPA(student.LetterGrade, IsWeighted, student.Type);
+                student.GPA = GetGPA(student.LetterGrade, student.Type);
 
                 Console.WriteLine(student.Name + " (" + student.LetterGrade + ":" + student.AverageGrade + "): GPA: " + student.GPA + ".");
                 allStudentsPoints += student.AverageGrade;
@@ -83,7 +83,7 @@ namespace GradeBook.GradeBooks
         {
             var student = Students.FirstOrDefault(e => e.Name == name);
             student.LetterGrade = GetLetterGrade(student.AverageGrade);
-            student.GPA = GetGPA(student.LetterGrade, IsWeighted, student.Type);
+            student.GPA = GetGPA(student.LetterGrade, student.Type);
 
             Console.WriteLine(student.Name + " (" + student.LetterGrade + ":" + student.AverageGrade + "): GPA: " + student.GPA + ".");
             Console.WriteLine();
@@ -94,9 +94,9 @@ namespace GradeBook.GradeBooks
             }
         }
 
-        public override double GetGPA(char letterGrade, bool isWeighted, StudentType studentType)
+        public override double GetGPA(char letterGrade, StudentType studentType)
         {
-            if (isWeighted)
+            if (IsWeighted)
             {
                 switch (studentType)
                 {

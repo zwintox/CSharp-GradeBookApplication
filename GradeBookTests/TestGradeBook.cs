@@ -21,7 +21,7 @@ namespace GradeBookTests
             throw new NotImplementedException();
         }
 
-        public override double GetGPA(char letterGrade, bool isWeighted, StudentType studentType)
+        public override double GetGPA(char letterGrade, StudentType studentType)
         {
             throw new NotImplementedException();
         }

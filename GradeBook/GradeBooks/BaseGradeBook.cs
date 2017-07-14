@@ -114,7 +114,7 @@ namespace GradeBook.GradeBooks
                 }
             }
         }
-        public abstract double GetGPA(char letterGrade, bool isWeighted, StudentType studentType);
+        public abstract double GetGPA(char letterGrade, StudentType studentType);
         public abstract char GetLetterGrade(double averageGrade);
         public abstract void CalculateStatistics();
         public abstract void CalculateStudentStatistics(string name);
