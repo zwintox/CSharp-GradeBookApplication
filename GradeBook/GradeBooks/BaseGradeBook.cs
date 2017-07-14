@@ -39,7 +39,6 @@ namespace GradeBook.GradeBooks
                 Console.WriteLine("student " + name + " was not found, try again.");
                 return;
             }
-
             Students.Remove(student);
         }
         public void AddGrade(string name, double score)
