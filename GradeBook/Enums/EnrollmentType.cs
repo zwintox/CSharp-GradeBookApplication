@@ -1,4 +1,4 @@
-﻿namespace GradeBook
+﻿namespace GradeBook.Enums
 {
     public enum EnrollmentType
     {

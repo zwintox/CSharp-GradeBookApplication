@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using GradeBook.Enums;
+
 namespace GradeBook
 {
     public abstract class GradeBook

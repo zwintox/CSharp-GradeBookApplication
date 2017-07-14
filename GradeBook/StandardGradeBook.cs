@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 
+using GradeBook.Enums;
+
 namespace GradeBook
 {
     public class StandardGradeBook : GradeBook
