@@ -112,5 +112,125 @@ namespace GradeBookTests
             var gradeBook = new TestGradeBook("Test GradeBook", true);
             Assert.Throws(typeof(ArgumentException), () => gradeBook.RemoveGrade(string.Empty, 100));
         }
+
+        [Fact]
+        public void GetGPAWeightedATest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+
+            var expected = 5;
+            var actual = gradeBook.GetGPA('A', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAWeightedBTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+
+            var expected = 4;
+            var actual = gradeBook.GetGPA('B', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAWeightedCTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+
+            var expected = 3;
+            var actual = gradeBook.GetGPA('C', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAWeightedDTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+
+            var expected = 2;
+            var actual = gradeBook.GetGPA('D', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAWeightedFTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+
+            var expected = 1;
+            var actual = gradeBook.GetGPA('F', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAWeightedOtherTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", true);
+
+            var expected = 0;
+            var actual = gradeBook.GetGPA('E', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAUnweightedATest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", false);
+
+            var expected = 4;
+            var actual = gradeBook.GetGPA('A', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAUnweightedBTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", false);
+
+            var expected = 3;
+            var actual = gradeBook.GetGPA('B', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAUnweightedCTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", false);
+
+            var expected = 2;
+            var actual = gradeBook.GetGPA('C', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAUnweightedDTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", false);
+
+            var expected = 1;
+            var actual = gradeBook.GetGPA('D', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAUnweightedFTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", false);
+
+            var expected = 0;
+            var actual = gradeBook.GetGPA('F', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
+
+        [Fact]
+        public void GetGPAUnweightedOtherTest()
+        {
+            var gradeBook = new TestGradeBook("Test GradeBook", false);
+
+            var expected = 0;
+            var actual = gradeBook.GetGPA('E', StudentType.Honors);
+            Assert.True(expected == actual);
+        }
     }
 }

@@ -21,11 +21,6 @@ namespace GradeBookTests
             throw new NotImplementedException();
         }
 
-        public override double GetGPA(char letterGrade, StudentType studentType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override char GetLetterGrade(double averageGrade)
         {
             throw new NotImplementedException();
