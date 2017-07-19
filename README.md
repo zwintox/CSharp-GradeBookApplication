@@ -28,15 +28,15 @@ If you would rather use something other than Visual Studio (or are on OSX or Lin
 __Note:__ this isn't the only way to accomplish this, however; this is what the project's tests are expecting. Implimenting this in a different way will likely result in being marked as incomplete / incorrect.
 
 - [ ] Add support for Ranked Grading
-	- [ ] Create an Enum `GradeBookType` containing the types of Gradebooks to be supported (Standard, Ranked, ESNU, OneToFour, SixPoint)
-		- [ ] Create a new Enum `GradeBookType` containing the types Standard, Ranked, ENSU, OneToFour, and SixPoint.
-		- [ ] Add a property `Type` to the `StandardGradeBook` of type `GradeBookType`.
+	- [ ] Create an Enum `GradeBookType` containing the types of Gradebooks to be supported (`Standard`, `Ranked`, `ESNU`, `OneToFour`, `SixPoint`)
+		- [ ] Create a new Enum `GradeBookType` containing the types `Standard`, `Ranked`, `ENSU`, `OneToFour`, and `SixPoint`.
+		- [ ] Add a property named `Type` to `StandardGradeBook` of type `GradeBookType`.
 
 	- [ ] Create a new abstract class `BaseGradeBook` to contain the common Gradebook functionality.
 		- [ ] Create the abstract class `BaseGradeBook`
 		- [ ] Copy all Properties from `StandardGradeBook` to the `BaseGradeBook`
 		- [ ] Copy all methods from `StandardGradeBook` to the `BaseGradeBook`
-		- [ ] Change the method `GetLetterGrade` to be an abstract method (don't forget to remove the implimentation of the abstract methods)
+		- [ ] Change the method `GetLetterGrade` to be an abstract method (don't forget to remove the implimentation of the abstract method!)
 		- [ ] Change `GetGPA`, `CalculateStatistics`, and `CalculateStudentStatistics` to be a virtual methods.
 
 	- [ ] Refactor the `StandardGradeBook` class to utilize our new `BaseGradeBook` class.
