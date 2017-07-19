@@ -23,7 +23,7 @@ If you would rather use something other than Visual Studio (or are on OSX or Lin
 
 You've inherrited responsability to continue to develope the C Sharp Grade Book application. As such it's up to you to update and maintain the application to include newly requested functionality.
 
-##Features you will be adding to this project (and tasks necessary to complete implimentation):
+## Features you will be adding to this project (and tasks necessary to complete implimentation):
 
 - [ ] Add support for Ranked Grading
 	- [ ] Create an Enum `GradeBookType` containing the types of Gradebooks to be supported (Standard, Ranked, ESNU, OneToFour, SixPoint)
