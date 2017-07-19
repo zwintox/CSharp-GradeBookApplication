@@ -21,7 +21,7 @@ If you would rather use something other than Visual Studio (or are on OSX or Lin
 
 # Features you will impliment
 
-- [ ] Add support for Ranked Grading
+- Add support for Ranked Grading
 
 ## Tasks necessary to complete implimentation (this isn't the only way, but it's the way we're scoring on.):
 
@@ -29,18 +29,21 @@ If you would rather use something other than Visual Studio (or are on OSX or Lin
 	- [ ] Create an Enum `GradeBookType` containing the types of Gradebooks to be supported (Standard, Ranked, ESNU, OneToFour, SixPoint)
 		- [ ] Create a new Enum `GradeBookType` containing the types Standard, Ranked, ENSU, OneToFour, and SixPoint.
 		- [ ] Add a property `Type` to the `StandardGradeBook` of type `GradeBookType`.
+
 	- [ ] Create a new abstract class `BaseGradeBook` to contain the common Gradebook functionality.
 		- [ ] Create the abstract class `BaseGradeBook`
 		- [ ] Copy all Properties from `StandardGradeBook` to the `BaseGradeBook`
 		- [ ] Copy all methods from `StandardGradeBook` to the `BaseGradeBook`
 		- [ ] Change the method `GetLetterGrade` to be an abstract method (don't forget to remove the implimentation of the abstract methods)
 		- [ ] Change `GetGPA`, `CalculateStatistics`, and `CalculateStudentStatistics` to be a virtual methods.
+
 	- [ ] Refactor the `StandardGradeBook` class to utilize our new `BaseGradeBook` class.
 		- [ ] Setup the `StandardGradeBook` to inherit the `BaseGradeBook` class.
 		- [ ] Remove all properties from `StandardGradeBook`
 		- [ ] Remove all methods except `GetLetterGrade`
 		- [ ] Change `GetLetterGrade` to be an override method
 		- [ ] Change the constructor to set the `Type` property to `Standard` in the `StandardGradeBook` class
+
 	- [ ] Create a new `RankedGradeBook` class utilizing our new `BaseGradeBook` class.
 		- [ ] Create a new class `RankedGradeBook` that inherits the `BaseGradeBook` class.
 		- [ ] Create a constructor that sets the `Type` property to `Ranked`
@@ -50,14 +53,17 @@ If you would rather use something other than Visual Studio (or are on OSX or Lin
 			- [ ] To get a C a student must have an average score between the top 40 and 60% of their class.
 			- [ ] To get a D a student must have an average score between the top 60 and 80% of their class.
 			- [ ] If a student's average score is below the top 80% of their class they get an F.
+
 		- [ ] Impliment an override of the `CalculateStatistics` method.
 			- [ ] This override will perform a check to make sure there are at least 5 students with grades
 				- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method using `return`.
 				- [ ] If there are 5 students with grades call the `CalculateStatistics` method using `base.CalculateStatistics`
+
 		- [ ] Impliment an override of the `CalculateStudentStatistics` method.
 			- [ ] This override will perform a check to make sure there are at least 5 students with grades
 				- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method using `return'.
 				- [ ] If there are 5 students with grades call the base `CalculateStudentStatistics` method using `base.CalculateStudentStatistics`
+
 - [ ] Add simple error handling to prevent problems with unexpected user input
 	- [ ] Ensure proper number of strings are present in Add Command.
 	- [ ] If the string doesn't match an existing type provide feedback and restart loop.
