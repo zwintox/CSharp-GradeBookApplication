@@ -19,11 +19,11 @@ If you would rather use something other than Visual Studio (or are on OSX or Lin
 -	To run the application go into the project folder and type `dotnet run`
 -	To run the tests go into the project folder and type `dotnet test`
 
-# Your Job
+# Features you will impliment
 
-You've inherrited responsability to continue to develope the C Sharp Grade Book application. As such it's up to you to update and maintain the application to include newly requested functionality.
+- [ ] Add support for Ranked Grading
 
-## Features you will be adding to this project (and tasks necessary to complete implimentation):
+## Tasks necessary to complete implimentation (this isn't the only way, but it's the way we're scoring on.):
 
 - [ ] Add support for Ranked Grading
 	- [ ] Create an Enum `GradeBookType` containing the types of Gradebooks to be supported (Standard, Ranked, ESNU, OneToFour, SixPoint)
