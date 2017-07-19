@@ -25,7 +25,7 @@ If you would rather use something other than Visual Studio (or are on OSX or Lin
 
 ## Tasks necessary to complete implimentation:
 
-- Note: this isn't the only way to accomplish this, however; this is what the project's tests are expecting. Implimenting this in a different way will likely result in being marked as incomplete / incorrect.
+__Note:__ this isn't the only way to accomplish this, however; this is what the project's tests are expecting. Implimenting this in a different way will likely result in being marked as incomplete / incorrect.
 
 - [ ] Add support for Ranked Grading
 	- [ ] Create an Enum `GradeBookType` containing the types of Gradebooks to be supported (Standard, Ranked, ESNU, OneToFour, SixPoint)
