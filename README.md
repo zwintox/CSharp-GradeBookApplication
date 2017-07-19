@@ -38,6 +38,12 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 		- [ ] Copy all methods from `StandardGradeBook` to the `BaseGradeBook`
 		- [ ] Change the method `GetLetterGrade` to be an abstract method (don't forget to remove the implimentation of the abstract method!)
 		- [ ] Change `GetGPA`, `CalculateStatistics`, and `CalculateStudentStatistics` to be a virtual methods.
+		- [ ] Update `Save` to handle types of Gradebooks
+			- [ ] Change method return type to `BaseGradeBook` instead of `StandardGradeBook`
+			- [ ] Create a variable to contain the gradebook.
+			- [ ] Set a variable using `Enum.Parse(typeof(GradeBookType), jobject.GetValue("Type").ToString(), true);` to get the type of GradeBook being loaded
+			- [ ] When type is `GradeBookType.Standard` set `gradebook` using `JsonConvert.DeserializeObject<StandardGradeBook>(json);`
+			- [ ] Change the return type to return `gradebook`
 
 	- [ ] Refactor the `StandardGradeBook` class to utilize our new `BaseGradeBook` class.
 		- [ ] Setup the `StandardGradeBook` to inherit the `BaseGradeBook` class.

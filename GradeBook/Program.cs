@@ -23,28 +23,15 @@ namespace GradeBook
 
                 if (command.StartsWith("create"))
                 {
-                    BaseGradeBook gradeBook;
                     var parts = command.Split(' ');
-                    if (parts.Length != 4)
+                    if (parts.Length != 3)
                     {
-                        Console.WriteLine("Command not valid, Create requires a name, type, is it weighted.");
+                        Console.WriteLine("Command not valid, Create requires a name and is it weighted.");
                         continue;
                     }
                     var name = parts[1];
-                    var type = parts[2];
                     var weighted = bool.Parse(parts[3]);
-                    switch(type)
-                    {
-                        case "standard":
-                            gradeBook = new StandardGradeBook(name, weighted);
-                            break;
-                        case "rank":
-                            gradeBook = new RankedGradeBook(name, weighted);
-                            break;
-                        default:
-                            Console.WriteLine("{0} is not a supported type of gradebook, please try again.", type);
-                            continue;
-                    }
+                    var gradeBook = new BaseGradeBook(name, weighted);
                     Console.WriteLine("Created gradebook " + name + ".");
                     GradeBookInteraction(gradeBook);
                 }
@@ -68,14 +55,7 @@ namespace GradeBook
                 { 
                     Console.WriteLine("GradeBook accepts the following commands:");
                     Console.WriteLine();
-                    Console.WriteLine("Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).");
-                    Console.WriteLine();
-                    Console.WriteLine("Accepted Types:");
-                    Console.WriteLine("Standard - Commonly used A,B,C,D,F grading system.");
-                    Console.WriteLine("Rank - Rank based grading is used.");
-                    Console.WriteLine("SixPoint - Six-point grading system is used.");
-                    Console.WriteLine("OneToFour - 1-2-3-4 Grading System is used.");
-                    Console.WriteLine("ESNU - E-S-N-U Grading System is used.");
+                    Console.WriteLine("Create 'Name' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook and 'Weighted' is whether or not grades should be weighted (true or false).");
                     Console.WriteLine();
                     Console.WriteLine("Load 'Name' - Loads the gradebook with the provided 'Name'.");
                     Console.WriteLine();
