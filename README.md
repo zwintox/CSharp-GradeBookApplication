@@ -30,6 +30,8 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 - [ ] Add support for Ranked Grading
 	- [ ] Create an Enum `GradeBookType` containing the types of Gradebooks to be supported (`Standard`, `Ranked`, `ESNU`, `OneToFour`, `SixPoint`)
 		- [ ] Create a new Enum `GradeBookType` containing the types `Standard`, `Ranked`, `ENSU`, `OneToFour`, and `SixPoint`.
+			- This should be located in the `Enums` directory.
+			- This should use the `GradeBook.Enums` namespace.
 		- [ ] Add a property named `Type` to `BaseGradeBook` of type `GradeBookType`.
 
 	- [ ] Change `BaseGradeBook` into an abstract class
@@ -38,10 +40,14 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 
 	- [ ] Create a new class `StandardGradeBook` to contain the Standard Gradebook functionality.
 		- [ ] Create a class `StandardGradeBook` that inherits the `BaseGradeBook` class.
+			- This should be located in the `GradeBooks` directory.
+			- This should use the `GradeBook.GradeBooks` namespace.
 		- [ ] Change the constructor to set the `Type` property to `Standard` in the `StandardGradeBook` class.
 
 	- [ ] Create a new `RankedGradeBook` to contain the Ranked Gradebook functionality.
 		- [ ] Create a new class `RankedGradeBook` that inherits the `BaseGradeBook` class.
+			- This should be located in the `GradeBooks` directory.
+			- This should use the `GradeBook.GradeBooks` namespace.
 		- [ ] Create a constructor that sets the `Type` property to `Ranked`
 
 	- [ ] Update the `BaseGradeBook` class's `Load` method to handle multiple types of Gradebooks
@@ -51,19 +57,19 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 		- [ ] When type is `GradeBookType.Ranked` set the gradebook variable using `JsonConvert.DeserializeObject<RankedGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a RankedGradeBook object based on that file)_
 		- [ ] Change the return type to return `gradebook`.
 
-	- [ ] Impliment an override for the `GetLetterGrade` method, in ranked grading students aren't scored based on their own individual performance, instead they are graded based on how they performed compared to the rest of their class.
+	- [ ] Impliment an override for the `RankedGradeBook`'s `GetLetterGrade` method, in ranked grading students aren't scored based on their own individual performance, instead they are graded based on how they performed compared to the rest of their class.
 		- [ ] To get an A a student must have an average score that is in the top 20% of their class.
 		- [ ] To get a B a student must have an average score between the top 20 and 40% of their class.
 		- [ ] To get a C a student must have an average score between the top 40 and 60% of their class.
 		- [ ] To get a D a student must have an average score between the top 60 and 80% of their class.
 		- [ ] If a student's average score is below the top 80% of their class they get an F.
 
-	- [ ] Impliment an override of the `CalculateStatistics` method.
+	- [ ] Impliment an override of the  `RankedGradeBook`'s `CalculateStatistics` method.
 		- [ ] This override will perform a check to make sure there are at least 5 students with grades
 			- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method.
 			- [ ] If there are 5 students with grades call the `CalculateStatistics` method using `base.CalculateStatistics`
 
-	- [ ] Impliment an override of the `CalculateStudentStatistics` method.
+	- [ ] Impliment an override of the  `RankedGradeBook`'s `CalculateStudentStatistics` method.
 		- [ ] This override will perform a check to make sure there are at least 5 students with grades
 			- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method.
 			- [ ] If there are 5 students with grades call the base `CalculateStudentStatistics` method using `base.CalculateStudentStatistics`
