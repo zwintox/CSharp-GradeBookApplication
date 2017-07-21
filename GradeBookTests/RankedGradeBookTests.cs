@@ -38,9 +38,16 @@ namespace GradeBookTests
         [Fact]
         public void GetLetterGradeThrowsExceptionOnNotEnoughStudentsTest()
         {
-            var gradeBook = new RankedGradeBook("Test GradeBook", true);
-            var student = new Student("jamie", StudentType.Standard, EnrollmentType.Campus);
-            Assert.Throws(typeof(InvalidOperationException), () => gradeBook.GetLetterGrade(100));
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
+            if (rankedGradeBook == null)
+                throw new Exception("GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            MethodInfo method = rankedGradeBook.GetMethod("GetLetterGrade");
+            Assert.Throws(typeof(TargetInvocationException), () => method.Invoke(gradeBook, new object[] { 100 }));
         }
 
         [Fact]
