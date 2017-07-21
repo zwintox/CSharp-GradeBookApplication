@@ -5,7 +5,7 @@ using GradeBook.GradeBooks;
 
 namespace GradeBookTests
 {
-    //This class exists to provide a default implimentation of the GradeBook for testing
+    //This class exists to provide a default implementation of the GradeBook for testing
     
     public class TestGradeBook : BaseGradeBook
     {
