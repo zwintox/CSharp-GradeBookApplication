@@ -1,6 +1,8 @@
-﻿using System.Reflection;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
 using Xunit;
 
 using GradeBook;
@@ -14,22 +16,40 @@ namespace GradeBookTests
         [Fact]
         public void ConstructorTest()
         {
-            var rankedGradeBook = Type.GetType("GradeBook.GradeBooks.RankedGradeBook");
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
             if (rankedGradeBook == null)
                 throw new Exception("GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
             object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
-            
+
+            var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                 from type in assembly.GetTypes()
+                                 where type.FullName == "GradeBook.Enums.GradeBookType"
+                                 select type).FirstOrDefault();
+            if (gradebookEnum == null)
+                throw new Exception("GradeBook.Enums.GradeBookType doesn't exist.");
+
             Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook");
-            //Assert.True(gradeBook.GetType().GetProperty("Type") == GradeBookType.Ranked);
+            Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum, "Ranked", true).GetType());
         }
 
-        //[Fact]
-        //public void GetLetterGradeThrowsExceptionOnNotEnoughStudentsTest()
-        //{
-        //    var gradeBook = new RankedGradeBook("Test GradeBook", true);
-        //    var student = new Student("jamie", StudentType.Standard, EnrollmentType.Campus);
-        //    Assert.Throws(typeof(InvalidOperationException), () => gradeBook.GetLetterGrade(100));
-        //}
+        [Fact]
+        public void GetLetterGradeThrowsExceptionOnNotEnoughStudentsTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
+            if (rankedGradeBook == null)
+                throw new Exception("GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            MethodInfo method = rankedGradeBook.GetMethod("GetLetterGrade");
+            Assert.Throws(typeof(InvalidOperationException), () => method.Invoke(gradeBook, new object[] { 100 }));
+        }
 
         //[Fact]
         //public void GetLetterGradeATest()
