@@ -55,7 +55,7 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 		- [ ] Set a variable using `Enum.Parse(typeof(GradeBookType), jobject.GetValue("Type").ToString(), true);` to get the type of GradeBook being loaded _(this was not covered in the course, it will take the saved file, and attempt to get the type of the gradebook from it)_
 		- [ ] When type is `GradeBookType.Standard` set the gradebook variable using `JsonConvert.DeserializeObject<StandardGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a StandardGradeBook object based on that file)_
 		- [ ] When type is `GradeBookType.Ranked` set the gradebook variable using `JsonConvert.DeserializeObject<RankedGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a RankedGradeBook object based on that file)_
-		- [ ] Change the return type to return `gradebook`.
+		- [ ] Change the return statement to return `gradebook`.
 
 	- [ ] Impliment an override for the `RankedGradeBook`'s `GetLetterGrade` method, in ranked grading students aren't scored based on their own individual performance, instead they are graded based on how they performed compared to the rest of their class.
 		- [ ] To get an A a student must have an average score that is in the top 20% of their class.
@@ -73,3 +73,14 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 		- [ ] This override will perform a check to make sure there are at least 5 students with grades
 			- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method.
 			- [ ] If there are 5 students with grades call the base `CalculateStudentStatistics` method using `base.CalculateStudentStatistics`
+
+	- [ ] Update the `Program` class to work with multiple types of grade books
+		- [ ] Inside the `Main` method update the code within the `if` condution that checks to see if `command` starts with "create".
+			- [ ] Update the validation to check the `parts.Length` is not 4.
+			- [ ] Update the message written to console by this condition to say "Command not valid, Create requires a name, type, is it weighted.".
+			- [ ] Remove where `gradeBook` is set to `BaseGradeBook`.
+			- [ ] Create a new variable to store a string representing the gradebook type, this will be set using the second substring of the parts array.
+			- [ ] Create a new switch / case block that checks the gradebook type variable
+				- [ ] When the value is "standard" set `gradeBook` to a newly instantiated `StandardGradeBook`.
+				- [ ] When the value is "rank" set `gradeBook` to a newly instantiated `RankedGradeBook`.
+			- [ ] Change where the "help" command outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
