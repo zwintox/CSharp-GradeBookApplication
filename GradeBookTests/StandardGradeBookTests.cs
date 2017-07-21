@@ -19,9 +19,9 @@ namespace GradeBookTests
         public void ConstructorTest()
         {
             var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                   from type in assembly.GetTypes()
-                                   where type.Name == "StandardGradeBook"
-                                   select type).FirstOrDefault();
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
             if (standardGradeBook == null)
                 throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
@@ -42,42 +42,17 @@ namespace GradeBookTests
         public void GetLetterGradeATest()
         {
             var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                   from type in assembly.GetTypes()
-                                   where type.Name == "StandardGradeBook"
-                                   select type).FirstOrDefault();
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
             if (standardGradeBook == null)
                 throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
-            var students = new List<Student>
-                {
-                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 100 }
-                    },
-                    new Student("john",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 75 }
-                    },
-                    new Student("jackie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 50 }
-                    },
-                    new Student("tom",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 25 }
-                    },
-                    new Student("tony",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 0 }
-                    }
-                };
-
-            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'A';
-            var actual = (char)method.Invoke(gradeBook, new object[] { 100 });
+            var actual = (char)method.Invoke(gradeBook, new object[] { 90 });
             Assert.True(expected == actual);
         }
 
@@ -85,42 +60,17 @@ namespace GradeBookTests
         public void GetLetterGradeBTest()
         {
             var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                   from type in assembly.GetTypes()
-                                   where type.Name == "StandardGradeBook"
-                                   select type).FirstOrDefault();
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
             if (standardGradeBook == null)
                 throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
-            var students = new List<Student>
-                {
-                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 100 }
-                    },
-                    new Student("john",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 75 }
-                    },
-                    new Student("jackie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 50 }
-                    },
-                    new Student("tom",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 25 }
-                    },
-                    new Student("tony",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 0 }
-                    }
-                };
-
-            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'B';
-            var actual = (char)method.Invoke(gradeBook, new object[] { 75 });
+            var actual = (char)method.Invoke(gradeBook, new object[] { 80 });
             Assert.True(expected == actual);
         }
 
@@ -128,42 +78,17 @@ namespace GradeBookTests
         public void GetLetterGradeCTest()
         {
             var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                   from type in assembly.GetTypes()
-                                   where type.Name == "StandardGradeBook"
-                                   select type).FirstOrDefault();
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
             if (standardGradeBook == null)
                 throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
-            var students = new List<Student>
-                {
-                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 100 }
-                    },
-                    new Student("john",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 75 }
-                    },
-                    new Student("jackie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 50 }
-                    },
-                    new Student("tom",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 25 }
-                    },
-                    new Student("tony",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 0 }
-                    }
-                };
-
-            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'C';
-            var actual = (char)method.Invoke(gradeBook, new object[] { 50 });
+            var actual = (char)method.Invoke(gradeBook, new object[] { 70 });
             Assert.True(expected == actual);
         }
 
@@ -171,42 +96,17 @@ namespace GradeBookTests
         public void GetLetterGradeDTest()
         {
             var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                   from type in assembly.GetTypes()
-                                   where type.Name == "StandardGradeBook"
-                                   select type).FirstOrDefault();
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
             if (standardGradeBook == null)
                 throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
-            var students = new List<Student>
-                {
-                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 100 }
-                    },
-                    new Student("john",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 75 }
-                    },
-                    new Student("jackie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 50 }
-                    },
-                    new Student("tom",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 25 }
-                    },
-                    new Student("tony",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 0 }
-                    }
-                };
-
-            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'D';
-            var actual = (char)method.Invoke(gradeBook, new object[] { 25 });
+            var actual = (char)method.Invoke(gradeBook, new object[] { 60 });
             Assert.True(expected == actual);
         }
 
@@ -214,42 +114,17 @@ namespace GradeBookTests
         public void GetLetterGradeFTest()
         {
             var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                   from type in assembly.GetTypes()
-                                   where type.Name == "StandardGradeBook"
-                                   select type).FirstOrDefault();
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
             if (standardGradeBook == null)
                 throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
-            var students = new List<Student>
-                {
-                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 100 }
-                    },
-                    new Student("john",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 75 }
-                    },
-                    new Student("jackie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 50 }
-                    },
-                    new Student("tom",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 25 }
-                    },
-                    new Student("tony",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 0 }
-                    }
-                };
-
-            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'F';
-            var actual = (char)method.Invoke(gradeBook, new object[] { 0 });
+            var actual = (char)method.Invoke(gradeBook, new object[] { 50 });
             Assert.True(expected == actual);
         }
     }
