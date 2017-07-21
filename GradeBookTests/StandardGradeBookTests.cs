@@ -5,6 +5,10 @@ using GradeBook.GradeBooks;
 
 namespace GradeBookTests
 {
+    /* Disclaimer: The tests in this class are NOT recommended practice, they've been made far more compilated and fragile than standard tests out of the 
+     need for the project to be able to compile prior to student completion of all tasks which greatly complicates this process, you should not do this 
+     in real world testing. */
+
     public class StandardGradeBookTests
     {
         //[Fact]
