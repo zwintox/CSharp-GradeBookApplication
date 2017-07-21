@@ -30,42 +30,46 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 - [ ] Add support for Ranked Grading
 	- [ ] Create an Enum `GradeBookType` containing the types of Gradebooks to be supported (`Standard`, `Ranked`, `ESNU`, `OneToFour`, `SixPoint`)
 		- [ ] Create a new Enum `GradeBookType` containing the types `Standard`, `Ranked`, `ENSU`, `OneToFour`, and `SixPoint`.
-		- [ ] Add a property named `Type` to `StandardGradeBook` of type `GradeBookType`.
+			- This should be located in the `Enums` directory.
+			- This should use the `GradeBook.Enums` namespace.
+		- [ ] Add a property named `Type` to `BaseGradeBook` of type `GradeBookType`.
 
-	- [ ] Create a new abstract class `BaseGradeBook` to contain the common Gradebook functionality.
-		- [ ] Create the abstract class `BaseGradeBook`
-		- [ ] Copy all Properties from `StandardGradeBook` to the `BaseGradeBook`
-		- [ ] Copy all methods from `StandardGradeBook` to the `BaseGradeBook`
-		- [ ] Change the method `GetLetterGrade` to be an abstract method (don't forget to remove the implimentation of the abstract method!)
+	- [ ] Change `BaseGradeBook` into an abstract class
+		- [ ] Add the `abstract` keyword to the `BaseGradeBook` declarition
 		- [ ] Change `GetGPA`, `CalculateStatistics`, and `CalculateStudentStatistics` to be a virtual methods.
 
-	- [ ] Refactor the `StandardGradeBook` class to utilize our new `BaseGradeBook` class.
-		- [ ] Setup the `StandardGradeBook` to inherit the `BaseGradeBook` class.
-		- [ ] Remove all properties from `StandardGradeBook`
-		- [ ] Remove all methods except `GetLetterGrade`
-		- [ ] Change `GetLetterGrade` to be an override method
-		- [ ] Change the constructor to set the `Type` property to `Standard` in the `StandardGradeBook` class
+	- [ ] Create a new class `StandardGradeBook` to contain the Standard Gradebook functionality.
+		- [ ] Create a class `StandardGradeBook` that inherits the `BaseGradeBook` class.
+			- This should be located in the `GradeBooks` directory.
+			- This should use the `GradeBook.GradeBooks` namespace.
+		- [ ] Change the constructor to set the `Type` property to `Standard` in the `StandardGradeBook` class.
 
-	- [ ] Create a new `RankedGradeBook` class utilizing our new `BaseGradeBook` class.
+	- [ ] Create a new `RankedGradeBook` to contain the Ranked Gradebook functionality.
 		- [ ] Create a new class `RankedGradeBook` that inherits the `BaseGradeBook` class.
+			- This should be located in the `GradeBooks` directory.
+			- This should use the `GradeBook.GradeBooks` namespace.
 		- [ ] Create a constructor that sets the `Type` property to `Ranked`
-		- [ ] Impliment `GetLetterGrade`, in ranked grading students aren't scored based on their own individual performance, instead they are graded based on how they performed compared to the rest of their class.
-			- [ ] To get an A a student must have an average score that is in the top 20% of their class.
-			- [ ] To get a B a student must have an average score between the top 20 and 40% of their class.
-			- [ ] To get a C a student must have an average score between the top 40 and 60% of their class.
-			- [ ] To get a D a student must have an average score between the top 60 and 80% of their class.
-			- [ ] If a student's average score is below the top 80% of their class they get an F.
 
-		- [ ] Impliment an override of the `CalculateStatistics` method.
-			- [ ] This override will perform a check to make sure there are at least 5 students with grades
-				- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method using `return`.
-				- [ ] If there are 5 students with grades call the `CalculateStatistics` method using `base.CalculateStatistics`
+	- [ ] Update the `BaseGradeBook` class's `Load` method to handle multiple types of Gradebooks
+		- [ ] Create a variable inside the `Load` method to contain the gradebook.
+		- [ ] Set a variable using `Enum.Parse(typeof(GradeBookType), jobject.GetValue("Type").ToString(), true);` to get the type of GradeBook being loaded _(this was not covered in the course, it will take the saved file, and attempt to get the type of the gradebook from it)_
+		- [ ] When type is `GradeBookType.Standard` set the gradebook variable using `JsonConvert.DeserializeObject<StandardGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a StandardGradeBook object based on that file)_
+		- [ ] When type is `GradeBookType.Ranked` set the gradebook variable using `JsonConvert.DeserializeObject<RankedGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a RankedGradeBook object based on that file)_
+		- [ ] Change the return type to return `gradebook`.
 
-		- [ ] Impliment an override of the `CalculateStudentStatistics` method.
-			- [ ] This override will perform a check to make sure there are at least 5 students with grades
-				- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method using `return'.
-				- [ ] If there are 5 students with grades call the base `CalculateStudentStatistics` method using `base.CalculateStudentStatistics`
+	- [ ] Impliment an override for the `RankedGradeBook`'s `GetLetterGrade` method, in ranked grading students aren't scored based on their own individual performance, instead they are graded based on how they performed compared to the rest of their class.
+		- [ ] To get an A a student must have an average score that is in the top 20% of their class.
+		- [ ] To get a B a student must have an average score between the top 20 and 40% of their class.
+		- [ ] To get a C a student must have an average score between the top 40 and 60% of their class.
+		- [ ] To get a D a student must have an average score between the top 60 and 80% of their class.
+		- [ ] If a student's average score is below the top 80% of their class they get an F.
 
-- [ ] Add simple error handling to prevent problems with unexpected user input
-	- [ ] Ensure proper number of strings are present in Add Command.
-	- [ ] If the string doesn't match an existing type provide feedback and restart loop.
+	- [ ] Impliment an override of the  `RankedGradeBook`'s `CalculateStatistics` method.
+		- [ ] This override will perform a check to make sure there are at least 5 students with grades
+			- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method.
+			- [ ] If there are 5 students with grades call the `CalculateStatistics` method using `base.CalculateStatistics`
+
+	- [ ] Impliment an override of the  `RankedGradeBook`'s `CalculateStudentStatistics` method.
+		- [ ] This override will perform a check to make sure there are at least 5 students with grades
+			- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method.
+			- [ ] If there are 5 students with grades call the base `CalculateStudentStatistics` method using `base.CalculateStudentStatistics`
