@@ -1,6 +1,5 @@
 ﻿using System;
 
-using GradeBook.Enums;
 using GradeBook.GradeBooks;
 
 namespace GradeBookTests
