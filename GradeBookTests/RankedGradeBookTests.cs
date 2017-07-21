@@ -35,7 +35,7 @@ namespace GradeBookTests
             Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook");
             Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum, "Ranked", true).GetType());
         }
-
+        
         [Fact]
         public void GetLetterGradeThrowsExceptionOnNotEnoughStudentsTest()
         {
@@ -48,7 +48,7 @@ namespace GradeBookTests
 
             object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
             MethodInfo method = rankedGradeBook.GetMethod("GetLetterGrade");
-            Assert.Throws(typeof(InvalidOperationException), () => method.Invoke(gradeBook, new object[] { 100 }));
+            Assert.Throws(typeof(TargetInvocationException), () => method.Invoke(gradeBook, new object[] { 100 }));
         }
 
         //[Fact]
