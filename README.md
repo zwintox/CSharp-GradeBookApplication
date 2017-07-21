@@ -16,8 +16,8 @@ If you want to use Visual Studio (highly recommend for Windows users) follow the
 ## If you don't plan to use Visual studio
 If you would rather use something other than Visual Studio (or are on OSX or Linux)
 -	Install the .Net Core SDK from https://www.microsoft.com/net/download/core once that installation completes you're ready to roll!
--	To run the application go into the project folder and type `dotnet run`
--	To run the tests go into the project folder and type `dotnet test`
+-	To run the application go into the GradeBook project folder and type `dotnet run`
+-	To run the tests go into the GradeBookTests project folder and type `dotnet test`
 
 # Features you will impliment
 
