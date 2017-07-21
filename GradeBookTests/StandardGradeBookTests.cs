@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Xunit;
-
-using GradeBook;
-using GradeBook.Enums;
 
 namespace GradeBookTests
 {
