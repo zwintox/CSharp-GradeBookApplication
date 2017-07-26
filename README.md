@@ -28,13 +28,13 @@ If you would rather use something other than Visual Studio (or are on OSX or Lin
 __Note:__ this isn't the only way to accomplish this, however; this is what the project's tests are expecting. Implimenting this in a different way will likely result in being marked as incomplete / incorrect.
 
 - [ ] Add support for Ranked Grading
-	- [ ] Create an Enum `GradeBookType` containing the types of Gradebooks to be supported (`Standard`, `Ranked`, `ESNU`, `OneToFour`, `SixPoint`)
+	- [ ] In the Enums directory, create a new Enum `GradeBookType` containing the types of Gradebooks to be supported (`Standard`, `Ranked`, `ESNU`, `OneToFour`, `SixPoint`)
 		- [ ] Create a new Enum `GradeBookType` containing the types `Standard`, `Ranked`, `ENSU`, `OneToFour`, and `SixPoint`.
 			- This should be located in the `Enums` directory.
 			- This should use the `GradeBook.Enums` namespace.
 		- [ ] Add a property named `Type` to `BaseGradeBook` of type `GradeBookType`.
 
-	- [ ] Change `BaseGradeBook` into an abstract class
+	- [ ] In the GradeBooks directory, change `BaseGradeBook` into an abstract class
 		- [ ] Add the `abstract` keyword to the `BaseGradeBook` declarition
 		- [ ] Change `GetGPA`, `CalculateStatistics`, and `CalculateStudentStatistics` to be a virtual methods.
 
@@ -74,7 +74,7 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 			- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method.
 			- [ ] If there are 5 students with grades call the base `CalculateStudentStatistics` method using `base.CalculateStudentStatistics`
 
-	- [ ] Update the `Program` class to work with multiple types of grade books
+	- [ ] In the GradeBook project's root directory, Update the `Program` class to work with multiple types of grade books
 		- [ ] Inside the `Main` method update the code within the `if` condution that checks to see if `command` starts with "create".
 			- [ ] Update the validation to check the `parts.Length` is not 4.
 			- [ ] Update the message written to console by this condition to say "Command not valid, Create requires a name, type, is it weighted.".
