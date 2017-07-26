@@ -4,6 +4,26 @@ The C Sharp Grade Book Application is a designed to allow instructors to create 
 
 -- Gif of working Application
 
+## Accepted Commands
+
+### Commands when no gradebook is open
+- "Create <Name of Gradebook> <Is this Gradebook Weighted (true/false)>" : Creates a new gradebook with the provided name
+- "Help" : gives you a list of all valid commands within the given context
+- "Load <Name of GradeBook>"
+- "Quit" : Closes the application
+
+### Commands when a gradebook is open
+- "Add <Name of Student> <Type of Student> <Type of Enrollment>" : Adds a new student to the open gradebook
+- "Remove <Name of Student>" : Removes a student with the provided name from the gradebook. (if a student with that name exists in the gradebook)
+- "List" : Lists all students in the open gradebook
+- "AddGrade <Name of Student> <Score>" : Adds to the given value to provided student's grades.
+- "RemoveGrade <Name of Student> <Score>" : Removes the given value from the provided student's grade. (if that value exists in the stundent's grades)
+- "Statistics all" : Provides statistical output for all students in the open gradebook
+- "Statistics <Name of Student>" : Provides statistical out put for the provided student. (if that student exists)
+- "Help" : Gives you a list of all valid commands within the given context
+- "Save" : Saves the currently open gradebook
+- "Close" : Closes the gradebook
+
 # Setup the Application
 
 ## If you want to use Visual Studio
@@ -36,7 +56,6 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 
 	- [ ] In the GradeBooks directory, change `BaseGradeBook` into an abstract class
 		- [ ] Add the `abstract` keyword to the `BaseGradeBook` declarition
-		- [ ] Change `GetGPA`, `CalculateStatistics`, and `CalculateStudentStatistics` to be a virtual methods.
 
 	- [ ] Create a new class `StandardGradeBook` to contain the Standard Gradebook functionality.
 		- [ ] Create a class `StandardGradeBook` that inherits the `BaseGradeBook` class.
