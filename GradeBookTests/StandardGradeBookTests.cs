@@ -18,8 +18,7 @@ namespace GradeBookTests
                                      from type in assembly.GetTypes()
                                      where type.Name == "StandardGradeBook"
                                      select type).FirstOrDefault();
-            if (standardGradeBook == null)
-                throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
 
@@ -27,11 +26,10 @@ namespace GradeBookTests
                                  from type in assembly.GetTypes()
                                  where type.FullName == "GradeBook.Enums.GradeBookType"
                                  select type).FirstOrDefault();
-            if (gradebookEnum == null)
-                throw new Exception("GradeBook.Enums.GradeBookType doesn't exist.");
+            Assert.True(gradebookEnum != null, "GradeBook.Enums.GradeBookType doesn't exist.");
 
-            Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook");
-            Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum, "Standard", true).GetType());
+            Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook", "`Name` wasn't set properly by `GradeBook.GradeBooks.StandardGradeBook` Construtor.");
+            Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum, "Standard", true).GetType(), "`Type` wasn't set properly by the `GradeBook.GradeBooks.StandardGradeBook` Constructor.");
         }
 
         [Fact]
@@ -41,15 +39,14 @@ namespace GradeBookTests
                                      from type in assembly.GetTypes()
                                      where type.Name == "StandardGradeBook"
                                      select type).FirstOrDefault();
-            if (standardGradeBook == null)
-                throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'A';
             var actual = (char)method.Invoke(gradeBook, new object[] { 90 });
-            Assert.True(expected == actual);
+            Assert.True(expected == actual, "GradeBook.GradeBooks.StandardGradeBook.GetLetterGrade didn't give an A to students with an average grade of 90% or more.");
         }
 
         [Fact]
@@ -59,15 +56,14 @@ namespace GradeBookTests
                                      from type in assembly.GetTypes()
                                      where type.Name == "StandardGradeBook"
                                      select type).FirstOrDefault();
-            if (standardGradeBook == null)
-                throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'B';
             var actual = (char)method.Invoke(gradeBook, new object[] { 80 });
-            Assert.True(expected == actual);
+            Assert.True(expected == actual, "GradeBook.GradeBooks.StandardGradeBook.GetLetterGrade didn't give an B to students with an average grade between 80% and 90%.");
         }
 
         [Fact]
@@ -77,15 +73,14 @@ namespace GradeBookTests
                                      from type in assembly.GetTypes()
                                      where type.Name == "StandardGradeBook"
                                      select type).FirstOrDefault();
-            if (standardGradeBook == null)
-                throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'C';
             var actual = (char)method.Invoke(gradeBook, new object[] { 70 });
-            Assert.True(expected == actual);
+            Assert.True(expected == actual, "GradeBook.GradeBooks.StandardGradeBook.GetLetterGrade didn't give an C to students with an average grade between 70% and 80%.");
         }
 
         [Fact]
@@ -95,15 +90,14 @@ namespace GradeBookTests
                                      from type in assembly.GetTypes()
                                      where type.Name == "StandardGradeBook"
                                      select type).FirstOrDefault();
-            if (standardGradeBook == null)
-                throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'D';
             var actual = (char)method.Invoke(gradeBook, new object[] { 60 });
-            Assert.True(expected == actual);
+            Assert.True(expected == actual, "GradeBook.GradeBooks.StandardGradeBook.GetLetterGrade didn't give an D to students with an average grade between 70% and 60%.");
         }
 
         [Fact]
@@ -113,15 +107,14 @@ namespace GradeBookTests
                                      from type in assembly.GetTypes()
                                      where type.Name == "StandardGradeBook"
                                      select type).FirstOrDefault();
-            if (standardGradeBook == null)
-                throw new Exception("GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
             MethodInfo method = standardGradeBook.GetMethod("GetLetterGrade");
 
             var expected = 'F';
             var actual = (char)method.Invoke(gradeBook, new object[] { 50 });
-            Assert.True(expected == actual);
+            Assert.True(expected == actual, "GradeBook.GradeBooks.StandardGradeBook.GetLetterGrade didn't give an F to students with an average grade below 60%.");
         }
     }
 }
