@@ -16,10 +16,9 @@ namespace GradeBookTests
         {
             var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                         from type in assembly.GetTypes()
-                        where type.Name == "RankedGradeBook"
+                        where type.FullName == "GradeBook.GradeBooks.RankedGradeBook"
                         select type).FirstOrDefault();
-            if (rankedGradeBook == null)
-                throw new Exception("GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
 
             object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
 
@@ -27,11 +26,10 @@ namespace GradeBookTests
                               from type in assembly.GetTypes()
                               where type.FullName == "GradeBook.Enums.GradeBookType"
                               select type).FirstOrDefault();
-            if (gradebookEnum == null)
-                throw new Exception("GradeBook.Enums.GradeBookType doesn't exist.");
+            Assert.True(gradebookEnum != null, "GradeBook.Enums.GradeBookType doesn't exist.");
 
-            Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook");
-            Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum,"Ranked",true).GetType());
+            Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook", "`Name` wasn't set properly by `GradeBook.RankedGradeBook` Construtor.");
+            Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum,"Ranked",true).GetType(), "`Type` wasn't set properly by the `GradeBook.RankedGradeBook` Constructor.");
         }
 
         [Fact]
