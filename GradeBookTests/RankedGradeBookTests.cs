@@ -24,7 +24,16 @@ namespace GradeBookTests
                                    select type).FirstOrDefault();
             Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
 
-            object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
 
             var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                                  from type in assembly.GetTypes()
@@ -32,8 +41,8 @@ namespace GradeBookTests
                                  select type).FirstOrDefault();
             Assert.True(gradebookEnum != null, "GradeBook.Enums.GradeBookType doesn't exist.");
 
-            Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook", "`Name` wasn't set properly by `GradeBook.GradeBooks.RankedGradeBook` Construtor.");
-            Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum, "Ranked", true).GetType(), "`Type` wasn't set properly by the `GradeBook.GradeBooks.RankedGradeBook` Constructor.");
+            Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook", "`Name` wasn't set properly by `GradeBook.RankedGradeBook` Construtor.");
+            Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum, "Ranked", true).GetType(), "`Type` wasn't set properly by the `GradeBook.RankedGradeBook` Constructor.");
         }
 
         [Fact]
@@ -45,7 +54,17 @@ namespace GradeBookTests
                                    select type).FirstOrDefault();
             Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
 
-            object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
             MethodInfo method = rankedGradeBook.GetMethod("GetLetterGrade");
             var exception = Record.Exception(() => method.Invoke(gradeBook, new object[] { 100 }));
             Assert.True(exception != null, "GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade didn't throw an exception when less than 5 students have grades.");
@@ -60,7 +79,17 @@ namespace GradeBookTests
                                    select type).FirstOrDefault();
             Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
 
-            object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
             var students = new List<Student>
                 {
                     new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
@@ -102,7 +131,17 @@ namespace GradeBookTests
                                    select type).FirstOrDefault();
             Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
 
-            object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
             var students = new List<Student>
                 {
                     new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
@@ -144,7 +183,17 @@ namespace GradeBookTests
                                    select type).FirstOrDefault();
             Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
 
-            object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
             var students = new List<Student>
                 {
                     new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
@@ -186,7 +235,17 @@ namespace GradeBookTests
                                    select type).FirstOrDefault();
             Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
 
-            object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
             var students = new List<Student>
                 {
                     new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
@@ -228,7 +287,17 @@ namespace GradeBookTests
                                    select type).FirstOrDefault();
             Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
 
-            object gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
             var students = new List<Student>
                 {
                     new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
