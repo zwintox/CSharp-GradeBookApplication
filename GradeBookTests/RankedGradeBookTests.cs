@@ -49,7 +49,6 @@ namespace GradeBookTests
             MethodInfo method = rankedGradeBook.GetMethod("GetLetterGrade");
             var exception = Record.Exception(() => method.Invoke(gradeBook, new object[] { 100 }));
             Assert.True(exception != null, "GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade didn't throw an exception when less than 5 students have grades.");
-            Assert.True(exception.Message == "Ranked grading requires a minimum of 5 students in order to provide grades.", "GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade threw an exception, but it didn't have the correct 'Ranked grading requires a minimum of 5 students in order to provide grades.' message.");
         }
 
         [Fact]
