@@ -42,6 +42,7 @@ If you would rather use something other than Visual Studio (or are on OSX or Lin
 # Features you will impliment
 
 - Add support for Ranked Grading
+- Add support for Weighted GPAs
 
 ## Tasks necessary to complete implimentation:
 
@@ -62,12 +63,14 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 			- This should be located in the `GradeBooks` directory.
 			- This should use the `GradeBook.GradeBooks` namespace.
 		- [ ] Change the constructor to set the `Type` property to `Standard` in the `StandardGradeBook` class.
+		- [ ] The constructor should also call the base constructor by adding ` : base(name)` after the contsructor declaration. (this was not covered in the course, it calls the constructor of `BaseGradeBook`)
 
 	- [ ] Create a new `RankedGradeBook` to contain the Ranked Gradebook functionality.
 		- [ ] Create a new class `RankedGradeBook` that inherits the `BaseGradeBook` class.
 			- This should be located in the `GradeBooks` directory.
 			- This should use the `GradeBook.GradeBooks` namespace.
-		- [ ] Create a constructor that sets the `Type` property to `Ranked`
+		- [ ] Create a constructor that sets the `Type` property to `Ranked.		
+		- [ ] The constructor should also call the base constructor by adding ` : base(name)` after the contsructor declaration. (this was not covered in the course)
 
 	- [ ] Update the `BaseGradeBook` class's `Load` method to handle multiple types of Gradebooks
 		- [ ] Create a variable inside the `Load` method to contain the gradebook.
@@ -103,3 +106,14 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 				- [ ] When the value is "standard" set `gradeBook` to a newly instantiated `StandardGradeBook`.
 				- [ ] When the value is "rank" set `gradeBook` to a newly instantiated `RankedGradeBook`.
 			- [ ] Change where the "help" command outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
+
+- [ ] Add support for weighted GPAs
+	- [ ] Add a property named 'IsWeighted' of type `bool` to `BaseGradeBook` located in the `GradeBooks` directory.
+		- [ ] Change the `BaseGradeBook` constructor to accept a `bool` for the second parameterp
+		- [ ] Set the `IsWeighted` property using the `bool` parameter.
+		- [ ] Update the `RankedGradeBook` and `StandardGradeBook` constructors to also have the same `bool` parameter. (Don't forget to add the bool to base constructor call after the constructor declaration!)
+		- [ ] Update the `BaseGradeBook.GetGPA` method to add 1 point to GPAs of `Honors` and `DuelEnrolled` students when `IsWeighted` is true.
+
+	- [ ] Update `Program.Main`, located in the GradeBook project's root directory, to support `IsWeighted`
+		- [ ] Update `Program.Main` so that the `Create` command accepts a third value of `true` or `false` to set `IsWeighted` via the gradebook constructors.
+		- [ ] Change where the "help" command outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
