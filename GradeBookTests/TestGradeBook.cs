@@ -8,7 +8,15 @@ namespace GradeBookTests
     
     public class TestGradeBook : BaseGradeBook
     {
-        public TestGradeBook(string name, bool isWeighted) : base(name, isWeighted) { }
+        public TestGradeBook(string name) : base(name)
+        {
+
+        }
+
+        public TestGradeBook(string name, bool isWeighted) : base(name)
+        {
+            //do a check for is weighted and set it accordingly?
+        }
 
         public override void CalculateStatistics()
         {

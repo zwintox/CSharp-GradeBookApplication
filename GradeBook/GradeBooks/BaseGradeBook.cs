@@ -13,12 +13,10 @@ namespace GradeBook.GradeBooks
     {
         public string Name { get; set; }
         public List<Student> Students { get; set; }
-        public bool IsWeighted { get; set; }
 
-        public BaseGradeBook(string name, bool isWeighted)
+        public BaseGradeBook(string name)
         {
             Name = name;
-            IsWeighted = isWeighted;
             Students = new List<Student>();
         }
 
@@ -35,7 +33,7 @@ namespace GradeBook.GradeBooks
             var student = Students.FirstOrDefault(e => e.Name == name);
             if (student == null)
             {
-                Console.WriteLine("student " + name + " was not found, try again.");
+                Console.WriteLine("student {0} was not found, try again.", name);
                 return;
             }
             Students.Remove(student);
@@ -47,7 +45,7 @@ namespace GradeBook.GradeBooks
             var student = Students.FirstOrDefault(e => e.Name == name);
             if (student == null)
             {
-                Console.WriteLine("student " + name + " was not found, try again.");
+                Console.WriteLine("student {0} was not found, try again.", name);
                 return;
             }
             student.AddGrade(score);
@@ -59,7 +57,7 @@ namespace GradeBook.GradeBooks
             var student = Students.FirstOrDefault(e => e.Name == name);
             if (student == null)
             {
-                Console.WriteLine("student " + name + " was not found, try again.");
+                Console.WriteLine("student {0} was not found, try again.", name);
                 return;
             }
             student.RemoveGrade(score);
@@ -68,7 +66,7 @@ namespace GradeBook.GradeBooks
         {
             foreach (var student in Students)
             {
-                Console.WriteLine(student.Name + " : " + student.Type + " : " + student.Enrollment);
+                Console.WriteLine("{0} : {1} : {2}", student.Name, student.Type, student.Enrollment);
             }
         }
         public static BaseGradeBook Load(string name)
@@ -102,31 +100,6 @@ namespace GradeBook.GradeBooks
         }
         public virtual double GetGPA(char letterGrade, StudentType studentType)
         {
-            if (IsWeighted)
-            {
-                switch (studentType)
-                {
-                    case StudentType.DuelEnrolled:
-                    case StudentType.Honors:
-                        {
-                            switch (letterGrade)
-                            {
-                                case 'A':
-                                    return 5;
-                                case 'B':
-                                    return 4;
-                                case 'C':
-                                    return 3;
-                                case 'D':
-                                    return 2;
-                                case 'F':
-                                    return 1;
-                            }
-                            break;
-                        }
-                }
-            }
-
             switch (letterGrade)
             {
                 case 'A':
@@ -159,7 +132,7 @@ namespace GradeBook.GradeBooks
                 student.LetterGrade = GetLetterGrade(student.AverageGrade);
                 student.GPA = GetGPA(student.LetterGrade, student.Type);
 
-                Console.WriteLine(student.Name + " (" + student.LetterGrade + ":" + student.AverageGrade + "): GPA: " + student.GPA + ".");
+                Console.WriteLine("{0} ({1}:{2}) GPA: {3}.", student.Name, student.LetterGrade, student.AverageGrade, student.GPA);
                 allStudentsPoints += student.AverageGrade;
 
                 switch (student.Enrollment)
@@ -216,7 +189,7 @@ namespace GradeBook.GradeBooks
             student.LetterGrade = GetLetterGrade(student.AverageGrade);
             student.GPA = GetGPA(student.LetterGrade, student.Type);
 
-            Console.WriteLine(student.Name + " (" + student.LetterGrade + ":" + student.AverageGrade + "): GPA: " + student.GPA + ".");
+            Console.WriteLine("{0} ({1}:{2}) GPA: {3}.", student.Name, student.LetterGrade, student.AverageGrade, student.GPA);
             Console.WriteLine();
             Console.WriteLine("Grades:");
             foreach (var grade in student.Grades)
