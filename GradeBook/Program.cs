@@ -45,7 +45,7 @@ namespace GradeBook
                             Console.WriteLine("{0} is not a supported type of gradebook, please try again.", type);
                             continue;
                     }
-                    Console.WriteLine("Created gradebook " + name + ".");
+                    Console.WriteLine("Created gradebook {0}.", name);
                     GradeBookInteraction(gradeBook);
                 }
                 else if(command.StartsWith("load"))
@@ -108,7 +108,7 @@ namespace GradeBook
                 if (command == "save")
                 {
                     gradeBook.Save();
-                    Console.WriteLine(gradeBook.Name + " has been saved.");
+                    Console.WriteLine("{0} has been saved.", gradeBook.Name);
                 }
                 else if (command == "close")
                     close = true;
@@ -123,7 +123,7 @@ namespace GradeBook
                     var name = parts[1];
                     var score = Double.Parse(parts[2]);
                     gradeBook.AddGrade(name, score);
-                    Console.WriteLine("Added a score of " + score +  " to " + name + "'s grades");
+                    Console.WriteLine("Added a score of {0} to {1}'s grades", score, name);
                 }
                 else if (command.StartsWith("removegrade"))
                 {
@@ -136,7 +136,7 @@ namespace GradeBook
                     var name = parts[1];
                     var score = Double.Parse(parts[2]);
                     gradeBook.RemoveGrade(name, score);
-                    Console.WriteLine("Removed a score of " + score + " from " + name + "'s grades");
+                    Console.WriteLine("Removed a score of {0} from {1}'s grades", score, name);
                 }
                 else if (command.StartsWith("add"))
                 {
@@ -151,20 +151,20 @@ namespace GradeBook
                     StudentType studentType;
                     if(!Enum.TryParse(parts[2], true, out studentType))
                     {
-                        Console.WriteLine(parts[2] + " is not a valid student type, try again.");
+                        Console.WriteLine("{0} is not a valid student type, try again.", parts[2]);
                         continue;
                     }
 
                     EnrollmentType enrollmentType;
                     if(!Enum.TryParse(parts[3], true, out enrollmentType))
                     {
-                        Console.WriteLine(parts[3] + " is not a volid enrollment type, try again.");
+                        Console.WriteLine("{0} is not a volid enrollment type, try again.", parts[3]);
                         continue;
                     }
 
                     var student = new Student(name, studentType, enrollmentType);
                     gradeBook.AddStudent(student);
-                    Console.WriteLine("Added " + name +  " to the gradebook.");
+                    Console.WriteLine("Added {0} to the gradebook.", name);
                 }
                 else if (command.StartsWith("remove"))
                 {
@@ -176,7 +176,7 @@ namespace GradeBook
                     }
                     var name = parts[1];
                     gradeBook.RemoveStudent(name);
-                    Console.WriteLine("Removed " + name + " from the gradebook.");
+                    Console.WriteLine("Removed {0} from the gradebook.", name);
                 }
                 else if (command == "list")
                 {

@@ -15,6 +15,7 @@ namespace GradeBookTests
         {
             var gradeBook = new TestGradeBook("Test GradeBook",true);
             Assert.True(gradeBook.Name == "Test GradeBook");
+            Assert.True(gradeBook.IsWeighted == true);
             Assert.True(gradeBook.Students != null);
         }
 
