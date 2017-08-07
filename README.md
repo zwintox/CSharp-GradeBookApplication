@@ -6,20 +6,20 @@ The C Sharp Grade Book Application is a designed to allow instructors to create 
 
 ## Accepted Commands
 
-### Commands when no gradebook is open
-- "Create <Name of Gradebook> <Is this Gradebook Weighted (true/false)>" : Creates a new gradebook with the provided name
+### Commands when no gradebooks are open
+- "Create `Name of Gradebook` `Is this Gradebook Weighted (true/false)`" : Creates a new gradebook with the provided name
 - "Help" : gives you a list of all valid commands within the given context
-- "Load <Name of GradeBook>"
+- "Load `Name of GradeBook`"
 - "Quit" : Closes the application
 
 ### Commands when a gradebook is open
-- "Add <Name of Student> <Type of Student> <Type of Enrollment>" : Adds a new student to the open gradebook
-- "Remove <Name of Student>" : Removes a student with the provided name from the gradebook. (if a student with that name exists in the gradebook)
+- "Add `Name of Student` `Type of Student` `Type of Enrollment`" : Adds a new student to the open gradebook
+- "Remove `Name of Student`" : Removes a student with the provided name from the gradebook. (if a student with that name exists in the gradebook)
 - "List" : Lists all students in the open gradebook
-- "AddGrade <Name of Student> <Score>" : Adds to the given value to provided student's grades.
-- "RemoveGrade <Name of Student> <Score>" : Removes the given value from the provided student's grade. (if that value exists in the stundent's grades)
+- "AddGrade `Name of Student` `Score`" : Adds to the given value to provided student's grades.
+- "RemoveGrade `Name of Student` `Score`" : Removes the given value from the provided student's grade. (if that value exists in the stundent's grades)
 - "Statistics all" : Provides statistical output for all students in the open gradebook
-- "Statistics <Name of Student>" : Provides statistical out put for the provided student. (if that student exists)
+- "Statistics `Name of Student`" : Provides statistical out put for the provided student. (if that student exists)
 - "Help" : Gives you a list of all valid commands within the given context
 - "Save" : Saves the currently open gradebook
 - "Close" : Closes the gradebook
@@ -109,11 +109,12 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 
 - [ ] Add support for weighted GPAs
 	- [ ] Add a property named 'IsWeighted' of type `bool` to `BaseGradeBook` located in the `GradeBooks` directory.
-		- [ ] Change the `BaseGradeBook` constructor to accept a `bool` for the second parameterp
+		- [ ] Change the `BaseGradeBook` constructor to accept a `bool` for the second parameter.
 		- [ ] Set the `IsWeighted` property using the `bool` parameter.
 		- [ ] Update the `RankedGradeBook` and `StandardGradeBook` constructors to also have the same `bool` parameter. (Don't forget to add the bool to base constructor call after the constructor declaration!)
 		- [ ] Update the `BaseGradeBook.GetGPA` method to add 1 point to GPAs of `Honors` and `DuelEnrolled` students when `IsWeighted` is true.
 
 	- [ ] Update `Program.Main`, located in the GradeBook project's root directory, to support `IsWeighted`
 		- [ ] Update `Program.Main` so that the `Create` command accepts a third value of `true` or `false` to set `IsWeighted` via the gradebook constructors.
+		- [ ] Update both Gradebook Instantiations to use our new command value to set `IsWeighted`.
 		- [ ] Change where the "help" command outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
