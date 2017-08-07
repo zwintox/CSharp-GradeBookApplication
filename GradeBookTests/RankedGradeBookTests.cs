@@ -6,6 +6,7 @@ using Xunit;
 
 using GradeBook;
 using GradeBook.Enums;
+using System.IO;
 
 namespace GradeBookTests
 {
@@ -43,6 +44,72 @@ namespace GradeBookTests
 
             Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook", "`Name` wasn't set properly by `GradeBook.RankedGradeBook` Construtor.");
             Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum, "Ranked", true).GetType(), "`Type` wasn't set properly by the `GradeBook.RankedGradeBook` Constructor.");
+        }
+
+        [Fact]
+        public void CalculateStatisticsNotEnoughStudentsTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.FullName == "GradeBook.GradeBooks.RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("CalculateStatistics");
+            var output = string.Empty;
+
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                method.Invoke(gradeBook, null);
+                output = consolestream.ToString().ToLower();
+            }
+
+            Assert.True(output.Contains("5 students") || output.Contains("five students"));
+        }
+
+        [Fact]
+        public void CalculateStudentStatisticsNotEnoughStudentTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.FullName == "GradeBook.GradeBooks.RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("CalculateStudentStatistics");
+            var output = string.Empty;
+
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                method.Invoke(gradeBook, new object[] { "Bob" });
+                output = consolestream.ToString().ToLower();
+            }
+
+            Assert.True(output.Contains("5 students") || output.Contains("five students"));
         }
 
         [Fact]

@@ -30,7 +30,7 @@ namespace GradeBook
                         continue;
                     }
                     var name = parts[1];
-                    var gradeBook = new BaseGradeBook(name, true);
+                    var gradeBook = new BaseGradeBook(name);
                     Console.WriteLine("Created gradebook {0}.", name);
                     GradeBookInteraction(gradeBook);
                 }
