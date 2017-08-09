@@ -29,6 +29,7 @@ namespace GradeBook.GradeBooks
                 throw new ArgumentException("A Name is required to add a student to a gradebook.");
             Students.Add(student);
         }
+
         public void RemoveStudent(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -41,6 +42,7 @@ namespace GradeBook.GradeBooks
             }
             Students.Remove(student);
         }
+
         public void AddGrade(string name, double score)
         {
             if (string.IsNullOrEmpty(name))
@@ -53,6 +55,7 @@ namespace GradeBook.GradeBooks
             }
             student.AddGrade(score);
         }
+
         public void RemoveGrade(string name, double score)
         {
             if (string.IsNullOrEmpty(name))
@@ -65,6 +68,7 @@ namespace GradeBook.GradeBooks
             }
             student.RemoveGrade(score);
         }
+
         public void ListStudents()
         {
             foreach(var student in Students)
@@ -72,6 +76,7 @@ namespace GradeBook.GradeBooks
                 Console.WriteLine("{0} : {1} : {2}", student.Name, student.Type, student.Enrollment);
             }
         }
+
         public static BaseGradeBook Load(string name)
         {
             if(!File.Exists(name + ".gdbk"))
@@ -103,6 +108,7 @@ namespace GradeBook.GradeBooks
                 }
             }
         }
+
         public void Save()
         {
             using (var file = new FileStream(Name + ".gdbk", FileMode.Create, FileAccess.Write))
@@ -114,6 +120,7 @@ namespace GradeBook.GradeBooks
                 }
             }
         }
+
         public virtual double GetGPA(char letterGrade, StudentType studentType)
         {
             if (IsWeighted)
