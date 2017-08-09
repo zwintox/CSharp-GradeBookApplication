@@ -397,7 +397,7 @@ namespace GradeBookTests
             Assert.True(expected == actual, "GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade didn't give an F to students in the bottom 20%.");
         }
 
-        #region BaseGradeBookTests
+        #region BaseGradeBookTests.GetGPA
         [Fact]
         public void GetGPAStandardStudentIsNotWeightedATest()
         {
@@ -1208,5 +1208,58 @@ namespace GradeBookTests
             Assert.True(expected == actual, "GradeBook.GradeBooks.RankedGradeBook.GetGPA didn't give a GPA of 0 when the grade is 'F', the Student is DuelEnrolled, and grades are not weighted.");
         }
         #endregion
+
+        [Fact]
+        public void AddStudentExceptionWhenNoNameTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "RankedGradeBook"
+                                     select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("AddStudent");
+
+            var exception = Record.Exception(() => method.Invoke(gradeBook, new object[] { new Student(string.Empty, StudentType.Standard, EnrollmentType.Campus) }));
+            Assert.True(exception != null, "GradeBook.GradeBooks.BaseGradeBook.AddStudent didn't throw an exception when a student's name was empty when called through RankedGradeBook.");
+        }
+
+        [Fact]
+        public void AddStudentTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("AddStudent");
+
+            var expected = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            method.Invoke(gradeBook, new object[] { new Student("Test Student", StudentType.Standard, EnrollmentType.Campus) });
+            Assert.True(((List<Student>)gradeBook.GetType().GetProperty("Students").GetValue(gradeBook)).FirstOrDefault(e => e.Name == "Test Student") != null, "GradeBook.GradeBooks.BaseGradeBook.AddStudent didn't successfully add a student when called through RankedGradeBook.");
+        }
     }
 }
