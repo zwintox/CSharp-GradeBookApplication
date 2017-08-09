@@ -2,6 +2,7 @@
 using GradeBook.Enums;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Xunit;
@@ -1020,28 +1021,117 @@ namespace GradeBookTests
         [Fact]
         public void AddStudentTest()
         {
-            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+            var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                                    from type in assembly.GetTypes()
-                                   where type.Name == "RankedGradeBook"
+                                   where type.Name == "StandardGradeBook"
                                    select type).FirstOrDefault();
-            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
 
-            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            var ctor = standardGradeBook.GetConstructors().FirstOrDefault();
             Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
 
             var parameters = ctor.GetParameters();
             object gradeBook = null;
             if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
-                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+                gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
             else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
-                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
-            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+                gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.StandardGradeBook have the expected parameters.");
 
-            MethodInfo method = rankedGradeBook.GetMethod("AddStudent");
+            MethodInfo method = standardGradeBook.GetMethod("AddStudent");
 
             var expected = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
             method.Invoke(gradeBook, new object[] { new Student("Test Student", StudentType.Standard, EnrollmentType.Campus) });
-            Assert.True(((List<Student>)gradeBook.GetType().GetProperty("Students").GetValue(gradeBook)).FirstOrDefault(e => e.Name == "Test Student") != null, "GradeBook.GradeBooks.BaseGradeBook.AddStudent didn't successfully add a student when called through RankedGradeBook.");
+            Assert.True(((List<Student>)gradeBook.GetType().GetProperty("Students").GetValue(gradeBook)).FirstOrDefault(e => e.Name == "Test Student") != null, "GradeBook.GradeBooks.BaseGradeBook.AddStudent didn't successfully add a student when called through StandardGradeBook.");
+        }
+
+        [Fact]
+        public void RemoveStudentExceptionWhenNoNameTest()
+        {
+            var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
+
+            var ctor = standardGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.StandardGradeBook have the expected parameters.");
+
+            MethodInfo method = standardGradeBook.GetMethod("RemoveStudent");
+
+            var exception = Record.Exception(() => method.Invoke(gradeBook, new object[] { string.Empty }));
+            Assert.True(exception != null, "GradeBook.GradeBooks.BaseGradeBook.RemoveStudent didn't throw an exception when a student's name was empty when used from a StandardGradeBook.");
+        }
+
+        [Fact]
+        public void RemoveStudentNoStudentFoundTest()
+        {
+            var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "StandardGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.SankedGradeBook doesn't exist.");
+
+            var ctor = standardGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.StandardGradeBook have the expected parameters.");
+
+            MethodInfo method = standardGradeBook.GetMethod("RemoveStudent");
+            var output = string.Empty;
+
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                method.Invoke(gradeBook, new object[] { "Test Student" });
+                output = consolestream.ToString().ToLower();
+            }
+            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
+
+            Assert.True(output.Contains("try again"), "GradeBook.GradeBooks.BaseGradeBook.RemoveStudent didn't return a 'Try Again' message when called from a StandardGradeBook.");
+        }
+
+        [Fact]
+        public void RemoveStudentTest()
+        {
+            var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
+
+            var ctor = standardGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.StandardGradeBook have the expected parameters.");
+
+            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, new List<Student> { new Student("Test Student", StudentType.Standard, EnrollmentType.Campus) });
+
+            MethodInfo method = standardGradeBook.GetMethod("RemoveStudent");
+            
+            method.Invoke(gradeBook, new object[] { "Test Student" });
+            Assert.True(((List<Student>)gradeBook.GetType().GetProperty("Students").GetValue(gradeBook)).FirstOrDefault(e => e.Name == "Test Student") == null, "GradeBook.GradeBooks.BaseGradeBook.RemoveStudent didn't successfully remove a student when called through StandardGradeBook.");
         }
     }
 }
