@@ -15,6 +15,7 @@ namespace GradeBookTests
 
     public class StandardGradeBookTests
     {
+        #region Constructor
         [Fact]
         public void ConstructorTest()
         {
@@ -44,7 +45,9 @@ namespace GradeBookTests
             Assert.True((string)gradeBook.GetType().GetProperty("Name").GetValue(gradeBook) == "Test GradeBook", "`Name` wasn't set properly by `GradeBook.GradeBooks.StandardGradeBook` Construtor.");
             Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).GetType() == Enum.Parse(gradebookEnum, "Standard", true).GetType(), "`Type` wasn't set properly by the `GradeBook.GradeBooks.StandardGradeBook` Constructor.");
         }
+        #endregion
 
+        #region GetLetterGrade
         [Fact]
         public void GetLetterGradeATest()
         {
@@ -179,8 +182,9 @@ namespace GradeBookTests
             var actual = (char)method.Invoke(gradeBook, new object[] { 50 });
             Assert.True(expected == actual, "GradeBook.GradeBooks.StandardGradeBook.GetLetterGrade didn't give an F to students with an average grade below 60%.");
         }
+        #endregion
 
-        #region BaseGradeBookTests.GetGPA
+        #region BaseGradeBook.GetGPA
         [Fact]
         public void GetGPAStandardStudentIsNotWeightedATest()
         {
@@ -992,6 +996,7 @@ namespace GradeBookTests
         }
         #endregion
 
+        #region BaseGradeBook.AddStudent
         [Fact]
         public void AddStudentExceptionWhenNoNameTest()
         {
@@ -1044,7 +1049,9 @@ namespace GradeBookTests
             method.Invoke(gradeBook, new object[] { new Student("Test Student", StudentType.Standard, EnrollmentType.Campus) });
             Assert.True(((List<Student>)gradeBook.GetType().GetProperty("Students").GetValue(gradeBook)).FirstOrDefault(e => e.Name == "Test Student") != null, "GradeBook.GradeBooks.BaseGradeBook.AddStudent didn't successfully add a student when called through StandardGradeBook.");
         }
+        #endregion
 
+        #region BaseGradeBook.RemoveStudent
         [Fact]
         public void RemoveStudentExceptionWhenNoNameTest()
         {
@@ -1133,5 +1140,6 @@ namespace GradeBookTests
             method.Invoke(gradeBook, new object[] { "Test Student" });
             Assert.True(((List<Student>)gradeBook.GetType().GetProperty("Students").GetValue(gradeBook)).FirstOrDefault(e => e.Name == "Test Student") == null, "GradeBook.GradeBooks.BaseGradeBook.RemoveStudent didn't successfully remove a student when called through StandardGradeBook.");
         }
+        #endregion
     }
 }
