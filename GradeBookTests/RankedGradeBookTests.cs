@@ -1550,5 +1550,54 @@ namespace GradeBookTests
             Assert.True(!((List<Student>)gradeBook.GetType().GetProperty("Students").GetValue(gradeBook)).FirstOrDefault(e => e.Name == "Test Student").Grades.Contains(100), "GradeBook.GradeBooks.BaseGradeBook.RemoveGrade didn't successfully remove a grade to the student when called through RankedGradeBook.");
         }
         #endregion
+
+        #region BaseGradeBook.ListStudents
+        [Fact]
+        public void ListStudentsTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, 
+                new List<Student>
+                {
+                    new Student("Test Student", StudentType.Standard, EnrollmentType.Campus) { Grades = new List<double> { 0, 100, 50 } },
+                    new Student("Test Student2", StudentType.Honors, EnrollmentType.State) { Grades = new List<double> { 0, 100, 50 } },
+                    new Student("Test Student3", StudentType.DuelEnrolled, EnrollmentType.National) { Grades = new List<double> { 0, 100, 50 } }
+                });
+
+            MethodInfo method = rankedGradeBook.GetMethod("ListStudents");
+
+            var output = string.Empty;
+
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                method.Invoke(gradeBook, null);
+                output = consolestream.ToString().ToLower();
+            }
+            StreamWriter rankedOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(rankedOutput);
+
+            Assert.True(output.Contains("test student"), "GradeBook.GradeBooks.BaseGradeBook.ListStudent didn't announce the student's name.");
+            Assert.True(output.Contains("standard"), "GradeBook.GradeBooks.BaseGradeBook.ListStudent didn't announce the student's type.");
+            Assert.True(output.Contains("campus"), "GradeBook.GradeBooks.BaseGradeBook.ListStudent didn't announce the student's enrollment.");
+            Assert.True(output.Contains("test student2"), "GradeBook.GradeBooks.BaseGradeBook.ListStudent didn't announce all students in the gradebook.");
+        }
+        #endregion
     }
 }
