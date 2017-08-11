@@ -1366,5 +1366,97 @@ namespace GradeBookTests
             Assert.True(((List<Student>)gradeBook.GetType().GetProperty("Students").GetValue(gradeBook)).FirstOrDefault(e => e.Name == "Test Student") == null, "GradeBook.GradeBooks.BaseGradeBook.RemoveStudent didn't successfully remove a student when called through RankedGradeBook.");
         }
         #endregion
+
+        #region BaseGradeBook.AddGrade
+        [Fact]
+        public void AddGradeExceptionWhenNoNameTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("AddGrade");
+
+            var exception = Record.Exception(() => method.Invoke(gradeBook, new object[] { string.Empty, 100 }));
+            Assert.True(exception != null, "GradeBook.GradeBooks.BaseGradeBook.AddGrade didn't throw an exception when a student's name was empty when called through RankedGradeBook.");
+        }
+
+        [Fact]
+        public void AddGradeNoStudentFoundTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.SankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("AddGrade");
+            var output = string.Empty;
+
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                method.Invoke(gradeBook, new object[] { "Test Student", 100 });
+                output = consolestream.ToString().ToLower();
+            }
+            StreamWriter rankedOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(rankedOutput);
+
+            Assert.True(output.Contains("try again"), "GradeBook.GradeBooks.BaseGradeBook.AddGrade didn't return a 'Try Again' message when called from a RankedGradeBook.");
+        }
+
+        [Fact]
+        public void AddGradeTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, new List<Student> { new Student("Test Student", StudentType.Standard, EnrollmentType.Campus) });
+
+            MethodInfo method = rankedGradeBook.GetMethod("AddGrade");
+            
+            var expected = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
+            method.Invoke(gradeBook, new object[] { "Test Student", 100 });
+            Assert.True(((List<Student>)gradeBook.GetType().GetProperty("Students").GetValue(gradeBook)).FirstOrDefault(e => e.Name == "Test Student").Grades.Contains(100), "GradeBook.GradeBooks.BaseGradeBook.AddGrade didn't successfully add a grade to the student when called through RankedGradeBook.");
+        }
+        #endregion
     }
 }
