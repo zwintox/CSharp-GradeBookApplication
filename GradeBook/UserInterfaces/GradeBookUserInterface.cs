@@ -2,7 +2,7 @@
 using GradeBook.GradeBooks;
 using System;
 
-namespace GradeBook
+namespace GradeBook.UserInterfaces
 {
     public static class GradeBookUserInterface
     {

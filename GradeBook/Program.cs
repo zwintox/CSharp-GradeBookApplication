@@ -1,7 +1,5 @@
 ﻿using System;
-
-using GradeBook.Enums;
-using GradeBook.GradeBooks;
+using GradeBook.UserInterfaces;
 
 namespace GradeBook
 {

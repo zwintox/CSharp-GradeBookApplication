@@ -96,16 +96,17 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 			- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method.
 			- [ ] If there are 5 students with grades call the base `CalculateStudentStatistics` method using `base.CalculateStudentStatistics`
 
-	- [ ] In the GradeBook project's root directory, Update the `Program` class to work with multiple types of grade books
-		- [ ] Inside the `Main` method update the code within the `if` condution that checks to see if `command` starts with "create".
-			- [ ] Update the validation to check the `parts.Length` is not 4.
+	- [ ] In the `UserInterfaces` directory, Update the `StartingUserInterface` class to work with multiple types of grade books
+		- [ ] Update the `CreateCommand` method to support multiple types.
+			- [ ] Update the condition to check if the `parts.Length` is not 3.
 			- [ ] Update the message written to console by this condition to say "Command not valid, Create requires a name, type, is it weighted.".
-			- [ ] Remove where `gradeBook` is set to `BaseGradeBook`.
+			- [ ] Change where `gradeBook` is set to `BaseGradeBook` so it's of type `BaseGradeBook`, but don't instantiate it.
 			- [ ] Create a new variable to store a string representing the gradebook type, this will be set using the second substring of the parts array.
 			- [ ] Create a new switch / case block that checks the gradebook type variable
 				- [ ] When the value is "standard" set `gradeBook` to a newly instantiated `StandardGradeBook`.
 				- [ ] When the value is "rank" set `gradeBook` to a newly instantiated `RankedGradeBook`.
-			- [ ] Change where the "help" command outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
+
+	- [ ] Change where the "help" command outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
 
 - [ ] Add support for weighted GPAs
 	- [ ] Add a property named 'IsWeighted' of type `bool` to `BaseGradeBook` located in the `GradeBooks` directory.
@@ -114,10 +115,11 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 		- [ ] Update the `RankedGradeBook` and `StandardGradeBook` constructors to also have the same `bool` parameter. (Don't forget to add the bool to base constructor call after the constructor declaration!)
 		- [ ] Update the `BaseGradeBook.GetGPA` method to add 1 point to GPAs of `Honors` and `DuelEnrolled` students when `IsWeighted` is true.
 
-	- [ ] Update `Program.Main`, located in the GradeBook project's root directory, to support `IsWeighted`
-		- [ ] Update `Program.Main` so that the `Create` command accepts a third value of `true` or `false` to set `IsWeighted` via the gradebook constructors.
+	- [ ] Update `StartingUserInterface`, located in the `UserInterfaces` directory, to support `IsWeighted`
+		- [ ] Update `CreateCommand` to accept a third value of `true` or `false` to set `IsWeighted` via the gradebook constructors.
 		- [ ] Update both Gradebook Instantiations to use our new command value to set `IsWeighted`.
-		- [ ] Change where the "help" command outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
+
+	- [ ] Change where the `HelpCommand` outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
 
 ## What Now?
 
