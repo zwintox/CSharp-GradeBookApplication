@@ -7,6 +7,8 @@ using Xunit;
 using GradeBook;
 using GradeBook.Enums;
 using System.IO;
+using Newtonsoft.Json;
+using GradeBook.GradeBooks;
 
 namespace GradeBookTests
 {
@@ -16,6 +18,111 @@ namespace GradeBookTests
 
     public class RankedGradeBookTests
     {
+        [Fact]
+        public void RankedGradeBookExistsTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "RankedGradeBook"
+                                     select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+        }
+
+        [Fact]
+        public void RankedGradeBookInheritsBaseGradeBookTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "RankedGradeBook"
+                                     select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("Save");
+            Assert.True(method != null, "GradeBook.GradeBooks.RankedGradeBook doesn't appear to be inherritting BaseGradeBook.");
+        }
+
+        [Fact]
+        public void TypePropertyExistsTest()
+        {
+            var gradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.FullName == "GradeBook.GradeBooks.BaseGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(gradeBook != null, "GradeBook.GradeBooks.BaseGradeBook doesn't exist.");
+
+            gradeBook.GetProperty("Type");
+            
+            Assert.True(gradeBook.GetProperty("Type") != null, "`Type` property wasn't found in `GradeBook.BaseGradeBook`.");
+        }
+
+        //Do not test IO in this manner in real world applications, it's fragile, false negative prone, etc (sadly in our education context it's unavoidable without adding complexity to the project)
+        [Fact]
+        public void LoadTest()
+        {
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "RankedGradeBook"
+                                     select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                 from type in assembly.GetTypes()
+                                 where type.FullName == "GradeBook.Enums.GradeBookType"
+                                 select type).FirstOrDefault();
+            Assert.True(gradebookEnum != null, "GradeBook.Enums.GradeBookType doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "LoadTest", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "LoadTest");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            gradeBook.GetType().GetProperty("Type").SetValue(gradeBook, Enum.Parse(gradebookEnum, "Ranked", true));
+
+            try
+            {
+                using (var file = new FileStream("LoadTest.gdbk", FileMode.Create, FileAccess.Write))
+                {
+                    using (var writer = new StreamWriter(file))
+                    {
+                        var json = JsonConvert.SerializeObject(gradeBook);
+                        writer.Write(json);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.True(ex != null, "Test for GradeBook.GradeBooks.BaseGradeBook.Load was unable to run. This is likely due to issues being able to read/write gradebook files to the local file system.");
+            }
+
+            var actual = BaseGradeBook.Load("LoadTest");
+            Assert.True((string)actual.GetType().GetProperty("Name").GetValue(gradeBook) == "LoadTest", "GradeBook.GradeBooks.BaseGradeBook.Load did not properly load the gradebook when called from RankedGradeBook.");
+            Assert.True(actual.GetType().GetProperty("Type").GetValue(gradeBook).ToString() == Enum.Parse(gradebookEnum, "Ranked", true).ToString(), "GradeBook.GradeBooks.BaseGradeBook.Load did not properly set the type of gradebook to Ranked when called from RankedGradeBook.");
+        }
+
+        //Do not test IO in this manner in real world applications, it's fragile, false negative prone, etc (sadly in our education context it's unavoidable without adding complexity to the project)
+        [Fact]
+        public void LoadFileNotFoundTest()
+        {
+
+            var output = string.Empty;
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                BaseGradeBook.Load("LoadFileNotFoundTest.gdbk");
+                output = consolestream.ToString().ToLower();
+            }
+            StreamWriter rankedOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(rankedOutput);
+
+            Assert.True(output.Contains("gradebook could not be found"), "GradeBook.GradeBooks.BaseGradeBook.Load didn't return a 'Gradebook could not be found' message when there isn't a gradebook with that name.");
+        }
+
         #region Constructor
         [Fact]
         public void ConstructorTest()
