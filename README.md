@@ -77,7 +77,7 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 		- [ ] Change the return statement to return `gradebook`.
 
 	- [ ] Impliment an override for the `RankedGradeBook`'s `GetLetterGrade` method, in ranked grading students aren't scored based on their own individual performance, instead they are graded based on how they performed compared to the rest of their class.
-	*Hint: To accomplish this out you need to figure out where an average grade fits compared to all other average grades, one way to do this is to take the number of students and multiple by 0.2 (this tells you every `X` students drop one letter grade), then put all average grades in descending order, and finally figure out where the input grade fits in the list of grades, for every `X` students from the top drop the result one letter grade (with `F` being the lowest possible grade)
+	*Hint: To accomplish this you need to figure out where an average grade fits compared to all other average grades, one way to do this is to take the number of students and multiple by 0.2 (this gets you how many students it takes before you drop one letter grade), then put all average grades in descending order, and finally figure out where the input grade fits in the list of grades, for every `X` students from the top drop the result one letter grade (with `F` being the lowest possible grade)
 		- [ ] If there are less than 5 students with a grade throw an `InvalidOperationException`. (Ranked Grading requires a minimum of 5 students to work)
 		- [ ] To get an A a student must have an average score that is in the top 20% of their class.
 		- [ ] To get a B a student must have an average score between the top 20 and 40% of their class.
