@@ -94,7 +94,6 @@ namespace GradeBookTests
         [Fact]
         public void LoadFileNotFoundTest()
         {
-
             var output = string.Empty;
             using (var consolestream = new StringWriter())
             {
