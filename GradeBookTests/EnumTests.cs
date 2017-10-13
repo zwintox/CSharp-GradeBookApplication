@@ -8,6 +8,16 @@ namespace GradeBookTests
     public class EnumTests
     {
         [Fact]
+        public void GradeBookTypeExists()
+        {
+            var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                 from type in assembly.GetTypes()
+                                 where type.FullName == "GradeBook.Enums.GradeBookType"
+                                 select type).FirstOrDefault();
+            Assert.True(gradebookEnum != null, "GradeBook.Enums.GradeBookType doesn't exist.");
+        }
+
+        [Fact]
         public void GradeBookTypeContainsStandardTest()
         {
             var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
