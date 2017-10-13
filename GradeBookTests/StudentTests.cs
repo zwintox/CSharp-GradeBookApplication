@@ -65,14 +65,14 @@ namespace GradeBookTests
         public void AddGradeExceptionOnLowerThanZeroTest()
         {
             var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
-            Assert.Throws(typeof(ArgumentException), () => student.AddGrade(-10));
+            Assert.Throws<ArgumentException>(() => student.AddGrade(-10));
         }
 
         [Fact]
         public void AddGradeExceptionOnMoreThanOneHundredTest()
         {
             var student = new Student("Test Student", StudentType.Standard, EnrollmentType.Campus);
-            Assert.Throws(typeof(ArgumentException), () => student.AddGrade(110));
+            Assert.Throws<ArgumentException>(() => student.AddGrade(110));
         }
 
         [Fact]
