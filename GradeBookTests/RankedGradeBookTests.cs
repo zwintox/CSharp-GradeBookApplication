@@ -102,7 +102,7 @@ namespace GradeBookTests
 
             var actual = BaseGradeBook.Load("LoadTest");
             Assert.True((string)actual.GetType().GetProperty("Name").GetValue(gradeBook) == "LoadTest", "GradeBook.GradeBooks.BaseGradeBook.Load did not properly load the gradebook when called from RankedGradeBook.");
-            Assert.True(actual.GetType().GetProperty("Type").GetValue(gradeBook).ToString() == Enum.Parse(gradebookEnum, "Ranked", true).ToString(), "GradeBook.GradeBooks.BaseGradeBook.Load did not properly set the type of gradebook to Ranked when called from RankedGradeBook.");
+            Assert.True(actual.GetType().ToString() == "RankedGradeBook", "GradeBook.GradeBooks.BaseGradeBook.Load did not properly set the type of gradebook to Ranked when called from RankedGradeBook.");
         }
 
         //Do not test IO in this manner in real world applications, it's fragile, false negative prone, etc (sadly in our education context it's unavoidable without adding complexity to the project)

@@ -40,6 +40,36 @@ namespace GradeBookTests
             Assert.True(method != null, "GradeBook.GradeBooks.StandardGradeBook doesn't appear to be inherritting BaseGradeBook.");
         }
 
+        [Fact]
+        public void StandardGradeBookContainsTypeTest()
+        {
+            var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
+            Assert.True(standardGradeBook != null, "GradeBook.GradeBooks.StandardGradeBook doesn't exist.");
+
+            var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                 from type in assembly.GetTypes()
+                                 where type.FullName == "GradeBook.Enums.GradeBookType"
+                                 select type).FirstOrDefault();
+            Assert.True(gradebookEnum != null, "GradeBook.Enums.GradeBookType doesn't exist.");
+
+            var ctor = standardGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.StardardGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "LoadTest", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "LoadTest");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.StandardGradeBook have the expected parameters.");
+
+            PropertyInfo property = standardGradeBook.GetProperty("Type");
+            Assert.True(property != null, "GradeBook.GradeBooks.StandardGradeBook doesn't appear to contain the public property Type.");
+        }
+
         //Do not test IO in this manner in real world applications, it's fragile, false negative prone, etc (sadly in our education context it's unavoidable without adding complexity to the project)
         [Fact]
         public void LoadTest()
@@ -87,7 +117,7 @@ namespace GradeBookTests
             
             var actual = BaseGradeBook.Load("LoadTest");
             Assert.True((string)actual.GetType().GetProperty("Name").GetValue(gradeBook) == "LoadTest", "GradeBook.GradeBooks.BaseGradeBook.Load did not properly load the gradebook when called from StandardGradeBook.");
-            Assert.True(actual.GetType().GetProperty("Type").GetValue(gradeBook).ToString() == Enum.Parse(gradebookEnum, "Standard", true).ToString(), "GradeBook.GradeBooks.BaseGradeBook.Load did not properly set the type of gradebook to Standard when called from StandardGradeBook.");
+            Assert.True(actual.GetType().ToString() == "StandardGradeBook", "GradeBook.GradeBooks.BaseGradeBook.Load did not properly set the type of gradebook to Standard when called from StandardGradeBook.");
         }
 
         //Do not test IO in this manner in real world applications, it's fragile, false negative prone, etc (sadly in our education context it's unavoidable without adding complexity to the project)
