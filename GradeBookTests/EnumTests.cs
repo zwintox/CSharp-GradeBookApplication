@@ -46,7 +46,7 @@ namespace GradeBookTests
         }
 
         [Fact]
-        public void GradeBookTypeContainsENSUTest()
+        public void GradeBookTypeContainsESNUTest()
         {
             var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                                  from type in assembly.GetTypes()
@@ -54,9 +54,9 @@ namespace GradeBookTests
                                  select type).FirstOrDefault();
             Assert.True(gradebookEnum != null, "GradeBook.Enums.GradeBookType doesn't exist.");
 
-            var expected = "ENSU";
-            var actual = Enum.Parse(gradebookEnum, "ENSU", true).ToString();
-            Assert.True(actual == expected, "`GradeBook.Enums.GradeBookType` doesn't contain the value `ENSU`.");
+            var expected = "ESNU";
+            var actual = Enum.Parse(gradebookEnum, "ESNU", true).ToString();
+            Assert.True(actual == expected, "`GradeBook.Enums.GradeBookType` doesn't contain the value `ESNU`.");
         }
 
         [Fact]

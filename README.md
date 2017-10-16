@@ -50,7 +50,7 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 
 - [ ] Add support for Ranked Grading
 	- [ ] In the Enums directory, create a new Enum `GradeBookType` containing the types of Gradebooks to be supported (`Standard`, `Ranked`, `ESNU`, `OneToFour`, `SixPoint`)
-		- [ ] Create a new Enum `GradeBookType` containing the types `Standard`, `Ranked`, `ENSU`, `OneToFour`, and `SixPoint`.
+		- [ ] Create a new Enum `GradeBookType` containing the types `Standard`, `Ranked`, `ESNU`, `OneToFour`, and `SixPoint`.
 			- This should be located in the `Enums` directory.
 			- This should use the `GradeBook.Enums` namespace.
 
