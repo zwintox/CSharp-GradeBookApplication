@@ -49,13 +49,18 @@ If you would rather use something other than Visual Studio
 __Note:__ this isn't the only way to accomplish this, however; this is what the project's tests are expecting. Implimenting this in a different way will likely result in being marked as incomplete / incorrect.
 
 - [ ] Add support for Ranked Grading
-	- [ ] In the Enums directory, create a new Enum `GradeBookType` containing the types of Gradebooks to be supported (`Standard`, `Ranked`, `ESNU`, `OneToFour`, `SixPoint`)
-		- [ ] Create a new Enum `GradeBookType` containing the types `Standard`, `Ranked`, `ESNU`, `OneToFour`, and `SixPoint`.
+	- [ ] Creating The `GradeBookType` Enum
+		- Create a new Enum `GradeBookType`.
 			- This should be located in the `Enums` directory.
-			- This should use the `GradeBook.Enums` namespace.
+			- This should use the `GradeBooks.Enums` namespace.
+			- This should use the `public` access modifier.
+			- This should contain the values `Standard`, `Ranked`, `ESNU`, `OneToFour`, and `SixPoint`.
 
-	- [ ] In the `GradeBooks` directory add a `GradeBookType` property to `BaseGradeBook
-		- [ ] Add a `public` property named `Type` to `BaseGradeBook` of type `GradeBookType`.
+	- [ ] Add `Type` property
+		- Add a new property `Type` to `BaseGradeBook`
+			- This should use the name `Type`.
+			- This should be of type `GradeBookType`.
+			- This should use the `public` access modifier.
 
 	- [ ] Create a new class `StandardGradeBook` to contain the Standard Gradebook functionality. *note once this task is started code won't compile until task completion*
 		- [ ] Create a class `StandardGradeBook` that inherits the `BaseGradeBook` class.
