@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GradeBook.GradeBooks;
+using System;
 using System.IO;
 using System.Linq;
 using Xunit;
@@ -18,7 +19,7 @@ namespace GradeBookTests
         /// </summary>
         [Fact]
         [Trait("Category", "CreateGradeBookTypeEnum")]
-        public void GradeBookTypeEnumTests()
+        public void GradeBookTypeEnumTest()
         {
             // Test to make sure `GradeBookType.cs` is in the `Enums` directory.
             var filePath = ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + "GradeBook" + Path.DirectorySeparatorChar + "Enums" + Path.DirectorySeparatorChar + "GradeBookType.cs";
@@ -51,6 +52,33 @@ namespace GradeBookTests
 
             // Test that `GradeBookType` contains the value `SixPoint`
             Assert.True(Enum.Parse(gradebookEnum, "SixPoint", true) != null, "`GradeBook.Enums.GradeBookType` doesn't contain the value `SixPoint`.");
+        }
+
+        /// <summary>
+        ///     Tests all requirements for adding the `Type` property.
+        /// </summary>
+        [Fact]
+        [Trait("Category", "AddTypeProperty")]
+        public void AddTypePropertyTest()
+        {
+            // Assume all requirements of previous tasks were completed successfully
+            var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                 from type in assembly.GetTypes()
+                                 where type.FullName == "GradeBook.Enums.GradeBookType"
+                                 select type).FirstOrDefault();
+
+            // Test that the property `Type` exists in `BaseGradeBook`
+            var typeProperty = typeof(BaseGradeBook).GetProperty("Type");
+            Assert.True(typeProperty != null, "`GradeBook.GradeBooks.BaseGradeBook` doesn't contain a property `Type` or `Type` is not `public`.");
+
+            // Test that the property `Type` is of type `GradeBookType`
+            Assert.True(typeProperty.PropertyType == gradebookEnum, "`GradeBook.GradeBooks.BaseGradeBook` contains a property `Type` but it is not of type `GradeBookType`.");
+
+            // Test that the property `Type`'s `get` method is `public`
+            Assert.True(typeProperty.GetGetMethod() != null, "`GradeBook.GradeBooks.BaseGradeBook` contains a property `Type` but it's getter is not `public`.");
+
+            // Test that the property `Type`'s 'set' method is `public`
+            Assert.True(typeProperty.GetSetMethod() != null, "`GradeBook.GradeBooks.BaseGradeBook` contains a property `Type` but it's setter is not `public`.");
         }
     }
 }
