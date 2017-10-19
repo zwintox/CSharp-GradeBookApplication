@@ -50,31 +50,37 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 
 - [ ] Add support for Ranked Grading
 	- [ ] Creating The `GradeBookType` Enum
-		- Create a new Enum `GradeBookType`.
+		- [ ] Create a new Enum `GradeBookType`.
 			- This should be located in the `Enums` directory.
 			- This should use the `GradeBooks.Enums` namespace.
 			- This should use the `public` access modifier.
 			- This should contain the values `Standard`, `Ranked`, `ESNU`, `OneToFour`, and `SixPoint`.
 
 	- [ ] Add `Type` property
-		- Add a new property `Type` to `BaseGradeBook`
+		- [ ] Add a new property `Type` to `BaseGradeBook`
 			- This should use the name `Type`.
 			- This should be of type `GradeBookType`.
 			- This should use the `public` access modifier.
 
-	- [ ] Create a new class `StandardGradeBook` to contain the Standard Gradebook functionality. *note once this task is started code won't compile until task completion*
-		- [ ] Create a class `StandardGradeBook` that inherits the `BaseGradeBook` class.
+	- [ ] Creating the `StandardGradeBook` class
+		- [ ] Create a class `StandardGradeBook` (Once this change is made code will not compile until completion of the next task)
 			- This should be located in the `GradeBooks` directory.
 			- This should use the `GradeBook.GradeBooks` namespace.
-		- [ ] Change the constructor to set the `Type` property to `Standard` in the `StandardGradeBook` class.
-		- [ ] The constructor should also call the base constructor by adding ` : base(name)` after the contsructor declaration. (this was not covered in the course, it calls the constructor of `BaseGradeBook`)
+			- This should inherit the `BaseGradeBook` class.
+		- [ ] Create a constructor for `StandardGradeBook`
+			- This should accept a parameter `name` of type `string`.
+			- This should set `Type` to `GradeBookType.Standard`.
+			- This should call the `BaseGradeBook` constructor by putting ` : base(name)` after the constructor declaration (this was not covered in the course, it calls the constructor of the inheritted class.)
 
-	- [ ] Create a new `RankedGradeBook` to contain the Ranked Gradebook functionality. *note once this task is started code won't compile until task completion*
-		- [ ] Create a new class `RankedGradeBook` that inherits the `BaseGradeBook` class.
+	- [ ] Creating the `RankedGradeBook` class
+		-  [ ] Create a class `RankedGradeBook` (Once this change is made code will not compile until completion of the next task)
 			- This should be located in the `GradeBooks` directory.
 			- This should use the `GradeBook.GradeBooks` namespace.
-		- [ ] Create a constructor that sets the `Type` property to `Ranked.		
-		- [ ] The constructor should also call the base constructor by adding ` : base(name)` after the contsructor declaration. (this was not covered in the course)
+			- This should inherit the `BaseGradeBook` class.
+		-  [ ] Create a constructor for `RankedGradeBook`
+			- This should accept a parameter `name` of type `string`.
+			- This should set `Type` to `GradeBookType.Ranked`.
+			- This should call the `BaseGradeBook` constructor by putting ` : base(name)` after the constructor declaration (this was not covered in the course, it calls the constructor of the inheritted class.)
 
 	- [ ] Update the `BaseGradeBook` class's `Load` method to handle multiple types of Gradebooks
 		- [ ] Create a variable inside the `Load` method to contain the gradebook.
