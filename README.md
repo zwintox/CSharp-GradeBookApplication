@@ -63,32 +63,33 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 			- This should use the `public` access modifier.
 
 	- [ ] Creating the `StandardGradeBook` class
-		- [ ] Create a class `StandardGradeBook` (Once this change is made code will not compile until completion of the next task)
+		- [ ] Create a class `StandardGradeBook` _(Once this change is made code will not compile until completion of the next task)_
 			- This should be located in the `GradeBooks` directory.
 			- This should use the `GradeBook.GradeBooks` namespace.
 			- This should inherit the `BaseGradeBook` class.
 		- [ ] Create a constructor for `StandardGradeBook`
 			- This should accept a parameter `name` of type `string`.
 			- This should set `Type` to `GradeBookType.Standard`.
-			- This should call the `BaseGradeBook` constructor by putting ` : base(name)` after the constructor declaration (this was not covered in the course, it calls the constructor of the inheritted class.)
+			- This should call the `BaseGradeBook` constructor by putting ` : base(name)` after the constructor declaration (this was not covered in the course, it calls the constructor of the inheritted class.)_
 
 	- [ ] Creating the `RankedGradeBook` class
-		-  [ ] Create a class `RankedGradeBook` (Once this change is made code will not compile until completion of the next task)
+		-  [ ] Create a class `RankedGradeBook` _(Once this change is made code will not compile until completion of the next task)
 			- This should be located in the `GradeBooks` directory.
 			- This should use the `GradeBook.GradeBooks` namespace.
 			- This should inherit the `BaseGradeBook` class.
 		-  [ ] Create a constructor for `RankedGradeBook`
 			- This should accept a parameter `name` of type `string`.
 			- This should set `Type` to `GradeBookType.Ranked`.
-			- This should call the `BaseGradeBook` constructor by putting ` : base(name)` after the constructor declaration (this was not covered in the course, it calls the constructor of the inheritted class.)
+			- This should call the `BaseGradeBook` constructor by putting ` : base(name)` after the constructor declaration _(this was not covered in the course, it calls the constructor of the inheritted class.)_
 
-	- [ ] Update the `BaseGradeBook` class's `Load` method to handle multiple types of Gradebooks
-		- [ ] Create a variable inside the `Load` method to contain the gradebook.
-		- [ ] Between where the variable `jobject` is set and the return statement, set a variable using `Enum.Parse(typeof(GradeBookType), jobject.GetValue("Type").ToString(), true);` to get the type of GradeBook being loaded _(this was not covered in the course, it will take the saved file, and attempt to get the type of the gradebook from it)_
-		- [ ] When type is `GradeBookType.Standard` set the gradebook variable using `JsonConvert.DeserializeObject<StandardGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a StandardGradeBook object based on that file)_
-		- [ ] When type is `GradeBookType.Ranked` set the gradebook variable using `JsonConvert.DeserializeObject<RankedGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a RankedGradeBook object based on that file)_
-		- [ ] When type doesn't match a known GradeBookType set the gradebook variable using `JsonConvert.DeserializeObject<StandardGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a StandardGradeBook object based on that file)_
-		- [ ] Change the return statement to return `gradebook`.
+	- [ ] Add Multiple GradeBookType support to `BaseGradeBook`
+		- [ ] Update `BaseGradeBook`'s `Load` method
+			_(All code for this take will be written in place of the `Load` method's return statement)_
+			- This should get the GradeBookType using `Enum.Parse(typeof(GradeBookType), jobject.GetValue("Type").ToString(), true);` _(this was not covered in the course, it will take the saved file and attempt to get the type of the gradebook from it)_
+			- If the GradeBookType is `GradeBookType.Standard` create the gradebook using `JsonConvert.DeserializeObject<StandardGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a `StandardGradeBook` object based on that file)_
+			- If the GradeBookType is `GradeBookType.Ranked` create the gradebook using `JsonConvert.DeserializeObject<RankedGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a RankedGradeBook object based on that file)_
+			- If the GradeBookType is not yet handled throw an `InvalidOperationException` with message of "The gradebook you've attempted to load is not in a supported type of gradebook.";
+			- return the created gradebook.
 
 	- [ ] Impliment an override for the `RankedGradeBook`'s `GetLetterGrade` method, in ranked grading students aren't scored based on their own individual performance, instead they are graded based on how they performed compared to the rest of their class.
 	*Hint: To accomplish this you need to figure out where an average grade fits compared to all other average grades, one way to do this is to take the number of students and multiple by 0.2 (this gets you how many students it takes before you drop one letter grade), then put all average grades in descending order, and finally figure out where the input grade fits in the list of grades, for every `X` students from the top drop the result one letter grade (with `F` being the lowest possible grade)

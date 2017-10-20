@@ -1,7 +1,10 @@
-﻿using GradeBook.GradeBooks;
+﻿using GradeBook.Enums;
+using GradeBook.GradeBooks;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace GradeBookTests
@@ -171,6 +174,154 @@ namespace GradeBookTests
             Assert.True(gradebookEnum != null, "`GradeBook.Enums.GradeBookType` wasn't found in the `GradeBooks.Enums` namespace.");
 
             Assert.True(gradeBook.GetType().GetProperty("Type").GetValue(gradeBook).ToString() == Enum.Parse(gradebookEnum, "Ranked", true).ToString(), "`Type` wasn't set to `GradeBookType.Ranked` by the `GradeBook.GradeBooks.RankedGradeBook` Constructor.");
+        }
+
+        /// <summary>
+        ///     Tests all requipments for adding multiple `GradeBookType` support to `BaseGradeBook`
+        /// </summary>
+        [Fact]
+        [Trait("Category","AddMultipleGradeBookTypeSupportToBaseGradeBook")]
+        public void AddMultipleGradeBookTypeSupportToBaseGradeBookTest()
+        {
+            var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                 from type in assembly.GetTypes()
+                                 where type.FullName == "GradeBook.Enums.GradeBookType"
+                                 select type).FirstOrDefault();
+            Assert.True(gradebookEnum != null, "GradeBook.Enums.GradeBookType doesn't exist.");
+
+            // Test if when the `GradeBookType` is `Standard` the matching `StandardGradeBook` object is returned.
+            var standardGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "StandardGradeBook"
+                                     select type).FirstOrDefault();
+            Assert.True(standardGradeBook != null, "`GradeBook.GradeBooks.StandardGradeBook` doesn't exist.");
+
+            var ctor = standardGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "`GradeBook.GradeBooks.StandardGradeBook` doesn't appear to have a constructor.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "LoadTest", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(standardGradeBook, "LoadTest");
+            Assert.True(gradeBook != null, "The constructor for `GradeBook.GradeBooks.StandardGradeBook` doesn't have the expected parameters.");
+
+            Assert.True(gradeBook.GetType().GetProperty("Type") != null, "`GradeBook.GradeBooks.BaseGradeBook` doesn't appear to have a `Type` property.");
+            gradeBook.GetType().GetProperty("Type").SetValue(gradeBook, Enum.Parse(gradebookEnum, "Standard", true));
+
+            try
+            {
+                using (var file = new FileStream("LoadTest.gdbk", FileMode.Create, FileAccess.Write))
+                {
+                    using (var writer = new StreamWriter(file))
+                    {
+                        var json = JsonConvert.SerializeObject(gradeBook);
+                        writer.Write(json);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.True(ex != null, "Test for GradeBook.GradeBooks.BaseGradeBook.Load was unable to run. This is likely due to issues being able to read/write gradebook files to the local file system.");
+            }
+
+            var actual = BaseGradeBook.Load("LoadTest");
+            File.Delete("LoadTest.gdbk");
+            Assert.True((string)actual.GetType().GetProperty("Name").GetValue(gradeBook) == "LoadTest", "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly load when the gradebook is a `StandardGradeBook`.");
+            Assert.True(actual.GetType() == standardGradeBook, "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly create a `StandardGradeBook` when the loaded gradebook is a `StandardGradeBook`.");
+            Assert.True((GradeBookType)actual.GetType().GetProperty("Type").GetValue(actual) == (GradeBookType)Enum.Parse(gradebookEnum, "Standard", true), "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly set the `Type` property of gradebook to `Standard` when the gradebook is a `StandardGradeBook`.");
+
+            // Test if when the `GradeBookType` isn't set the matching `StandardGradeBook` object is returned.
+            var esnuGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "ESNUGradeBook"
+                                     select type).FirstOrDefault();
+
+            if (esnuGradeBook == null)
+            {
+                parameters = ctor.GetParameters();
+                gradeBook = null;
+                if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                    gradeBook = Activator.CreateInstance(standardGradeBook, "LoadTest", true);
+                else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                    gradeBook = Activator.CreateInstance(standardGradeBook, "LoadTest");
+                Assert.True(gradeBook != null, "The constructor for `GradeBook.GradeBooks.StandardGradeBook` doesn't have the expected parameters.");
+
+                Assert.True(gradeBook.GetType().GetProperty("Type") != null, "`GradeBook.GradeBooks.BaseGradeBook` doesn't appear to have a `Type` property.");
+                gradeBook.GetType().GetProperty("Type").SetValue(gradeBook, Enum.Parse(gradebookEnum, "ESNU", true));
+
+
+                try
+                {
+                    using (var file = new FileStream("LoadTest.gdbk", FileMode.Create, FileAccess.Write))
+                    {
+                        using (var writer = new StreamWriter(file))
+                        {
+                            var json = JsonConvert.SerializeObject(gradeBook);
+                            writer.Write(json);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(ex != null, "Test for GradeBook.GradeBooks.BaseGradeBook.Load was unable to run. This is likely due to issues being able to read/write gradebook files to the local file system.");
+                }
+         
+                try
+                {
+                    BaseGradeBook.Load("LoadTest");
+                    Assert.True(1 == 1, "`GradeBook.GradeBooks.BaseGradeBook.Load` didn't throw an `InvalidOperationException` when the `GradeBookType` was not yet implimented.");
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(ex.GetType() == typeof(InvalidOperationException), "`GradeBook.GradeBooks.BaseGradeBook.Load` threw an exception, however; it was not an `InvalidOperationException`.");
+                    Assert.True(ex.Message == "The gradebook you've attempted to load is not in a supported type of gradebook.", "`GradeBook.GradeBooks.BaseGradeBook`'s `Load` method threw the proper exception type, but didn't have the message \"The gradebook you've attempted to load is not in a supported type of gradebook.\"");
+                }
+                File.Delete("LoadTest.gdbk");
+            }
+
+            // Test if when the `GradeBookType` is `Ranked` the matching `RankedGradeBook` object is returned.
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                     from type in assembly.GetTypes()
+                                     where type.Name == "RankedGradeBook"
+                                     select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "`GradeBook.GradeBooks.RankedGradeBook` doesn't exist.");
+
+            ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "`GradeBook.GradeBooks.RankedGradeBook` doesn't appear to have a constructor.");
+
+            parameters = ctor.GetParameters();
+            gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "LoadTest", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "LoadTest");
+            Assert.True(gradeBook != null, "The constructor for `GradeBook.GradeBooks.RankedGradeBook` doesn't have the expected parameters.");
+
+            gradeBook.GetType().GetProperty("Type").SetValue(gradeBook, Enum.Parse(gradebookEnum, "Ranked", true));
+
+            try
+            {
+                using (var file = new FileStream("LoadTest.gdbk", FileMode.Create, FileAccess.Write))
+                {
+                    using (var writer = new StreamWriter(file))
+                    {
+                        var json = JsonConvert.SerializeObject(gradeBook);
+                        writer.Write(json);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.True(ex != null, "Test for GradeBook.GradeBooks.BaseGradeBook.Load was unable to run. This is likely due to issues being able to read/write gradebook files to the local file system.");
+            }
+
+            actual = BaseGradeBook.Load("LoadTest");
+            File.Delete("LoadTest.gdbk");
+            Assert.True((string)actual.GetType().GetProperty("Name").GetValue(gradeBook) == "LoadTest", "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly load when the gradebook is a `RankedGradeBook`.");
+            Assert.True(actual.GetType() == rankedGradeBook, "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly create a `RankedGradeBook` when the loaded gradebook is a `RankedGradeBook`.");
+            Assert.True((GradeBookType)actual.GetType().GetProperty("Type").GetValue(actual) == (GradeBookType)Enum.Parse(gradebookEnum, "Ranked", true), "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly set the `Type` property of gradebook to `Ranked` when the gradebook is a `RankedGradeBook`.");
         }
     }
 }
