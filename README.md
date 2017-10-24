@@ -101,15 +101,15 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 			- return D if the input grade is between the top 60 and 80% of the class.
 			- return F if the grade is below the top 80% of the class.
 
-	- [ ] Impliment an override of the  `RankedGradeBook`'s `CalculateStatistics` method.
-		- [ ] This override will perform a check to make sure there are at least 5 students with grades
-			- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method.
-			- [ ] If there are 5 students with grades call the `CalculateStatistics` method using `base.CalculateStatistics`
+	- [ ] Override `RankedGradeBook`'s `CalculateStatistics` method
+		- [ ] Short circuit the method if there are less than 5 students.
+			- If there are less than 5 students write "Ranked grading requires at least 5 students." to the Console.
+			- If there are 5 or more students call the base class's `CalculateStatistics` method using 'base.CalculateStatistics'.
 
-	- [ ] Impliment an override of the  `RankedGradeBook`'s `CalculateStudentStatistics` method.
-		- [ ] This override will perform a check to make sure there are at least 5 students with grades
-			- [ ] If there are not 5 students with grades display the message "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade." then escape the method.
-			- [ ] If there are 5 students with grades call the base `CalculateStudentStatistics` method using `base.CalculateStudentStatistics`
+	- [ ] Override `RankedGradeBook`'s `CalculateStudentStatistics` method
+		- [ ] Short circuit the method if there are less than 5 students.
+			- If there are less than 5 students write "Ranked grading requires at least 5 students." to the Console.
+			- If there are 5 or more students call the base class's `CalculateStudentStatistics` method using 'base.CalculateStudentStatistics'.
 
 	- [ ] In the `UserInterfaces` directory, Update the `StartingUserInterface` class to work with multiple types of grade books
 		- [ ] Update the `CreateCommand` method to support multiple types.

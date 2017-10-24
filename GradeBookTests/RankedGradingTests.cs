@@ -329,7 +329,7 @@ namespace GradeBookTests
 
         [Fact]
         [Trait("Category","OverrideGetLetterGrade")]
-        public void OverrideGetLetterGrade()
+        public void OverrideGetLetterGradeTest()
         {
             //Setup Test
             var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
@@ -396,6 +396,182 @@ namespace GradeBookTests
 
             //Test if F is given when input grade is below the top 80%.
             Assert.True((char)method.Invoke(gradeBook, new object[] { 0 }) == 'F', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an F to students below the top 80% of the class.");
+        }
+
+        [Fact]
+        [Trait("Category","OverrideCalculateStatistics")]
+        public void OverrideCalculateStatisticsTest()
+        {
+            //Setup Test
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.FullName == "GradeBook.GradeBooks.RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("CalculateStatistics");
+            var output = string.Empty;
+            Console.Clear();
+
+            //Test that message was written to console when there are less than 5 students.
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                method.Invoke(gradeBook, null);
+                output = consolestream.ToString().ToLower();
+            }
+            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
+
+            Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
+
+            //Test that the base calculate statistics didn't still run when there were less than 5 students.
+            Assert.True(!output.Contains("average grade of all students is"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStastics` still ran the base `CalculateStatistics` when there was less than 5 students.");
+
+            //Test that the base calculate statistics did run when there were 5 or more students.
+            output = string.Empty;
+            Console.Clear();
+
+            var students = new List<Student>
+                {
+                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 100 }
+                    },
+                    new Student("john",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 75 }
+                    },
+                    new Student("jackie",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 50 }
+                    },
+                    new Student("tom",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 25 }
+                    },
+                    new Student("tony",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 0 }
+                    }
+                };
+
+            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
+
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                method.Invoke(gradeBook, null);
+                output = consolestream.ToString().ToLower();
+            }
+            standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
+
+            Assert.True(output.Contains("average grade of all students is"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStastics` did not run the base `CalculateStatistics` when there was 5 or more students.");
+        }
+
+        [Fact]
+        [Trait("Category", "OverrideCalculateStudentStatistics")]
+        public void OverrideCalculateStudentStatisticsTest()
+        {
+            //Setup Test
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.FullName == "GradeBook.GradeBooks.RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("CalculateStudentStatistics");
+            var output = string.Empty;
+            Console.Clear();
+
+            var students = new List<Student>
+                {
+                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 100 }
+                    }
+                };
+
+            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
+
+            //Test that message was written to console when there are less than 5 students.
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                method.Invoke(gradeBook, new object[] { "jamie" });
+                output = consolestream.ToString().ToLower();
+            }
+            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
+
+            Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
+
+            //Test that the base calculate statistics didn't still run when there were less than 5 students.
+            Assert.True(!output.Contains("grades:"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStastics` still ran the base `CalculateStudentStatistics` when there was less than 5 students.");
+
+            //Test that the base calculate statistics did run when there were 5 or more students.
+            output = string.Empty;
+            Console.Clear();
+
+            students = new List<Student>
+                {
+                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 100 }
+                    },
+                    new Student("john",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 75 }
+                    },
+                    new Student("jackie",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 50 }
+                    },
+                    new Student("tom",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 25 }
+                    },
+                    new Student("tony",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 0 }
+                    }
+                };
+
+            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
+
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                method.Invoke(gradeBook, new object[] { "jamie" });
+                output = consolestream.ToString().ToLower();
+            }
+            standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
+
+            Assert.True(output.Contains("grades:"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStastics` did not run the base `CalculateStudentStatistics` when there was 5 or more students.");
         }
     }
 }
