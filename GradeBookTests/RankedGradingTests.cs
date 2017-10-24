@@ -1,9 +1,12 @@
-﻿using GradeBook.Enums;
+﻿using GradeBook;
+using GradeBook.Enums;
 using GradeBook.GradeBooks;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Xunit;
 
@@ -322,6 +325,77 @@ namespace GradeBookTests
             Assert.True((string)actual.GetType().GetProperty("Name").GetValue(gradeBook) == "LoadTest", "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly load when the gradebook is a `RankedGradeBook`.");
             Assert.True(actual.GetType() == rankedGradeBook, "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly create a `RankedGradeBook` when the loaded gradebook is a `RankedGradeBook`.");
             Assert.True((GradeBookType)actual.GetType().GetProperty("Type").GetValue(actual) == (GradeBookType)Enum.Parse(gradebookEnum, "Ranked", true), "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly set the `Type` property of gradebook to `Ranked` when the gradebook is a `RankedGradeBook`.");
+        }
+
+        [Fact]
+        [Trait("Category","OverrideGetLetterGrade")]
+        public void OverrideGetLetterGrade()
+        {
+            //Setup Test
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            object gradeBook = null;
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook", true);
+            else if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
+                gradeBook = Activator.CreateInstance(rankedGradeBook, "Test GradeBook");
+            Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
+
+            MethodInfo method = rankedGradeBook.GetMethod("GetLetterGrade");
+
+            //Test if exception is thrown when there are less than 5 students.
+            var exception = Record.Exception(() => method.Invoke(gradeBook, new object[] { 100 }));
+            Assert.True(exception != null, "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't throw an exception when less than 5 students have grades.");
+
+            //Setup successful conditions
+            var students = new List<Student>
+                {
+                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 100 }
+                    },
+                    new Student("john",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 75 }
+                    },
+                    new Student("jackie",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 50 }
+                    },
+                    new Student("tom",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 25 }
+                    },
+                    new Student("tony",StudentType.Standard,EnrollmentType.Campus)
+                    {
+                        Grades = new List<double>{ 0 }
+                    }
+                };
+
+            gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
+
+            //Test if A is given when input grade is in the top 20%.
+            Assert.True((char)method.Invoke(gradeBook, new object[] { 100 }) == 'A',"`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an A to students in the top 20% of the class.");
+
+            //Test if B is given when input grade is between the top 20 and 40%.
+            Assert.True((char)method.Invoke(gradeBook, new object[] { 75 }) == 'B', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an B to students between the top 20 and 40% of the class.");
+
+            //Test if C is given when input grade is between the top 40 and 60%.
+            Assert.True((char)method.Invoke(gradeBook, new object[] { 50 }) == 'C', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an C to students between the top 40 and 60% of the class.");
+
+            //Test if D is given when input grade is between the top 60 and 80%.
+            Assert.True((char)method.Invoke(gradeBook, new object[] { 25 }) == 'D', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an D to students between the top 60 and 80% of the class.");
+
+            //Test if F is given when input grade is below the top 80%.
+            Assert.True((char)method.Invoke(gradeBook, new object[] { 0 }) == 'F', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an F to students below the top 80% of the class.");
         }
     }
 }

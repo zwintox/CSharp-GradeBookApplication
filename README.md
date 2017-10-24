@@ -91,14 +91,15 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 			- If the GradeBookType is not yet handled throw an `InvalidOperationException` with message of "The gradebook you've attempted to load is not in a supported type of gradebook.";
 			- return the created gradebook.
 
-	- [ ] Impliment an override for the `RankedGradeBook`'s `GetLetterGrade` method, in ranked grading students aren't scored based on their own individual performance, instead they are graded based on how they performed compared to the rest of their class.
-	*Hint: To accomplish this you need to figure out where an average grade fits compared to all other average grades, one way to do this is to take the number of students and multiple by 0.2 (this gets you how many students it takes before you drop one letter grade), then put all average grades in descending order, and finally figure out where the input grade fits in the list of grades, for every `X` students from the top drop the result one letter grade (with `F` being the lowest possible grade)
-		- [ ] If there are less than 5 students with a grade throw an `InvalidOperationException`. (Ranked Grading requires a minimum of 5 students to work)
-		- [ ] To get an A a student must have an average score that is in the top 20% of their class.
-		- [ ] To get a B a student must have an average score between the top 20 and 40% of their class.
-		- [ ] To get a C a student must have an average score between the top 40 and 60% of their class.
-		- [ ] To get a D a student must have an average score between the top 60 and 80% of their class.
-		- [ ] If a student's average score is below the top 80% of their class they get an F.
+	- [ ] Override `RankedGradeBook`'s `GetLetterGrade` method
+		- [ ] Provide the appropriate grades based on where input grade compares to other students.
+			_(One way to solve this is to figure out how many students make up 20%, then loop through all the grades and check how many were more than the input average, every N students where N is that 20% value drop a letter grade.)_
+			- If there are less than 5 students throw an `InvalidOperationException`.
+			- return A if the input grade is in the top 20% of the class.
+			- return B if the input grade is between the top 20 and 40% of the class.
+			- return C if the input grade is between the top 40 and 60% of the class.
+			- return D if the input grade is between the top 60 and 80% of the class.
+			- return F if the grade is below the top 80% of the class.
 
 	- [ ] Impliment an override of the  `RankedGradeBook`'s `CalculateStatistics` method.
 		- [ ] This override will perform a check to make sure there are at least 5 students with grades
