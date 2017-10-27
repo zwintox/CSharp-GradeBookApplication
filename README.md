@@ -111,20 +111,20 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 			- If there are less than 5 students write "Ranked grading requires at least 5 students." to the Console.
 			- If there are 5 or more students call the base class's `CalculateStudentStatistics` method using 'base.CalculateStudentStatistics'.
 
-	- [ ] In the `UserInterfaces` directory, Update the `StartingUserInterface` class to work with multiple types of grade books
-		- [ ] Update the `CreateCommand` method to support multiple types.
-			- [ ] Update the condition to check if the `parts.Length` is not 3.
-			- [ ] Update the message written to console by this condition to say "Command not valid, Create requires a name and type of gradebook.".
-			- [ ] Change where `gradeBook` is set to `BaseGradeBook` so it's of type `BaseGradeBook`, but don't instantiate it.
-			- [ ] Create a new variable to store a string representing the gradebook type, this will be set using the second substring of the parts array.
-				- [ ] When the value is "standard" set `gradeBook` to a newly instantiated `StandardGradeBook`.
-				- [ ] When the value is "rank" set `gradeBook` to a newly instantiated `RankedGradeBook`.
-				- [ ] When the value doesn't match any of the above write to `Console` what they entered " is not a supported type of gradebook, please try again", then escape the method.
+	- [ ] Update `StartingUserInterface`'s `CreateCommand` method
+		- [ ] Update `CreateCommand`'s Conditions
+			- When checking the `parts.Length` it should check that `parts.Length` is not 3.
+			- If `parts.Length` is not 3 write "Command not valid, Create requires a name and type of gradebook." to Console.
+		- [ ] return a new GradeBook based on the provided type
+			- If the value of `parts[2]` is "standard" return a newly instantiated `StandardGradeBook` using the `name` variable.
+			- If the value of `parts[2]` is "ranked" return a newly instantiated `RankedGradeBook` using the `name` variable.
+			- If the value of `parts[2]` doesn't match the above write the value of `parts[2]` followed by " is not a supported type of gradebook, please try again" to console, then escape the method.
 
-	- [ ] Change where the "help" command outlines the "create" command to say "Create 'Name' 'Type' - Creates a new gradebook where 'Name' is the name of the gradebook and 'Type' is what type of grading it should use.".
+	- [ ] Update `StartingUserInterfaces`'s `HelpCommand` method
+		- [ ] Change where `HelpCommand` outlines the "create" command to write "Create 'Name' 'Type' - Creates a new gradebook where 'Name' is the name of the gradebook and 'Type' is what type of grading it should use." to console.
 
-	- [ ] In the GradeBooks directory, change `BaseGradeBook` into an abstract class
-		- [ ] Add the `abstract` keyword to the `BaseGradeBook` declarition
+	- [ ] Make the `BaseGradeBook` class abstract
+		- [ ] Add the `abstract` keyword to the `BaseGradeBook` declarition.
 
 - [ ] Add support for weighted GPAs *Note: Code will stop compiling once the constructor is updated until after changes are made in `Program.Main` are complete*
 	- [ ] Add a property named 'IsWeighted' of type `bool` to `BaseGradeBook` located in the `GradeBooks` directory.

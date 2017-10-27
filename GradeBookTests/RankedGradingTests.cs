@@ -1,6 +1,7 @@
 ﻿using GradeBook;
 using GradeBook.Enums;
 using GradeBook.GradeBooks;
+using GradeBook.UserInterfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -327,6 +328,9 @@ namespace GradeBookTests
             Assert.True((GradeBookType)actual.GetType().GetProperty("Type").GetValue(actual) == (GradeBookType)Enum.Parse(gradebookEnum, "Ranked", true), "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly set the `Type` property of gradebook to `Ranked` when the gradebook is a `RankedGradeBook`.");
         }
 
+        /// <summary>
+        ///     Tests all functionality related to overriding `LetterGrade`.
+        /// </summary>
         [Fact]
         [Trait("Category","OverrideGetLetterGrade")]
         public void OverrideGetLetterGradeTest()
@@ -398,6 +402,9 @@ namespace GradeBookTests
             Assert.True((char)method.Invoke(gradeBook, new object[] { 0 }) == 'F', "`GradeBook.GradeBooks.RankedGradeBook.GetLetterGrade` didn't give an F to students below the top 80% of the class.");
         }
 
+        /// <summary>
+        ///     Tests all functionality arround overriding `CalculateStatistics`.
+        /// </summary>
         [Fact]
         [Trait("Category","OverrideCalculateStatistics")]
         public void OverrideCalculateStatisticsTest()
@@ -481,6 +488,9 @@ namespace GradeBookTests
             Assert.True(output.Contains("average grade of all students is"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStastics` did not run the base `CalculateStatistics` when there was 5 or more students.");
         }
 
+        /// <summary>
+        ///     Tests all functionality related to overriding `CalculateStudentStatistics`.
+        /// </summary>
         [Fact]
         [Trait("Category", "OverrideCalculateStudentStatistics")]
         public void OverrideCalculateStudentStatisticsTest()
@@ -573,5 +583,114 @@ namespace GradeBookTests
 
             Assert.True(output.Contains("grades:"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStastics` did not run the base `CalculateStudentStatistics` when there was 5 or more students.");
         }
+
+
+        /// <summary>
+        ///     Tests all functionality related to updateding the `CreateCommand` to work with multiple types. WARNING! this test accesses a loop so could potentially get stuck in a loop if there is a problem.
+        /// </summary>
+        [Fact]
+        [Trait("Category","UpdateCreateCommand")]
+        public void UpdateCreateCommandTest()
+        {
+            //#Todo: Find a way to fail the test in the event the test gets stuck due to awaiting Console input
+
+            //Setup Test
+            var output = string.Empty;
+            Console.Clear();
+            using (var consoleInputStream = new StringReader("close"))
+            {
+                Console.SetIn(consoleInputStream);
+                using (var consolestream = new StringWriter())
+                {
+                    Console.SetOut(consolestream);
+                    StartingUserInterface.CreateCommand("create test");
+                    output = consolestream.ToString().ToLower();
+                }
+            }
+            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
+            StreamReader standardInput = new StreamReader(Console.OpenStandardInput());
+            Console.SetIn(standardInput);
+
+            //Test that message written to console when parts.length != 3.
+            Assert.True(output.Contains("command not valid"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write a message to the console when the create command didn't contain both a name and type.");
+
+            //Test that message written to console is correct.
+            Assert.True(output.Contains("command not valid, create requires a name and type of gradebook."), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write 'Command not valid, Create requires a name and type of gradebook.' to the console when the create command didn't contain both a name and type.");
+
+            //Test that `CreateCommand` escapes returns without setting the gradebook when parts.Length != 3.
+            Assert.True(!output.Contains("created gradebook"), "`GradeBook.UserInterfaces.StartingUserInterface` still created a gradebook when the create command didn't contain both a name and type.");
+
+            //Test that a `StandardGradeBook` is created with the correct name when value is "standard".
+            output = string.Empty;
+            Console.Clear();
+            Console.Clear();
+            using (var consoleInputStream = new StringReader("close"))
+            {
+                Console.SetIn(consoleInputStream);
+                using (var consolestream = new StringWriter())
+                {
+                    Console.SetOut(consolestream);
+                    StartingUserInterface.CreateCommand("create test standard");
+                    output = consolestream.ToString().ToLower();
+                }
+            }
+            standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
+            standardInput = new StreamReader(Console.OpenStandardInput());
+            Console.SetIn(standardInput);
+
+            Assert.True(output.Contains("standard"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't create a `StandardGradeBook` when 'standard' was used with the `CreateCommand`.");
+
+            //Test that a `RankedGradeBook` is created with the correct name when value is "ranked".
+            output = string.Empty;
+            Console.Clear();
+            Console.Clear();
+            using (var consoleInputStream = new StringReader("close"))
+            {
+                Console.SetIn(consoleInputStream);
+                using (var consolestream = new StringWriter())
+                {
+                    Console.SetOut(consolestream);
+                    StartingUserInterface.CreateCommand("create test ranked");
+                    output = consolestream.ToString().ToLower();
+                }
+            }
+            standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
+            standardInput = new StreamReader(Console.OpenStandardInput());
+            Console.SetIn(standardInput);
+
+            Assert.True(output.Contains("ranked"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't create a `RankedGradeBook` when 'ranked' was used with the `CreateCommand`.");
+
+            //Test that the correct message is written to console when value isn't handled.
+            output = string.Empty;
+            Console.Clear();
+            using (var consolestream = new StringWriter())
+            {
+                Console.SetOut(consolestream);
+                StartingUserInterface.CreateCommand("create test incorrect");
+                output = consolestream.ToString().ToLower();
+            }
+            standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
+
+            Assert.True(output.Contains("incorrect is not a supported type of gradebook, please try again"), "`GradeBook.UserInterfaces.StartingUserInterface` write the entered type followed by ' is not a supported type of gradebook, please try again' when an unknown value was used with the `CreateCommand`.");
+        }
+
+        /*- [ ] Update `StartingUserInterface`'s `CreateCommand` method
+        - [ ] Update `CreateCommand` For Multiple Types
+            - When checking the `parts.Length` it should check that `parts.Length` is not 3.
+            - If `parts.Length` is not 3 write "Command not valid, Create requires a name and type of gradebook." to Console, then escape the method.
+            - If the value of `parts[2]` is "standard" return a newly instantiated `StandardGradeBook` using the `name` variable.
+            - If the value of `parts[2]` is "ranked" return a newly instantiated `RankedGradeBook` using the `name` variable.
+            - If the value of `parts[2]` doesn't match the above write the value of `parts[2]` followed by " is not a supported type of gradebook, please try again" to console, then escape the method.
+
+
+        - [ ] Update `StartingUserInterfaces`'s `HelpCommand` method
+            - [ ] Change where `HelpCommand` outlines the "create" command to write "Create 'Name' 'Type' - Creates a new gradebook where 'Name' is the name of the gradebook and 'Type' is what type of grading it should use." to console.
+
+        - [ ] Make the `BaseGradeBook` class abstract
+            - [ ] Add the `abstract` keyword to the `BaseGradeBook` declarition.*/
     }
 }
