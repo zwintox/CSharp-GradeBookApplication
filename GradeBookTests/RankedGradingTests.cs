@@ -624,7 +624,6 @@ namespace GradeBookTests
             //Test that a `StandardGradeBook` is created with the correct name when value is "standard".
             output = string.Empty;
             Console.Clear();
-            Console.Clear();
             using (var consoleInputStream = new StringReader("close"))
             {
                 Console.SetIn(consoleInputStream);
@@ -644,7 +643,6 @@ namespace GradeBookTests
 
             //Test that a `RankedGradeBook` is created with the correct name when value is "ranked".
             output = string.Empty;
-            Console.Clear();
             Console.Clear();
             using (var consoleInputStream = new StringReader("close"))
             {
@@ -678,19 +676,39 @@ namespace GradeBookTests
             Assert.True(output.Contains("incorrect is not a supported type of gradebook, please try again"), "`GradeBook.UserInterfaces.StartingUserInterface` write the entered type followed by ' is not a supported type of gradebook, please try again' when an unknown value was used with the `CreateCommand`.");
         }
 
-        /*- [ ] Update `StartingUserInterface`'s `CreateCommand` method
-        - [ ] Update `CreateCommand` For Multiple Types
-            - When checking the `parts.Length` it should check that `parts.Length` is not 3.
-            - If `parts.Length` is not 3 write "Command not valid, Create requires a name and type of gradebook." to Console, then escape the method.
-            - If the value of `parts[2]` is "standard" return a newly instantiated `StandardGradeBook` using the `name` variable.
-            - If the value of `parts[2]` is "ranked" return a newly instantiated `RankedGradeBook` using the `name` variable.
-            - If the value of `parts[2]` doesn't match the above write the value of `parts[2]` followed by " is not a supported type of gradebook, please try again" to console, then escape the method.
+        /// <summary>
+        ///     Tests Help Command update to ensure all changes were made correctly.
+        /// </summary>
+        [Fact]
+        [Trait("Category","UpdateHelpCommand")]
+        public void UpdateHelpCommandTest()
+        {
+            //Setup Test
+            var output = string.Empty;
+            Console.Clear();
+            using (var consoleInputStream = new StringReader("close"))
+            {
+                Console.SetIn(consoleInputStream);
+                using (var consolestream = new StringWriter())
+                {
+                    Console.SetOut(consolestream);
+                    StartingUserInterface.HelpCommand();
+                    output = consolestream.ToString().ToLower();
+                }
+            }
+            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
 
+            // Test if help command message is correct
+            Assert.True(output.Contains("create 'name' 'type' - creates a new gradebook where 'name' is the name of the gradebook and 'type' is what type of grading it should use."), "`GradeBook.UserInterfaces.StartingUserInterface.HelpCommand` didn't write \"Create 'Name' 'Type' - Creates a new gradebook where 'Name' is the name of the gradebook and 'Type' is what type of grading it should use.\"");
+        }
 
-        - [ ] Update `StartingUserInterfaces`'s `HelpCommand` method
-            - [ ] Change where `HelpCommand` outlines the "create" command to write "Create 'Name' 'Type' - Creates a new gradebook where 'Name' is the name of the gradebook and 'Type' is what type of grading it should use." to console.
-
-        - [ ] Make the `BaseGradeBook` class abstract
-            - [ ] Add the `abstract` keyword to the `BaseGradeBook` declarition.*/
+        [Fact]
+        [Trait("Category","MakeBaseGradeBookAbstract")]
+        public void MakeBaseGradeBookAbstract()
+        {
+            // Test if `BaseGradeBook` is abstract.
+            Assert.True(typeof(BaseGradeBook).IsAbstract == true, "`GradeBook.GradeBooks.BaseGradeBook` is not abstract.");
+        }
     }
 }
