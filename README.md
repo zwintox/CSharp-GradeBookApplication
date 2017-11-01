@@ -126,22 +126,36 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 	- [ ] Make the `BaseGradeBook` class abstract
 		- [ ] Add the `abstract` keyword to the `BaseGradeBook` declarition.
 
-- [ ] Add support for weighted GPAs *Note: Code will stop compiling once the constructor is updated until after changes are made in `Program.Main` are complete*
-	- [ ] Add a property named 'IsWeighted' of type `bool` to `BaseGradeBook` located in the `GradeBooks` directory.
-		- [ ] Create a new public property `IsWeighted` of type `bool` in `BaseGradeBook`
-		- [ ] Change the `BaseGradeBook` constructor to accept a `bool` for the second parameter.
-		- [ ] Set the `IsWeighted` property using the `bool` parameter.
-		- [ ] Update the `RankedGradeBook` and `StandardGradeBook` constructors to also have the same `bool` parameter. (Don't forget to add the bool to base constructor call after the constructor declaration!)
-		- [ ] Update the `BaseGradeBook.GetGPA` method to add 1 point to GPAs of `Honors` and `DuelEnrolled` students when `IsWeighted` is true.
+- [ ] Add support for weighted GPAs
+	- [ ] Add `IsWeighted` property to `BaseGradeBook`
+		- [ ] Create a new `bool` property named `IsWeighted` in `BaseGradeBook`
+			- This should use the public access modifier.
+			- This should be of type `bool`.
+			- This should be named `IsWeighted`.
 
-	- [ ] Update `StartingUserInterface`, located in the `UserInterfaces` directory, to support `IsWeighted`
-		- [ ] Update `CreateCommand` to accept a third value of `true` or `false` to set `IsWeighted` via the gradebook constructors.
-		- [ ] Update the condition that checks the number of parts to check if the number of parts is not equal to 4.
-		- [ ] Update the error message to also mention that is weighted is required as well.
-		- [ ] Create a new variable to containing if or if not the gradebook should be weighted set by the last part of the command. *Hint: you should convert the provided `string` into a `bool`
-		- [ ] Update both Gradebook Instantiations to use our new command value to set `IsWeighted`.
+	- [ ] Refactor constructor of `BaseGradeBook`
+		_Note, once this group of tasks is begun the code will compile until the entire group of tasks is complete._
+		- [ ] Add a `bool` to the `BaseGradeBook` constructor
+			- This should be of type `bool`.
+			- This should be the second parameter.
+		- [ ] Add a `bool` to the `RankedGradeBook` constructor
+			- This should be of type `bool`.
+			- This should be the second parameter.
+			- This will require the the bool added to the call to the base constructor.
+		- [ ] Update `StartingUserInterface.CreateCommand` condition
+			- Change the condition checking if `parts` is not equal to 3 to be is not equal to 4.
+		- [ ] Update `StartingUserInterface.CreateCommand` to accept `IsWeighted`
+			- This should use `parts[3]` for the last parameter where the gradebooks are instantiated.
+			- Update the message provided by this condition to write to console "Command not valid, Create requires a name, type of gradebook, if it's weighted (true / false).".
 
-	- [ ] Change where the `HelpCommand` outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
+	- [ ] Update `BaseGradeBook` constructor
+		- [ ] Set the `IsWeighted` parameter using the `bool` parameter. 
+
+	- [ ] Update `BaseGradeBook.GetGPA`
+		- [ ] Add 1 point to GPA when student is `Honors` or `DualEnrolled`.
+
+	- [ ] Update `HelpCommand` 
+		- [ ] Change where the `HelpCommand` outlines the "create" command to say "Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).".
 
 ## What Now?
 
