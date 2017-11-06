@@ -138,18 +138,21 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 		- [ ] Add a `bool` to the `BaseGradeBook` constructor
 			- This should be of type `bool`.
 			- This should be the second parameter.
+		- [ ] Set `IsWeight` in the `BaseGradeBook` constructor
+			- [ ] Set the `IsWeighted` property using the `bool` parameter. 
+		- [ ] Add a `boor` to the `StandardGradeBook` constructor
+			- This should be of type `bool`.
+			- This should be the second parameter.
+			- This will require the bool to be added to the call to the base constructor.
 		- [ ] Add a `bool` to the `RankedGradeBook` constructor
 			- This should be of type `bool`.
 			- This should be the second parameter.
-			- This will require the the bool added to the call to the base constructor.
+			- This will require the bool to be added to the call to the base constructor.
 		- [ ] Update `StartingUserInterface.CreateCommand` condition
 			- Change the condition checking if `parts` is not equal to 3 to be is not equal to 4.
 		- [ ] Update `StartingUserInterface.CreateCommand` to accept `IsWeighted`
 			- This should use `parts[3]` for the last parameter where the gradebooks are instantiated.
 			- Update the message provided by this condition to write to console "Command not valid, Create requires a name, type of gradebook, if it's weighted (true / false).".
-
-	- [ ] Update `BaseGradeBook` constructor
-		- [ ] Set the `IsWeighted` parameter using the `bool` parameter. 
 
 	- [ ] Update `BaseGradeBook.GetGPA`
 		- [ ] Add 1 point to GPA when student is `Honors` or `DualEnrolled`.

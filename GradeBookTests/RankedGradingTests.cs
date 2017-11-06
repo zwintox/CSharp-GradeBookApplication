@@ -594,6 +594,20 @@ namespace GradeBookTests
         {
             //#Todo: Find a way to fail the test in the event the test gets stuck due to awaiting Console input
 
+            //Bypass Test if Create Command for Weighted GPA has been started
+            var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                   from type in assembly.GetTypes()
+                                   where type.FullName == "GradeBook.GradeBooks.RankedGradeBook"
+                                   select type).FirstOrDefault();
+            Assert.True(rankedGradeBook != null, "GradeBook.GradeBooks.RankedGradeBook doesn't exist.");
+
+            var ctor = rankedGradeBook.GetConstructors().FirstOrDefault();
+            Assert.True(ctor != null, "No constructor found for GradeBook.GradeBooks.RankedGradeBook.");
+
+            var parameters = ctor.GetParameters();
+            if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
+                return;
+
             //Setup Test
             var output = string.Empty;
             Console.Clear();
@@ -699,10 +713,17 @@ namespace GradeBookTests
             StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
             Console.SetOut(standardOutput);
 
+            // If help command is updated for weighted GPA bypass test
+            if (output.Contains("create 'name' 'type' 'weighted' - creates a new gradebook where 'name' is the name of the gradebook, 'type' is what type of grading it should use, and 'weighted' is whether or not grades should be weighted (true or false)."))
+                return;
+
             // Test if help command message is correct
             Assert.True(output.Contains("create 'name' 'type' - creates a new gradebook where 'name' is the name of the gradebook and 'type' is what type of grading it should use."), "`GradeBook.UserInterfaces.StartingUserInterface.HelpCommand` didn't write \"Create 'Name' 'Type' - Creates a new gradebook where 'Name' is the name of the gradebook and 'Type' is what type of grading it should use.\"");
         }
 
+        /// <summary>
+        ///     Tests if `BaseGradeBook` is abstract.
+        /// </summary>
         [Fact]
         [Trait("Category","MakeBaseGradeBookAbstract")]
         public void MakeBaseGradeBookAbstract()
