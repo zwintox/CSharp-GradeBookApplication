@@ -14,7 +14,7 @@ namespace GradeBook.UserInterfaces
             Quit = false;
 
             Console.WriteLine("#=======================#");
-            Console.WriteLine(GradeBook.Name + ":" + GradeBook.Type);
+            Console.WriteLine(GradeBook.Name);
             Console.WriteLine("#=======================#");
             Console.WriteLine(string.Empty);
 
