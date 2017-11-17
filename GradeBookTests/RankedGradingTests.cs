@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using Xunit;
 
 namespace GradeBookTests
@@ -234,7 +233,7 @@ namespace GradeBookTests
             File.Delete("LoadTest.gdbk");
             Assert.True((string)actual.GetType().GetProperty("Name").GetValue(gradeBook) == "LoadTest", "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly load when the gradebook is a `StandardGradeBook`.");
             Assert.True(actual.GetType() == standardGradeBook, "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly create a `StandardGradeBook` when the loaded gradebook is a `StandardGradeBook`.");
-            //Assert.True((GradeBookType)actual.GetType().GetProperty("Type").GetValue(actual) == (GradeBookType)Enum.Parse(gradebookEnum, "Standard", true), "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly set the `Type` property of gradebook to `Standard` when the gradebook is a `StandardGradeBook`.");
+            Assert.True(actual.GetType().GetProperty("Type").GetValue(actual).ToString() == Enum.Parse(gradebookEnum, "Standard", true).ToString(), "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly set the `Type` property of gradebook to `Standard` when the gradebook is a `StandardGradeBook`.");
 
             // Test if when the `GradeBookType` isn't set the matching `StandardGradeBook` object is returned.
             var esnuGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
@@ -325,7 +324,7 @@ namespace GradeBookTests
             File.Delete("LoadTest.gdbk");
             Assert.True((string)actual.GetType().GetProperty("Name").GetValue(gradeBook) == "LoadTest", "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly load when the gradebook is a `RankedGradeBook`.");
             Assert.True(actual.GetType() == rankedGradeBook, "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly create a `RankedGradeBook` when the loaded gradebook is a `RankedGradeBook`.");
-            //Assert.True((GradeBookType)actual.GetType().GetProperty("Type").GetValue(actual) == (GradeBookType)Enum.Parse(gradebookEnum, "Ranked", true), "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly set the `Type` property of gradebook to `Ranked` when the gradebook is a `RankedGradeBook`.");
+            Assert.True(actual.GetType().GetProperty("Type").GetValue(actual).ToString() == Enum.Parse(gradebookEnum, "Ranked", true).ToString(), "`GradeBook.GradeBooks.BaseGradeBook.Load` did not properly set the `Type` property of gradebook to `Ranked` when the gradebook is a `RankedGradeBook`.");
         }
 
         /// <summary>
@@ -592,8 +591,6 @@ namespace GradeBookTests
         [Trait("Category","UpdateCreateCommand")]
         public void UpdateCreateCommandTest()
         {
-            //#Todo: Find a way to fail the test in the event the test gets stuck due to awaiting Console input
-
             //Bypass Test if Create Command for Weighted GPA has been started
             var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                                    from type in assembly.GetTypes()
@@ -653,7 +650,7 @@ namespace GradeBookTests
             standardInput = new StreamReader(Console.OpenStandardInput());
             Console.SetIn(standardInput);
 
-            //Assert.True(output.Contains("standard"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't create a `StandardGradeBook` when 'standard' was used with the `CreateCommand`.");
+            Assert.True(output.Contains("standard"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't create a `StandardGradeBook` when 'standard' was used with the `CreateCommand`.");
 
             //Test that a `RankedGradeBook` is created with the correct name when value is "ranked".
             output = string.Empty;
@@ -673,7 +670,7 @@ namespace GradeBookTests
             standardInput = new StreamReader(Console.OpenStandardInput());
             Console.SetIn(standardInput);
 
-            //Assert.True(output.Contains("ranked"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't create a `RankedGradeBook` when 'ranked' was used with the `CreateCommand`.");
+            Assert.True(output.Contains("ranked"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't create a `RankedGradeBook` when 'ranked' was used with the `CreateCommand`.");
 
             //Test that the correct message is written to console when value isn't handled.
             output = string.Empty;
