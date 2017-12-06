@@ -23,7 +23,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all requirements for creating the `GradeBookType` enum.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Create GradeBookType enum @create-a-new-enum-gradebooktype")]
         [Trait("Category", "CreateGradeBookTypeEnum")]
         public void GradeBookTypeEnumTest()
         {
@@ -63,7 +63,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all requirements for adding the `Type` property.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Add Type property to BaseGradeBook  @add-a-gradebooktype-property-to-basegradebook")]
         [Trait("Category", "AddTypeProperty")]
         public void AddTypePropertyTest()
         {
@@ -90,7 +90,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all requirements for creating the `StandardGradeBook` class.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Create the StandardGradeBook class @create-the-standardgradebook-class")]
         [Trait("Category", "CreateStandardGradeBook")]
         public void CreateStandardGradeBookTest()
         {
@@ -136,7 +136,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all requirements for creating the `RankedGradeBook` class.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Create the RankedGradeBook class @create-the-rankedgradebook-class")]
         [Trait("Category", "CreateRankedGradeBook")]
         public void CreateRankedGradeBookTest()
         {
@@ -182,7 +182,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all requipments for adding multiple `GradeBookType` support to `BaseGradeBook`
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Add multiple GradeBookType support to BaseGradeBook @add-multiple-gradebooktype-support-to-basegradebook")]
         [Trait("Category","AddMultipleGradeBookTypeSupportToBaseGradeBook")]
         public void AddMultipleGradeBookTypeSupportToBaseGradeBookTest()
         {
@@ -330,7 +330,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all functionality related to overriding `LetterGrade`.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Add multiple GradeBookType support to BaseGradeBook @override-rankedgradebook-s-getlettergrade")]
         [Trait("Category","OverrideGetLetterGrade")]
         public void OverrideGetLetterGradeTest()
         {
@@ -404,7 +404,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all functionality arround overriding `CalculateStatistics`.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Override CalculateStatistics @override-calculatestatistics")]
         [Trait("Category","OverrideCalculateStatistics")]
         public void OverrideCalculateStatisticsTest()
         {
@@ -490,7 +490,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all functionality related to overriding `CalculateStudentStatistics`.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Override CalculateStudentsStatistics @override-calculatestudentstatistics")]
         [Trait("Category", "OverrideCalculateStudentStatistics")]
         public void OverrideCalculateStudentStatisticsTest()
         {
@@ -587,7 +587,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all functionality related to updateding the `CreateCommand` to work with multiple types. WARNING! this test accesses a loop so could potentially get stuck in a loop if there is a problem.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Update StartingUserInterface's CreateCommand Method @update-startinguserinterface-s-createcommand-method")]
         [Trait("Category","UpdateCreateCommand")]
         public void UpdateCreateCommandTest()
         {
@@ -690,7 +690,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests Help Command update to ensure all changes were made correctly.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Update StartingUserInterface's HelpCommand Method @update-startinguserinterface-s-helpcommand-method")]
         [Trait("Category","UpdateHelpCommand")]
         public void UpdateHelpCommandTest()
         {
@@ -721,7 +721,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests if `BaseGradeBook` is abstract.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Make BaseGradeBook Abstract @make-basegradebook-abstract")]
         [Trait("Category","MakeBaseGradeBookAbstract")]
         public void MakeBaseGradeBookAbstract()
         {

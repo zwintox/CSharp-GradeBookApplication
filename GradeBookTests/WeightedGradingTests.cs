@@ -11,7 +11,7 @@ namespace GradeBookTests
 {
     public class WeightedGradingTests
     {
-        [Fact]
+        [Fact(DisplayName = "Add IsWeighted To BaseGradeBook @add-isweighted-to-basegradebook")]
         [Trait("Category", "AddIsWeightedPropertyTest")]
         public void AddIsWeightedPropertyTest()
         {
@@ -22,7 +22,7 @@ namespace GradeBookTests
             Assert.True(isWeightedProperty.PropertyType == typeof(bool), "`GradeBook.GradeBooks.BaseGradeBook`'s `IsWeighted` is not of type `bool`.");
         }
 
-        [Fact]
+        [Fact(DisplayName = "Refactor Constructor of BaseGradeBook @refactor-constructor-of-basegradebook")]
         [Trait("Category", "RefactorConstructorTest")]
         public void RefactorConstructorTest()
         {
@@ -99,7 +99,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all functionality
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Update BaseGradeBook's GetGPA Method @update-basegradebook-s-getgpa-method")]
         [Trait("Category", "GetWeightedGPATest")]
         public void GetWeightedGPATest()
         {
@@ -141,7 +141,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests Help Command update to ensure all changes were made correctly.
         /// </summary>
-        [Fact]
+        [Fact(DisplayName = "Update HelpCommand Method @update-helpcommand-method")]
         [Trait("Category", "UpdateHelpCommandAgain")]
         public void UpdateHelpCommandTest()
         {
