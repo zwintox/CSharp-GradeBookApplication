@@ -1,24 +1,17 @@
-﻿using GradeBook;
-using GradeBook.Enums;
-using GradeBook.GradeBooks;
-using GradeBook.UserInterfaces;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Xunit;
 
 namespace GradeBookTests
 {
     /// <summary>
-    ///     This class contains all tests related to the implimentation of adding support for Ranked Grading.
+    ///     This class contains all tests related to the create a new enum gradebooktype task.
     ///     Note: Do not use these tests as example of good testing practices, due to the nature of how Pluralsight projects work
     ///     we have to create tests against code that doesn't exist and changes implimentation, due to this tests are fragile,
     ///     hard to maintain, and don't don't adhere to the "test just one thing" practice commonly used in production tests.
     /// </summary>
-    public class RankedGradingTests
+    public class CreateANewEnumGradeBookTypeTests
     {
         /// <summary>
         ///     Tests to make sure the GradeBookType file is in the Enums directory.
@@ -36,14 +29,14 @@ namespace GradeBookTests
         ///     Test to make sure the GradeBookType is in the GradeBook.Enums namespace.
         /// </summary>
         [Fact(DisplayName = "Is GradeBookType in the GradeBook.Enums namespace @create-a-new-enum-gradebooktype")]
-        public void  GradeBookTypeIsInCorrectNamespaceTest()
+        public void GradeBookTypeIsInCorrectNamespaceTest()
         {
             // Get GradeBookType from the GradeBook.Enums namespace
             var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                                  from type in assembly.GetTypes()
                                  where type.FullName == "GradeBook.Enums.GradeBookType"
                                  select type).FirstOrDefault();
-            
+
             // Assert GradeBookType was found in the GradeBook.Enums namespace
             Assert.True(gradebookEnum != null, "`GradeBook.Enums.GradeBookType` wasn't found in the `GradeBooks.Enums` namespace.");
         }
