@@ -17,7 +17,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests to make sure the RankedGradeBook file is in the GradeBooks directory.
         /// </summary>
-        [Fact(DisplayName = "Does RankedGradeBook exist in the GradeBooks Folder @create-the-standardgradebook-class")]
+        [Fact(DisplayName = "Does RankedGradeBook exist in the GradeBooks Folder @create-the-rankedgradebook-class")]
         public void StardardGradeBookExistsTest()
         {
             // Get appropriate path to file for the current operating system
@@ -29,7 +29,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Test to make sure the RankedGradeBook is in the GradeBook.GradeBooks namespace.
         /// </summary>
-        [Fact(DisplayName = "Is RankedGradeBook in the GradeBook.GradeBooks namespace @create-the-standardgradebook-class")]
+        [Fact(DisplayName = "Is RankedGradeBook in the GradeBook.GradeBooks namespace @create-the-rankedgradebook-class")]
         public void RankedGradeBookIsInCorrectNamespaceTest()
         {
             // Get GradeBookType from the GradeBook.Enums namespace
@@ -45,7 +45,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Test to make sure RankedGradeBook has a public access modifier.
         /// </summary>
-        [Fact(DisplayName = "Is RankedGradeBook public @create-the-standardgradebook-class")]
+        [Fact(DisplayName = "Is RankedGradeBook public @create-the-rankedgradebook-class")]
         public void RankedGradeBookIsPublicTest()
         {
             // Get RankedGradeBook from the GradeBook.GradeBooks namespace
@@ -61,7 +61,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Test that RankedGradeBook inherits BaseGradeBook.
         /// </summary>
-        [Fact(DisplayName = "Does RankedGradeBook inherit BaseGradeBook @create-the-standardgradebook-class")]
+        [Fact(DisplayName = "Does RankedGradeBook inherit BaseGradeBook @create-the-rankedgradebook-class")]
         public void RankedGradeBookInheritsBaseGradeBookTest()
         {
             // Get RankedGradeBook from the GradeBook.GradeBooks namespace
@@ -77,7 +77,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Test that RankedGradeBook has a constructor.
         /// </summary>
-        [Fact(DisplayName = "Does RankedGradeBook have a constructor @update-standardgradebook-type")]
+        [Fact(DisplayName = "Does RankedGradeBook have a constructor @update-rankedgradebook-type")]
         public void RankedGradeBookHasAConstructor()
         {
             // Get RankedGradeBook from the GradeBook.GradeBooks namespace
@@ -96,7 +96,7 @@ namespace GradeBookTests
         /// <summary>
         ///     Tests all requirements for creating the `RankedGradeBook` class.
         /// </summary>
-        [Fact(DisplayName = "Create the RankedGradeBook class @update-standardgradebook-type")]
+        [Fact(DisplayName = "Create the RankedGradeBook class @update-rankedgradebook-type")]
         [Trait("Category", "CreateRankedGradeBook")]
         public void CreateRankedGradeBookTest()
         {
@@ -119,24 +119,24 @@ namespace GradeBookTests
             var parameters = constructor.GetParameters();
 
             // Instantiate the RankedGradeBook
-            object standardGradeBook = null;
+            object rankedGradeBook = null;
             if (parameters.Count() == 1 && parameters[0].ParameterType == typeof(string))
-                standardGradeBook = Activator.CreateInstance(gradebook, "LoadTest");
+                rankedGradeBook = Activator.CreateInstance(gradebook, "LoadTest");
 
             // GUARD CODE - Without this code this test will fail once the project is refactored to accomidate weighted grading DO NOT REMOVE!!!
             else if (parameters.Count() == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(bool))
-                standardGradeBook = Activator.CreateInstance(gradebook, "LoadTest", true);
+                rankedGradeBook = Activator.CreateInstance(gradebook, "LoadTest", true);
             // END GUARD CODE
 
             // Assert the Type property's value is Ranked
-            Assert.True(standardGradeBook.GetType().GetProperty("Type").GetValue(standardGradeBook).ToString() == Enum.Parse(gradebookEnum, "Ranked", true).ToString(), "`Type` wasn't set to `GradeBookType.Ranked` by the `GradeBook.GradeBooks.RankedGradeBook` Constructor.");
+            Assert.True(rankedGradeBook.GetType().GetProperty("Type").GetValue(rankedGradeBook).ToString() == Enum.Parse(gradebookEnum, "Ranked", true).ToString(), "`Type` wasn't set to `GradeBookType.Ranked` by the `GradeBook.GradeBooks.RankedGradeBook` Constructor.");
         }
 
         /// <summary>
         ///     Ignore this test, it's here as a necessity to ensure the Project's UI behaves on the "RankedGradeBook Invoke BaseGradeBook Task".
         ///     It will pass on the completion of that task despite it not actually testing it. (testing user code is weird)
         /// </summary>
-        [Fact(DisplayName = "Doesn't actually test Invoke, but makes the UI work @standardgradebook-invoke-basegradebook")]
+        [Fact(DisplayName = "Doesn't actually test Invoke, but makes the UI work @rankedgradebook-invoke-basegradebook")]
         public void MakeRankedGradeBookInvokeTaskWorkTest()
         {
             // Get RankedGradeBook from the GradeBook.GradeBooks namespace
