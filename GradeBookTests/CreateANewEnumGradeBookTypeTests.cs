@@ -38,7 +38,7 @@ namespace GradeBookTests
                                  select type).FirstOrDefault();
 
             // Assert GradeBookType was found in the GradeBook.Enums namespace
-            Assert.True(gradebookEnum != null, "`GradeBook.Enums.GradeBookType` wasn't found in the `GradeBooks.Enums` namespace.");
+            Assert.True(gradebookEnum != null, "`GradeBookType` wasn't found in the `GradeBooks.Enums` namespace.");
         }
 
         /// <summary>
