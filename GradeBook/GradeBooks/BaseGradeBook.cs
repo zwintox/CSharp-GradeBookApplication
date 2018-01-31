@@ -13,6 +13,7 @@ namespace GradeBook.GradeBooks
     {
         public string Name { get; set; }
         public List<Student> Students { get; set; }
+        public GradeBookType Type { get; set; }
 
         public BaseGradeBook(string name)
         {
@@ -82,15 +83,17 @@ namespace GradeBook.GradeBooks
                 return null;
             }
 
+            BaseGradeBook gradeBook;
             using (var file = new FileStream(name + ".gdbk", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = new StreamReader(file))
                 {
                     var json = reader.ReadToEnd();
                     var jobject = JsonConvert.DeserializeObject<JObject>(json);
-                    return JsonConvert.DeserializeObject<BaseGradeBook>(json);
+                    gradeBook = JsonConvert.DeserializeObject<BaseGradeBook>(json);
                 }
             }
+            return gradeBook;
         }
 
         public void Save()
