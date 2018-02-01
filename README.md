@@ -83,13 +83,10 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 			- This should call the `BaseGradeBook` constructor by putting ` : base(name)` after the constructor declaration _(this was not covered in the course, it calls the constructor of the inheritted class.)_
 
 	- [ ] Add Multiple GradeBookType support to `BaseGradeBook`
-		- [ ] Update `BaseGradeBook`'s `Load` method
-			_(All code for this take will be written in place of the `Load` method's return statement)_
-			- This should get the GradeBookType using `Enum.Parse(typeof(GradeBookType), jobject.GetValue("Type").ToString(), true);` _(this was not covered in the course, it will take the saved file and attempt to get the type of the gradebook from it)_
-			- If the GradeBookType is `GradeBookType.Standard` create the gradebook using `JsonConvert.DeserializeObject<StandardGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a `StandardGradeBook` object based on that file)_
-			- If the GradeBookType is `GradeBookType.Ranked` create the gradebook using `JsonConvert.DeserializeObject<RankedGradeBook>(json);` _(this was also not covered in the course, it will take the saved file and create a RankedGradeBook object based on that file)_
-			- If the GradeBookType is not yet handled throw an `InvalidOperationException` with message of "The gradebook you've attempted to load is not in a supported type of gradebook.";
-			- return the created gradebook.
+		- [ ] Update `BaseGradeBook`'s `Load` to cast `gradeBook` into the appropriate grade book class based on `gradeBook`'s `Type` property
+            - If `gradeBook.Type` is `GradeBookType.Standard` use `gradeBook.As<StandardGradeBook>()` to convert the `BaseGradeBook` into a `StandardGradeBook`.
+            - If `gradeBook.Type` is `GradeBookType.Ranked` use `gradeBook.As<RankedGradeBook>()` to convert the `BaseGradeBook` into a `RankedGradeBook`.
+            - If `gradeBook.Type` is `null` or an GradeBookType with no class implimented yet use `gradeBook.As<StandardGradeBook>` to convert the `BaseGradeBook` into a `StandardGradeBook`.
 
 	- [ ] Override `RankedGradeBook`'s `GetLetterGrade` method
 		- [ ] Provide the appropriate grades based on where input grade compares to other students.

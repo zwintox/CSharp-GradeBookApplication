@@ -20,6 +20,45 @@ namespace GradeBook.GradeBooks
             Students = new List<Student>();
         }
 
+        /// <summary>
+        ///     Converts the BaseGradeBook class to the provided type.
+        ///     Note: This method has performance implications, while this is an acceptable way of handling this mapping properties 
+        ///     is a better approach for most situations.
+        ///     (we've taken this route as the alternative would greatly complicate things needless for the learner)
+        /// </summary>
+        /// <returns>GradeBook of the requested type</returns>
+        /// <typeparam name="T">Type of GradeBook you are converting to.</typeparam>
+        public T As<T>()
+        {
+            // Get the input type
+            var type = typeof(T);
+
+            // Get the parameters of the constructor
+            var parameters = type.GetConstructors()[0].GetParameters();
+
+            // Stuff all parameters with null to allow creation of the instance. 
+            // note: this will break if an object has multiple constructors of the same number but different types of parameters.
+            object[] args = new object[parameters.Count()];
+            for (int i = 0; i < parameters.Count(); i++)
+            {
+                args[i] = null;
+            }
+
+            var instance = Activator.CreateInstance(type, args);
+
+            if(type.BaseType != null)
+            {
+                var properties = type.BaseType.GetProperties();
+                foreach(var property in properties)
+                {
+                    if (property.CanWrite)
+                        property.SetValue(instance, property.GetValue(this, null), null);
+                }
+            }
+
+            return (T) instance;
+        }
+
         public void AddStudent(Student student)
         {
             if (string.IsNullOrEmpty(student.Name))
@@ -82,15 +121,17 @@ namespace GradeBook.GradeBooks
                 return null;
             }
 
+            BaseGradeBook gradeBook;
             using (var file = new FileStream(name + ".gdbk", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = new StreamReader(file))
                 {
                     var json = reader.ReadToEnd();
                     var jobject = JsonConvert.DeserializeObject<JObject>(json);
-                    return JsonConvert.DeserializeObject<BaseGradeBook>(json);
+                    gradeBook = JsonConvert.DeserializeObject<BaseGradeBook>(json);
                 }
             }
+            return gradeBook;
         }
 
         public void Save()
