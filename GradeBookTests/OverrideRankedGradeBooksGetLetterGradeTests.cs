@@ -8,7 +8,7 @@ using Xunit;
 
 namespace GradeBookTests
 {
-    public class OverrideRankedGradeBooksGetLetterGrade
+    public class OverrideRankedGradeBooksGetLetterGradeTests
     {
         /// <summary>
         ///   All tests related to the "Create GetLetterGrade Override" task.
