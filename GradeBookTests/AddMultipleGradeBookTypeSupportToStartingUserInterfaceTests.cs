@@ -175,7 +175,7 @@ namespace GradeBookTests
         /// <summary>
         ///     All Tests related to "Update StartingUserInterfaces HelpCommand Method" Task.
         /// </summary>
-        [Fact(DisplayName = "Update StartingUserInterface's HelpCommand Method @update-startinguserinterface-s-helpcommand-method")]
+        [Fact(DisplayName = "Update StartingUserInterface's HelpCommand Method Test @update-startinguserinterface-s-helpcommand-method")]
         public void UpdateHelpCommandTest()
         {
             //Setup Test
