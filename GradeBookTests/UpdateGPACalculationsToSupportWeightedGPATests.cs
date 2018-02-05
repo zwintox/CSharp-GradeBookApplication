@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using GradeBook.Enums;
 using GradeBook.GradeBooks;
 using Xunit;
 
