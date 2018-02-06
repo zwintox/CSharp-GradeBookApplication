@@ -83,22 +83,6 @@ namespace GradeBookTests
         }
 
         /// <summary>
-        ///     Test to make "Invoke BaseGradeBook's Constructor" task work on Project's UI (ignore this test)
-        /// </summary>
-        [Fact(DisplayName = "Invoke BaseGradeBooks Constructor @standardgradebook-invoke-basegradebook")]
-        public void InvokeBaseGradeBooksConstructorTest()
-        {
-            // Get StandardGradeBook from the GradeBook.GradeBooks namespace
-            var gradebook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                             from type in assembly.GetTypes()
-                             where type.FullName == "GradeBook.GradeBooks.StandardGradeBook"
-                             select type).FirstOrDefault();
-
-            // Assert that StandardGradeBook's BaseType is BaseGradeBook
-            Assert.True(gradebook.BaseType == typeof(BaseGradeBook), "`GradeBook.GradeBooks.StandardGradeBook` doesn't inherit `BaseGradeBook`");
-        }
-
-        /// <summary>
         ///     All tests related to the "Create RankedGradeBook Class" task.
         /// </summary>
         [Fact(DisplayName = "Create RankedGradeBook Class @create-the-rankedgradebook-class")]
@@ -164,22 +148,6 @@ namespace GradeBookTests
 
             // Assert the Type property's value is Ranked
             Assert.True(rankedGradeBook.GetType().GetProperty("Type").GetValue(rankedGradeBook).ToString() == Enum.Parse(gradebookEnum, "Ranked", true).ToString(), "`Type` wasn't set to `GradeBookType.Ranked` by the `GradeBook.GradeBooks.RankedGradeBook` Constructor.");
-        }
-
-        /// <summary>
-        ///     Test to make "Set RankedGradeBook to Invoke BaseGradeBook's Constructor" task work with project's UI. (ignore this test)
-        /// </summary>
-        [Fact(DisplayName = "Set RankedGradeBook to Invoke BaseGradeBooks Constructor @rankedgradebook-invoke-basegradebook")]
-        public void SetRankedGradeBookToInvokeBaseGradeBooksConstructorTest()
-        {
-            // Get RankedGradeBook from the GradeBook.GradeBooks namespace
-            var gradebook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                             from type in assembly.GetTypes()
-                             where type.FullName == "GradeBook.GradeBooks.RankedGradeBook"
-                             select type).FirstOrDefault();
-
-            // Assert that RankedGradeBook's BaseType is BaseGradeBook
-            Assert.True(gradebook.BaseType == typeof(BaseGradeBook), "`GradeBook.GradeBooks.RankedGradeBook` doesn't inherit `BaseGradeBook`");
         }
     }
 }

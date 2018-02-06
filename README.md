@@ -82,12 +82,6 @@ __Note:__ this isn't the only way to accomplish this, however; this is what the 
 			- This should set `Type` to `GradeBookType.Ranked`.
 			- This should call the `BaseGradeBook` constructor by putting ` : base(name)` after the constructor declaration _(this was not covered in the course, it calls the constructor of the inheritted class.)_
 
-	- [ ] Add Multiple GradeBookType support to `BaseGradeBook`
-		- [ ] Update `BaseGradeBook`'s `Load` to cast `gradeBook` into the appropriate grade book class based on `gradeBook`'s `Type` property
-            - If `gradeBook.Type` is `GradeBookType.Standard` use `gradeBook.As<StandardGradeBook>()` to convert the `BaseGradeBook` into a `StandardGradeBook`.
-            - If `gradeBook.Type` is `GradeBookType.Ranked` use `gradeBook.As<RankedGradeBook>()` to convert the `BaseGradeBook` into a `RankedGradeBook`.
-            - If `gradeBook.Type` is `null` or an GradeBookType with no class implimented yet use `gradeBook.As<StandardGradeBook>` to convert the `BaseGradeBook` into a `StandardGradeBook`.
-
 	- [ ] Override `RankedGradeBook`'s `GetLetterGrade` method
 		- [ ] Provide the appropriate grades based on where input grade compares to other students.
 			_(One way to solve this is to figure out how many students make up 20%, then loop through all the grades and check how many were more than the input average, every N students where N is that 20% value drop a letter grade.)_
