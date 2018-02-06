@@ -159,9 +159,9 @@ namespace GradeBook.UserInterfaces
             Console.WriteLine("Add 'Name' 'Student Type' 'Enrollment Type' - Adds a new student to the gradebook with the provided name, type of student, and type of enrollment.");
             Console.WriteLine();
             Console.WriteLine("Accepted Student Types:");
-            Console.WriteLine("Standard - Student not enrolled in Honors classes or Duel Enrolled.");
-            Console.WriteLine("Honors - Students enrolled in Honors classes and not Duel Enrolled.");
-            Console.WriteLine("DuelEnrolled - Students who are Duel Enrolled.");
+            Console.WriteLine("Standard - Student not enrolled in Honors classes or Dual Enrolled.");
+            Console.WriteLine("Honors - Students enrolled in Honors classes and not Dual Enrolled.");
+            Console.WriteLine("DualEnrolled - Students who are Duel Enrolled.");
             Console.WriteLine();
             Console.WriteLine("Accepted Enrollement Types:");
             Console.WriteLine("Campus - Students who are in the same disctrict as the school.");

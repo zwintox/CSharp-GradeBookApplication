@@ -129,7 +129,7 @@ namespace GradeBook.GradeBooks
             var internationalPoints = 0d;
             var standardPoints = 0d;
             var honorPoints = 0d;
-            var duelEnrolledPoints = 0d;
+            var dualEnrolledPoints = 0d;
 
             foreach (var student in Students)
             {
@@ -163,8 +163,8 @@ namespace GradeBook.GradeBooks
                     case StudentType.Honors:
                         honorPoints += student.AverageGrade;
                         break;
-                    case StudentType.DuelEnrolled:
-                        duelEnrolledPoints += student.AverageGrade;
+                    case StudentType.DualEnrolled:
+                        dualEnrolledPoints += student.AverageGrade;
                         break;
                 }
             }
@@ -183,8 +183,8 @@ namespace GradeBook.GradeBooks
                 Console.WriteLine("Average for students excluding honors and duel enrollment is " + (standardPoints / Students.Where(e => e.Type == StudentType.Standard).Count()));
             if (honorPoints != 0)
                 Console.WriteLine("Average for only honors students is " + (honorPoints / Students.Where(e => e.Type == StudentType.Honors).Count()));
-            if (duelEnrolledPoints != 0)
-                Console.WriteLine("Average for only duel enrolled students is " + (duelEnrolledPoints / Students.Where(e => e.Type == StudentType.DuelEnrolled).Count()));
+            if (dualEnrolledPoints != 0)
+                Console.WriteLine("Average for only duel enrolled students is " + (dualEnrolledPoints / Students.Where(e => e.Type == StudentType.DualEnrolled).Count()));
         }
 
         public virtual void CalculateStudentStatistics(string name)
