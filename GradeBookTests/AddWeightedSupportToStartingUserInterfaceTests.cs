@@ -16,23 +16,27 @@ namespace GradeBookTests
             //Setup Test
             var output = string.Empty;
             Console.Clear();
-            using (var consoleInputStream = new StringReader("close"))
+            try
             {
-                Console.SetIn(consoleInputStream);
-                using (var consolestream = new StringWriter())
+                using (var consoleInputStream = new StringReader("close"))
                 {
-                    Console.SetOut(consolestream);
-                    StartingUserInterface.HelpCommand();
-                    output = consolestream.ToString().ToLower();
+                    Console.SetIn(consoleInputStream);
+                    using (var consolestream = new StringWriter())
+                    {
+                        Console.SetOut(consolestream);
+                        StartingUserInterface.HelpCommand();
+                        output = consolestream.ToString().ToLower();
+
+                        // Test if help command message is correct
+                        Assert.True(output.Contains("create 'name' 'type' 'weighted' - creates a new gradebook where 'name' is the name of the gradebook, 'type' is what type of grading it should use, and 'weighted' is whether or not grades should be weighted (true or false)."), "`GradeBook.UserInterfaces.StartingUserInterface.HelpCommand` didn't write \"Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).\"");
+                    }
                 }
             }
-            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
-            Console.SetOut(standardOutput);
-
-            // Test if help command message is correct
-            Assert.True(output.Contains("create 'name' 'type' 'weighted' - creates a new gradebook where 'name' is the name of the gradebook, 'type' is what type of grading it should use, and 'weighted' is whether or not grades should be weighted (true or false)."), "`GradeBook.UserInterfaces.StartingUserInterface.HelpCommand` didn't write \"Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).\"");
-            output = string.Empty;
-            Console.Clear();
+            finally
+            {
+                StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+                Console.SetOut(standardOutput);
+            }
         }
     }
 }

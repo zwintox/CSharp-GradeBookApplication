@@ -20,45 +20,6 @@ namespace GradeBook.GradeBooks
             Students = new List<Student>();
         }
 
-        /// <summary>
-        ///     Converts the BaseGradeBook class to the provided type.
-        ///     Note: This method has performance implications, while this is an acceptable way of handling this mapping properties 
-        ///     is a better approach for most situations.
-        ///     (we've taken this route as the alternative would greatly complicate things needless for the learner)
-        /// </summary>
-        /// <returns>GradeBook of the requested type</returns>
-        /// <typeparam name="T">Type of GradeBook you are converting to.</typeparam>
-        public T As<T>()
-        {
-            // Get the input type
-            var type = typeof(T);
-
-            // Get the parameters of the constructor
-            var parameters = type.GetConstructors()[0].GetParameters();
-
-            // Stuff all parameters with null to allow creation of the instance. 
-            // note: this will break if an object has multiple constructors of the same number but different types of parameters.
-            object[] args = new object[parameters.Count()];
-            for (int i = 0; i < parameters.Count(); i++)
-            {
-                args[i] = null;
-            }
-
-            var instance = Activator.CreateInstance(type, args);
-
-            if(type.BaseType != null)
-            {
-                var properties = type.BaseType.GetProperties();
-                foreach(var property in properties)
-                {
-                    if (property.CanWrite)
-                        property.SetValue(instance, property.GetValue(this, null), null);
-                }
-            }
-
-            return (T) instance;
-        }
-
         public void AddStudent(Student student)
         {
             if (string.IsNullOrEmpty(student.Name))
@@ -121,17 +82,14 @@ namespace GradeBook.GradeBooks
                 return null;
             }
 
-            BaseGradeBook gradeBook;
             using (var file = new FileStream(name + ".gdbk", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = new StreamReader(file))
                 {
                     var json = reader.ReadToEnd();
-                    var jobject = JsonConvert.DeserializeObject<JObject>(json);
-                    gradeBook = JsonConvert.DeserializeObject<BaseGradeBook>(json);
+                    return ConvertToGradeBook(json);
                 }
             }
-            return gradeBook;
         }
 
         public void Save()
@@ -158,8 +116,6 @@ namespace GradeBook.GradeBooks
                     return 2;
                 case 'D':
                     return 1;
-                case 'F':
-                    return 0;
             }
             return 0;
         }
@@ -258,6 +214,55 @@ namespace GradeBook.GradeBooks
                 return 'D';
             else
                 return 'F';
+        }
+
+        /// <summary>
+        ///     Converts json to the appropriate grade book type.
+        ///     Note: This method contains code that is not recommended practice.
+        ///     This has been used as a compromise to avoid adding additional complexity to the learner.
+        /// </summary>
+        /// <returns>The to grade book.</returns>
+        /// <param name="json">Json.</param>
+        public static dynamic ConvertToGradeBook(string json)
+        {
+            // Get GradeBookType from the GradeBook.Enums namespace
+            var gradebookEnum = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                 from type in assembly.GetTypes()
+                                 where type.FullName == "GradeBook.Enums.GradeBookType"
+                                 select type).FirstOrDefault();
+
+            var jobject = JsonConvert.DeserializeObject<JObject>(json);
+            var gradeBookType = jobject.Property("Type")?.Value?.ToString();
+
+            // Check if StandardGradeBook exists
+            if ((from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                 from type in assembly.GetTypes()
+                 where type.FullName == "GradeBook.GradeBooks.StandardGradeBook"
+                 select type).FirstOrDefault() == null)
+                gradeBookType = "Base";
+            else
+            {
+                if (string.IsNullOrEmpty(gradeBookType))
+                    gradeBookType = "Standard";
+                else
+                    gradeBookType = Enum.GetName(gradebookEnum, int.Parse(gradeBookType));
+            }
+
+            // Get GradeBook from the GradeBook.GradeBooks namespace
+            var gradebook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                             from type in assembly.GetTypes()
+                             where type.FullName == "GradeBook.GradeBooks." + gradeBookType + "GradeBook"
+                             select type).FirstOrDefault();
+
+
+            //protection code
+            if (gradebook == null)
+                gradebook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                             from type in assembly.GetTypes()
+                             where type.FullName == "GradeBook.GradeBooks.StandardGradeBook"
+                             select type).FirstOrDefault();
+            
+            return JsonConvert.DeserializeObject(json, gradebook);
         }
     }
 }

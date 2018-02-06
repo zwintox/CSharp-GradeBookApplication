@@ -35,25 +35,26 @@ namespace GradeBookTests
             MethodInfo method = rankedGradeBook.GetMethod("CalculateStatistics");
             var output = string.Empty;
             Console.Clear();
-
-            //Test that message was written to console when there are less than 5 students.
-            using (var consolestream = new StringWriter())
+            try
             {
-                Console.SetOut(consolestream);
-                method.Invoke(gradeBook, null);
-                output = consolestream.ToString().ToLower();
+                //Test that message was written to console when there are less than 5 students.
+                using (var consolestream = new StringWriter())
+                {
+                    Console.SetOut(consolestream);
+                    method.Invoke(gradeBook, null);
+                    output = consolestream.ToString().ToLower();
+
+                    Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
+
+                    //Test that the base calculate statistics didn't still run when there were less than 5 students.
+                    Assert.True(!output.Contains("average grade of all students is"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStastics` still ran the base `CalculateStatistics` when there was less than 5 students.");
+                }
             }
-            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
-            Console.SetOut(standardOutput);
-
-            Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
-
-            //Test that the base calculate statistics didn't still run when there were less than 5 students.
-            Assert.True(!output.Contains("average grade of all students is"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStastics` still ran the base `CalculateStatistics` when there was less than 5 students.");
-
-            //Test that the base calculate statistics did run when there were 5 or more students.
-            output = string.Empty;
-            Console.Clear();
+            finally
+            {
+                StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+                Console.SetOut(standardOutput);
+            }
 
             var students = new List<Student>
                 {
@@ -81,16 +82,26 @@ namespace GradeBookTests
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
 
-            using (var consolestream = new StringWriter())
-            {
-                Console.SetOut(consolestream);
-                method.Invoke(gradeBook, null);
-                output = consolestream.ToString().ToLower();
-            }
-            standardOutput = new StreamWriter(Console.OpenStandardOutput());
-            Console.SetOut(standardOutput);
+            //Test that the base calculate statistics did run when there were 5 or more students.
+            output = string.Empty;
+            Console.Clear();
 
-            Assert.True(output.Contains("average grade of all students is"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStastics` did not run the base `CalculateStatistics` when there was 5 or more students.");
+            try
+            {
+                using (var consolestream = new StringWriter())
+                {
+                    Console.SetOut(consolestream);
+                    method.Invoke(gradeBook, null);
+                    output = consolestream.ToString().ToLower();
+
+                    Assert.True(output.Contains("average grade of all students is"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStastics` did not run the base `CalculateStatistics` when there was 5 or more students.");
+                }
+            }
+            finally
+            {
+                StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+                Console.SetOut(standardOutput);
+            }
         }
     }
 }

@@ -36,37 +36,39 @@ namespace GradeBookTests
             Assert.True(gradeBook != null, "The constructor for GradeBook.GradeBooks.RankedGradeBook have the expected parameters.");
 
             MethodInfo method = rankedGradeBook.GetMethod("CalculateStudentStatistics");
-            var output = string.Empty;
-            Console.Clear();
 
             var students = new List<Student>
+            {
+                new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
                 {
-                    new Student("jamie",StudentType.Standard,EnrollmentType.Campus)
-                    {
-                        Grades = new List<double>{ 100 }
-                    }
-                };
+                    Grades = new List<double>{ 100 }
+                }
+            };
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
 
-            //Test that message was written to console when there are less than 5 students.
-            using (var consolestream = new StringWriter())
-            {
-                Console.SetOut(consolestream);
-                method.Invoke(gradeBook, new object[] { "jamie" });
-                output = consolestream.ToString().ToLower();
-            }
-            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
-            Console.SetOut(standardOutput);
-
-            Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
-
-            //Test that the base calculate statistics didn't still run when there were less than 5 students.
-            Assert.True(!output.Contains("grades:"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStastics` still ran the base `CalculateStudentStatistics` when there was less than 5 students.");
-
-            //Test that the base calculate statistics did run when there were 5 or more students.
-            output = string.Empty;
+            var output = string.Empty;
             Console.Clear();
+            try
+            {
+                //Test that message was written to console when there are less than 5 students.
+                using (var consolestream = new StringWriter())
+                {
+                    Console.SetOut(consolestream);
+                    method.Invoke(gradeBook, new object[] { "jamie" });
+                    output = consolestream.ToString().ToLower();
+
+                    Assert.True(output.Contains("5 students") || output.Contains("five students"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStatistics` didn't respond with 'Ranked grading requires at least 5 students.' when there were less than 5 students.");
+
+                    //Test that the base calculate statistics didn't still run when there were less than 5 students.
+                    Assert.True(!output.Contains("grades:"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStastics` still ran the base `CalculateStudentStatistics` when there was less than 5 students.");
+                }
+            }
+            finally
+            {
+                StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+                Console.SetOut(standardOutput);
+            }
 
             students = new List<Student>
                 {
@@ -94,16 +96,26 @@ namespace GradeBookTests
 
             gradeBook.GetType().GetProperty("Students").SetValue(gradeBook, students);
 
-            using (var consolestream = new StringWriter())
-            {
-                Console.SetOut(consolestream);
-                method.Invoke(gradeBook, new object[] { "jamie" });
-                output = consolestream.ToString().ToLower();
-            }
-            standardOutput = new StreamWriter(Console.OpenStandardOutput());
-            Console.SetOut(standardOutput);
+            //Test that the base calculate statistics did run when there were 5 or more students.
+            output = string.Empty;
+            Console.Clear();
 
-            Assert.True(output.Contains("grades:"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStastics` did not run the base `CalculateStudentStatistics` when there was 5 or more students.");
+            try
+            {
+                using (var consolestream = new StringWriter())
+                {
+                    Console.SetOut(consolestream);
+                    method.Invoke(gradeBook, new object[] { "jamie" });
+                    output = consolestream.ToString().ToLower();
+
+                    Assert.True(output.Contains("grades:"), "`GradeBook.GradeBooks.RankedGradeBook.CalculateStudentStastics` did not run the base `CalculateStudentStatistics` when there was 5 or more students.");
+                }
+            }
+            finally
+            {
+                StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+                Console.SetOut(standardOutput);
+            }
         }
     }
 }

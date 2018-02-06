@@ -72,48 +72,61 @@ namespace GradeBookTests
             //Setup Test
             var output = string.Empty;
             Console.Clear();
-            using (var consoleInputStream = new StringReader("close"))
+
+            try
             {
-                Console.SetIn(consoleInputStream);
-                using (var consolestream = new StringWriter())
+                using (var consoleInputStream = new StringReader("close"))
                 {
-                    Console.SetOut(consolestream);
-                    StartingUserInterface.CreateCommand("create test standard");
-                    output = consolestream.ToString().ToLower();
+                    Console.SetIn(consoleInputStream);
+                    using (var consolestream = new StringWriter())
+                    {
+                        Console.SetOut(consolestream);
+                        StartingUserInterface.CreateCommand("create test standard");
+                        output = consolestream.ToString().ToLower();
+
+                        //Test that message written to console when parts.length != 4.
+                        Assert.True(output.Contains("command not valid"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write a message to the console when the create command didn't contain a name, type, and if it was weighted (true / false).");
+
+                        //Test that message written to console is correct.
+                        Assert.True(output.Contains("command not valid, create requires a name, type of gradebook, if it's weighted (true / false)."), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write 'Command not valid, Create requires a name, type of gradebook, if it's weighted (true / false)..' to the console when the create command didn't contain both a name and type.");
+
+                        //Test that `CreateCommand` escapes returns without setting the gradebook when parts.Length != 4.
+                        Assert.True(!output.Contains("created gradebook"), "`GradeBook.UserInterfaces.StartingUserInterface` still created a gradebook when the create command didn't contain a name, type, if it's weighted (true / false).");
+                    }
                 }
             }
-            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
-            Console.SetOut(standardOutput);
-            StreamReader standardInput = new StreamReader(Console.OpenStandardInput());
-            Console.SetIn(standardInput);
-
-            //Test that message written to console when parts.length != 4.
-            Assert.True(output.Contains("command not valid"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write a message to the console when the create command didn't contain a name, type, and if it was weighted (true / false).");
-
-            //Test that message written to console is correct.
-            Assert.True(output.Contains("command not valid, create requires a name, type of gradebook, if it's weighted (true / false)."), "`GradeBook.UserInterfaces.StartingUserInterface` didn't write 'Command not valid, Create requires a name, type of gradebook, if it's weighted (true / false)..' to the console when the create command didn't contain both a name and type.");
-
-            //Test that `CreateCommand` escapes returns without setting the gradebook when parts.Length != 4.
-            Assert.True(!output.Contains("created gradebook"), "`GradeBook.UserInterfaces.StartingUserInterface` still created a gradebook when the create command didn't contain a name, type, if it's weighted (true / false).");
+            finally
+            {
+                StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+                Console.SetOut(standardOutput);
+                StreamReader standardInput = new StreamReader(Console.OpenStandardInput());
+                Console.SetIn(standardInput);
+            }
 
             output = string.Empty;
             Console.Clear();
-            using (var consoleInputStream = new StringReader("close"))
+            try
             {
-                Console.SetIn(consoleInputStream);
-                using (var consolestream = new StringWriter())
+                using (var consoleInputStream = new StringReader("close"))
                 {
-                    Console.SetOut(consolestream);
-                    StartingUserInterface.CreateCommand("create test standard true");
-                    output = consolestream.ToString().ToLower();
+                    Console.SetIn(consoleInputStream);
+                    using (var consolestream = new StringWriter())
+                    {
+                        Console.SetOut(consolestream);
+                        StartingUserInterface.CreateCommand("create test standard true");
+                        output = consolestream.ToString().ToLower();
+
+                        Assert.True(output.Contains("standard"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't create a gradebook when the `CreateCommand` included a name, type, and if it was weighted (true / false).");
+                    }
                 }
             }
-            standardOutput = new StreamWriter(Console.OpenStandardOutput());
-            Console.SetOut(standardOutput);
-            standardInput = new StreamReader(Console.OpenStandardInput());
-            Console.SetIn(standardInput);
-
-            Assert.True(output.Contains("standard"), "`GradeBook.UserInterfaces.StartingUserInterface` didn't create a gradebook when the `CreateCommand` included a name, type, and if it was weighted (true / false).");
+            finally
+            {
+                StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+                Console.SetOut(standardOutput);
+                StreamReader standardInput = new StreamReader(Console.OpenStandardInput());
+                Console.SetIn(standardInput);
+            }
         }
     }
 }

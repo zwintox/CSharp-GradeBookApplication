@@ -78,9 +78,9 @@ namespace GradeBookTests
 
             // Get the RankedGradeBook Class.
             var rankedGradeBook = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                     from type in assembly.GetTypes()
-                                     where type.Name == "RankedGradeBook"
-                                     select type).FirstOrDefault();
+                                   from type in assembly.GetTypes()
+                                   where type.Name == "RankedGradeBook"
+                                   select type).FirstOrDefault();
 
             // Get RankedGradeBook's constructor
             var constructor = rankedGradeBook.GetConstructors().FirstOrDefault();
