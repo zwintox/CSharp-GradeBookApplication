@@ -199,7 +199,7 @@ namespace GradeBookTests
         /// <summary>
         ///   All tests related to the "Fourth 20 Percent Get A D" task.
         /// </summary>
-        [Fact(DisplayName = "Fourth 20 Percent Get An D @override-getlettergrade-D")]
+        [Fact(DisplayName = "Fourth 20 Percent Get An D @override-getlettergrade-c")]
         public void FourthTwentyPercentGetADTests()
         {
             // Setup Test
@@ -252,7 +252,7 @@ namespace GradeBookTests
         /// <summary>
         ///   All tests related to the "Last 20 Percent Get A F" task.
         /// </summary>
-        [Fact(DisplayName = "Last 20 Percent Get A F @override-getlettergrade-F")]
+        [Fact(DisplayName = "Last 20 Percent Get A F @override-getlettergrade-c")]
         public void LastTwentyPercentGetAFTests()
         {
             // Setup Test
