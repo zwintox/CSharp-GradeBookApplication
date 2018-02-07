@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using GradeBook.GradeBooks;
 using Xunit;
 
@@ -80,6 +81,16 @@ namespace GradeBookTests
 
             // Assert the Type property's value is Standard
             Assert.True(standardGradeBook.GetType().GetProperty("Type").GetValue(standardGradeBook).ToString() == Enum.Parse(gradebookEnum, "Standard", true).ToString(), "`Type` wasn't set to `GradeBookType.Standard` by the `GradeBook.GradeBooks.StandardGradeBook` Constructor.");
+
+            // Read file for Type being set (because Standard is the default in our enum we can't test if the task was completed without regex :(
+            // Get appropriate path to file for the current operating system
+            var filePath = ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + "GradeBook" + Path.DirectorySeparatorChar + "GradeBooks" + Path.DirectorySeparatorChar + "StandardGradeBook.cs";
+            var input = File.ReadAllText(filePath);
+
+            var pattern = @"(Type\s?[=]\s?(GradeBook[.])?(Enums[.])?GradeBookType[.]Standard\s?;)";
+            var rgx = new Regex(pattern);
+            var matches = rgx.Matches(input);
+            Assert.True(matches.Count > 0, "While `Type` was set to `GradeBookType.Standard`, it wasn't set by the `GradeBook.GradeBooks.StandardGradeBook` Constructor.");
         }
 
         /// <summary>
