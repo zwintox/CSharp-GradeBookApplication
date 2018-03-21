@@ -8,8 +8,8 @@ namespace GradeBookTests
 {
     /// <summary>
     ///     This class contains all tests related to the "Add New GradeBookType Enum to BaseGradeBook" task group.
-    ///     Note: Do not use these tests as example of good testing practices, due to the nature of how Pluralsight projects work
-    ///     we have to create tests against code that doesn't exist and changes implimentation, due to this tests are fragile,
+    ///     Note: Do not use these tests as example of good testing practices, due to the nature of how PluralSight projects work
+    ///     we have to create tests against code that doesn't exist and changes implementation, due to this tests are fragile,
     ///     hard to maintain, and don't don't adhere to the "test just one thing" practice commonly used in production tests.
     /// </summary>t
     public class AddNewGradeBookTypeEnumToBaseGradeBookTests
@@ -22,6 +22,7 @@ namespace GradeBookTests
         {
             // Get appropriate path to file for the current operating system
             var filePath = ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + ".." + Path.DirectorySeparatorChar + "GradeBook" + Path.DirectorySeparatorChar + "Enums" + Path.DirectorySeparatorChar + "GradeBookType.cs";
+
             // Assert GradeBookType is in the Enums folder
             Assert.True(File.Exists(filePath), "`GradeBookType.cs` was not found in the `Enums` directory.");
 
