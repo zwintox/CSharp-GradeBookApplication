@@ -29,6 +29,7 @@ namespace GradeBook.GradeBooks
             else 
                 return 'F';
         }
+
         public override void CalculateStatistics()
         {
             if (Student.Count < 5)
