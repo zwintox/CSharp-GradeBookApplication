@@ -32,7 +32,7 @@ namespace GradeBook.GradeBooks
 
         public override void CalculateStatistics()
         {
-            if (Student.Count > 5)
+            if (Student.Count < 5)
             {
                 Console.WriteLine("Ranked grading requires at least 5 students.");
                 return;
