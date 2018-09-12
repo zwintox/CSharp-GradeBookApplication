@@ -38,7 +38,8 @@ namespace GradeBook.GradeBooks
                 return;
             }
 
-            base.CalculateStatistics();
+            else
+                base.CalculateStatistics();
         }
 
         public override void CalculateStudentStatistics(string name)
