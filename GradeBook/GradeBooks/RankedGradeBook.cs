@@ -38,7 +38,6 @@ namespace GradeBook.GradeBooks
                 return;
             }
 
-            else
                 base.CalculateStatistics();
         }
 
